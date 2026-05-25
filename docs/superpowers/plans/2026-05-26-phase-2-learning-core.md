@@ -714,7 +714,7 @@ git commit -m "labs: add math primitives"
 - Create: `labs/python/tests/test_nn_scalar_grad.py`
 - Create: `labs/python/tests/test_nn_tiny_linear.py`
 
-- [ ] **Step 1: Write failing scalar gradient tests**
+- [x] **Step 1: Write failing scalar gradient tests**
 
 Create `labs/python/tests/test_nn_scalar_grad.py`:
 
@@ -736,7 +736,7 @@ def test_finite_difference_gradient_matches_square_derivative() -> None:
     assert gradient == pytest.approx(6.0, rel=1e-3)
 ```
 
-- [ ] **Step 2: Run scalar gradient tests to verify failure**
+- [x] **Step 2: Run scalar gradient tests to verify failure**
 
 Run:
 
@@ -747,7 +747,7 @@ pytest labs/python/tests/test_nn_scalar_grad.py -q
 
 Expected: fails because `llm_from_scratch.nn.scalar_grad` does not exist.
 
-- [ ] **Step 3: Implement scalar gradient helpers**
+- [x] **Step 3: Implement scalar gradient helpers**
 
 Create `labs/python/llm_from_scratch/nn/__init__.py`:
 
@@ -776,7 +776,7 @@ def finite_difference_gradient(
     return (function(at + epsilon) - function(at - epsilon)) / (2 * epsilon)
 ```
 
-- [ ] **Step 4: Run scalar gradient tests to verify pass**
+- [x] **Step 4: Run scalar gradient tests to verify pass**
 
 Run:
 
@@ -787,7 +787,7 @@ pytest labs/python/tests/test_nn_scalar_grad.py -q
 
 Expected: `2 passed`.
 
-- [ ] **Step 5: Write failing tiny linear tests**
+- [x] **Step 5: Write failing tiny linear tests**
 
 Create `labs/python/tests/test_nn_tiny_linear.py`:
 
@@ -813,7 +813,7 @@ def test_one_step_update_reduces_loss_for_single_example() -> None:
     assert result.updated_model.weight > 0
 ```
 
-- [ ] **Step 6: Run tiny linear tests to verify failure**
+- [x] **Step 6: Run tiny linear tests to verify failure**
 
 Run:
 
@@ -824,7 +824,7 @@ pytest labs/python/tests/test_nn_tiny_linear.py -q
 
 Expected: fails because `llm_from_scratch.nn.tiny_linear` does not exist.
 
-- [ ] **Step 7: Implement tiny linear model**
+- [x] **Step 7: Implement tiny linear model**
 
 Create `labs/python/llm_from_scratch/nn/tiny_linear.py`:
 
@@ -879,7 +879,7 @@ def one_step_update(
     )
 ```
 
-- [ ] **Step 8: Run neural-net tests**
+- [x] **Step 8: Run neural-net tests**
 
 Run:
 
@@ -890,7 +890,7 @@ pytest labs/python/tests/test_nn_scalar_grad.py labs/python/tests/test_nn_tiny_l
 
 Expected: `4 passed`.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add labs/python/llm_from_scratch/nn labs/python/tests/test_nn_scalar_grad.py labs/python/tests/test_nn_tiny_linear.py
