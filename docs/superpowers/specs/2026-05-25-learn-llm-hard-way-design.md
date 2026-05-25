@@ -275,6 +275,18 @@ The Chat Playground should also include switches or views for:
 - No-tools mode versus tool-verified mode.
 - Context-only memory versus saved local memory.
 
+## Animation And Visualization Tooling
+
+Use a layered animation strategy:
+
+- Motion for React for app-state transitions, panel enter/exit, token-stream traces, progress changes, and interactive UI motion.
+- CSS transitions/keyframes for simple hover, press, opacity, and small transform micro-interactions.
+- SVG, Canvas, and D3 for educational visualizations such as token flow, attention maps, loss curves, and embedding movement.
+- React Flow for the concept map and prerequisite graph.
+- Gemini CLI for drafting SVG illustrations and educational animated SVG assets when a generated visual can speed up exploration.
+
+Gemini-generated SVG or animation assets must be treated as drafts. The reusable local skill `gemini-svg-animation` defines the workflow: generate with `gemini -p`, inspect the SVG, validate XML/accessibility/reduced-motion/external-reference constraints, render-test with `rsvg-convert`, and only then use the asset in the app.
+
 ## Data And Progress Model
 
 Separate versioned curriculum content from local personal state.
@@ -408,6 +420,7 @@ These can be added later after the local learning foundation is strong.
 - API: FastAPI.
 - Content schema: JSON metadata plus Markdown lesson body.
 - Local state: SQLite with explicit schema setup.
+- Animation tooling: Motion for React, CSS transitions/keyframes, SVG/Canvas/D3, React Flow, and Gemini CLI for validated SVG asset drafts.
 - Phase 1 lab execution: terminal-first for real lab runs; the web app reads deterministic outputs and artifacts.
 - Phase 2 lab execution: add safe app-triggered tiny demos where the runtime cost and side effects are controlled.
 - Package management choices should prioritize reproducibility and simple local setup.
