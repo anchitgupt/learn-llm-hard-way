@@ -157,18 +157,18 @@ class ProgressStore:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(
                 """
-                SELECT concept_id, 'manual-revisit' AS reason, updated_at
+                SELECT concept_id, 'manual-revisit' AS reason, 3 AS reason_priority, updated_at
                 FROM concept_progress
                 WHERE revisit = 1
                 UNION ALL
-                SELECT concept_id, 'low-confidence' AS reason, updated_at
+                SELECT concept_id, 'low-confidence' AS reason, 1 AS reason_priority, updated_at
                 FROM concept_progress
                 WHERE confidence <= 2
                 UNION ALL
-                SELECT concept_id, 'failed-checkpoint' AS reason, created_at AS updated_at
+                SELECT concept_id, 'failed-checkpoint' AS reason, 2 AS reason_priority, created_at AS updated_at
                 FROM checkpoint_attempts
                 WHERE correct = 0
-                ORDER BY updated_at DESC, concept_id ASC
+                ORDER BY reason_priority ASC, updated_at DESC, concept_id ASC
                 """
             ).fetchall()
 

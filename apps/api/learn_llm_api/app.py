@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -49,7 +50,10 @@ def create_app(
     database_path: Path | None = None,
 ) -> FastAPI:
     root = repo_root or Path.cwd()
-    store = ProgressStore(database_path or root / ".learn-llm" / "progress.sqlite")
+    configured_database_path = database_path or Path(
+        os.environ.get("LEARN_LLM_DATABASE_PATH", root / ".learn-llm" / "progress.sqlite")
+    )
+    store = ProgressStore(configured_database_path)
     store.initialize()
 
     app = FastAPI(title="Learn LLM The Hard Way API")

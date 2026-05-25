@@ -2613,7 +2613,7 @@ git commit -m "web: wire learning core app state"
 **Files:**
 - Create: `tests/e2e/phase2-learning-core.spec.ts`
 
-- [ ] **Step 1: Write failing e2e test**
+- [x] **Step 1: Write failing e2e test**
 
 Create `tests/e2e/phase2-learning-core.spec.ts`:
 
@@ -2643,7 +2643,7 @@ test("learner runs a math lab and sends low-confidence checkpoint to missed topi
 });
 ```
 
-- [ ] **Step 2: Run e2e to verify failure**
+- [x] **Step 2: Run e2e to verify failure**
 
 Run:
 
@@ -2654,7 +2654,7 @@ npm run e2e
 
 Expected: Phase 2 e2e fails before the web/API wiring from prior tasks is complete. If prior tasks are complete, this may pass immediately; in that case, confirm it was failing before implementation in the task log.
 
-- [ ] **Step 3: Fix any accessibility labels found by Playwright**
+- [x] **Step 3: Fix any accessibility labels found by Playwright**
 
 If the test cannot locate elements by role or label, change the UI so these labels exist:
 
@@ -2668,7 +2668,7 @@ and:
 <div className="workspace-tabs" role="tablist" aria-label="Concept workspace tabs">
 ```
 
-- [ ] **Step 4: Run e2e to verify pass**
+- [x] **Step 4: Run e2e to verify pass**
 
 Run:
 
@@ -2679,7 +2679,7 @@ npm run e2e
 
 Expected: both Phase 1 and Phase 2 e2e tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add tests/e2e/phase2-learning-core.spec.ts apps/web/src

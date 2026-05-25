@@ -10,7 +10,7 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: "npm run api:dev",
+      command: "mkdir -p .learn-llm && rm -f .learn-llm/e2e-progress.sqlite && LEARN_LLM_DATABASE_PATH=.learn-llm/e2e-progress.sqlite npm run api:dev",
       url: "http://127.0.0.1:8000/health",
       reuseExistingServer: true,
       timeout: 20_000

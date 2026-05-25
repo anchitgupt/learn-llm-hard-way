@@ -55,13 +55,13 @@ def test_records_checkpoint_attempts_and_missed_topics(tmp_path: Path) -> None:
         feedback="Mention ordered numbers.",
         confidence=2,
     )
-    store.save_progress("vectors", status="confusing", confidence=2, note="Need practice", revisit=False)
+    store.save_progress("vectors", status="confusing", confidence=2, note="Need practice", revisit=True)
 
     missed = store.list_missed_topics()
 
     assert attempt["conceptId"] == "vectors"
     assert missed[0]["conceptId"] == "vectors"
-    assert missed[0]["reason"] in {"low-confidence", "failed-checkpoint"}
+    assert missed[0]["reason"] == "low-confidence"
 
 
 def test_records_lab_runs_and_recent_artifacts(tmp_path: Path) -> None:

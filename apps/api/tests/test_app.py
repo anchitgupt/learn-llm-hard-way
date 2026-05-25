@@ -98,6 +98,21 @@ def test_progress_round_trip(tmp_path):
     assert revisit[0]["conceptId"] == "character-tokenization"
 
 
+def test_create_app_uses_database_path_env(tmp_path: Path, monkeypatch) -> None:
+    database_path = tmp_path / "env-progress.sqlite"
+    monkeypatch.setenv("LEARN_LLM_DATABASE_PATH", str(database_path))
+    app = create_app(repo_root=Path("."))
+    client = TestClient(app)
+
+    response = client.put(
+        "/api/progress/bytes-unicode",
+        json={"status": "in-progress", "confidence": 3, "note": "", "revisit": False},
+    )
+
+    assert response.status_code == 200
+    assert database_path.exists()
+
+
 def test_phase_two_endpoints_return_glossary_checkpoint_lab_and_artifacts(tmp_path: Path) -> None:
     write_phase2_api_repo(tmp_path)
     app = create_app(repo_root=tmp_path, database_path=tmp_path / "progress.sqlite")
