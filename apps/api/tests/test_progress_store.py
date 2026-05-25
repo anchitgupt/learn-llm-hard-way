@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from learn_llm_api.progress_store import ProgressStore
 
 
@@ -38,5 +40,50 @@ def test_progress_store_returns_revisit_queue(tmp_path):
             "confidence": 1,
             "note": "Pair merges",
             "revisit": True,
+        }
+    ]
+
+
+def test_records_checkpoint_attempts_and_missed_topics(tmp_path: Path) -> None:
+    store = ProgressStore(tmp_path / "progress.sqlite")
+    store.initialize()
+
+    attempt = store.record_checkpoint_attempt(
+        concept_id="vectors",
+        submitted_answer="numbers",
+        correct=False,
+        feedback="Mention ordered numbers.",
+        confidence=2,
+    )
+    store.save_progress("vectors", status="confusing", confidence=2, note="Need practice", revisit=False)
+
+    missed = store.list_missed_topics()
+
+    assert attempt["conceptId"] == "vectors"
+    assert missed[0]["conceptId"] == "vectors"
+    assert missed[0]["reason"] in {"low-confidence", "failed-checkpoint"}
+
+
+def test_records_lab_runs_and_recent_artifacts(tmp_path: Path) -> None:
+    store = ProgressStore(tmp_path / "progress.sqlite")
+    store.initialize()
+
+    run = store.record_lab_run(
+        lab_id="math-vector-demo",
+        concept_id="vectors",
+        artifact_path="artifacts/labs/math-vector-demo.json",
+        status="passed",
+    )
+
+    recent = store.list_recent_artifacts(limit=3)
+
+    assert run["labId"] == "math-vector-demo"
+    assert recent == [
+        {
+            "labId": "math-vector-demo",
+            "conceptId": "vectors",
+            "artifactPath": "artifacts/labs/math-vector-demo.json",
+            "status": "passed",
+            "error": "",
         }
     ]

@@ -1057,7 +1057,7 @@ git commit -m "labs: add phase two demo artifacts"
 - Modify: `apps/api/learn_llm_api/progress_store.py`
 - Modify: `apps/api/tests/test_progress_store.py`
 
-- [ ] **Step 1: Write failing progress store tests**
+- [x] **Step 1: Write failing progress store tests**
 
 Append these tests to `apps/api/tests/test_progress_store.py`:
 
@@ -1107,7 +1107,7 @@ def test_records_lab_runs_and_recent_artifacts(tmp_path: Path) -> None:
     ]
 ```
 
-- [ ] **Step 2: Run progress store tests to verify failure**
+- [x] **Step 2: Run progress store tests to verify failure**
 
 Run:
 
@@ -1118,7 +1118,7 @@ pytest apps/api/tests/test_progress_store.py -q
 
 Expected: fails because checkpoint and lab-run methods do not exist.
 
-- [ ] **Step 3: Extend schema**
+- [x] **Step 3: Extend schema**
 
 Modify `ProgressStore.initialize()` to create these tables in addition to `concept_progress`:
 
@@ -1151,7 +1151,7 @@ connection.execute(
 )
 ```
 
-- [ ] **Step 4: Add checkpoint and lab methods**
+- [x] **Step 4: Add checkpoint and lab methods**
 
 Add methods to `ProgressStore`:
 
@@ -1270,7 +1270,7 @@ def _row_to_lab_run(row: sqlite3.Row) -> dict[str, Any]:
     }
 ```
 
-- [ ] **Step 5: Run progress store tests**
+- [x] **Step 5: Run progress store tests**
 
 Run:
 
@@ -1281,7 +1281,7 @@ pytest apps/api/tests/test_progress_store.py -q
 
 Expected: all progress store tests pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add apps/api/learn_llm_api/progress_store.py apps/api/tests/test_progress_store.py
