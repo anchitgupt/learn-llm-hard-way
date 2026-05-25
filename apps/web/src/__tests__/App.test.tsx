@@ -16,7 +16,7 @@ const tracks = [
         order: 1,
         prerequisites: [],
         lessonPath: "content/lessons/data-and-tokens/bytes-unicode.md",
-        lessonMarkdown: "# Bytes and Unicode\n\nLLMs do not see text the way people do.",
+        lessonMarkdown: "# Bytes and Unicode\n\nLLMs do not see text the way people do.\n\n## What To Notice\n\n- Text becomes bytes.",
         lab: null,
         visual: "token-flow-svg",
         checkpoint: { question: "Why bytes?", answer: "Encoding." },
@@ -43,6 +43,8 @@ describe("App", () => {
     render(<App />);
 
     expect(await screen.findByRole("heading", { name: "Learn LLM The Hard Way" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "What To Notice" })).toBeInTheDocument();
+    expect(screen.queryByText((content) => content.startsWith("# Bytes and Unicode"))).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "Bytes and Unicode" }));
     await userEvent.type(screen.getByLabelText("Learning note"), "Need more practice");
     await userEvent.click(screen.getByLabelText("Add to revisit queue"));

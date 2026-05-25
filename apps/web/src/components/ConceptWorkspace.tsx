@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 import type { Concept } from "../types";
 import { ProgressPanel } from "./ProgressPanel";
 import { TokenFlowSvg } from "./TokenFlowSvg";
@@ -12,7 +13,16 @@ export function ConceptWorkspace({ concept }: ConceptWorkspaceProps) {
       <section className="lesson">
         <p className="eyebrow">Concept Workspace</p>
         <h2>{concept.title}</h2>
-        <article>{concept.lessonMarkdown}</article>
+        <article className="lesson-content">
+          <ReactMarkdown
+            components={{
+              h1: () => null,
+              h2: ({ children }) => <h3>{children}</h3>
+            }}
+          >
+            {concept.lessonMarkdown}
+          </ReactMarkdown>
+        </article>
       </section>
       <section className="visual-panel">
         <h3>Visual</h3>
