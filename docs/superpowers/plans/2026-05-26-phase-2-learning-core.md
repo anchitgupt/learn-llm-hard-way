@@ -531,7 +531,7 @@ git commit -m "content: add phase two learning core curriculum"
 - Create: `labs/python/tests/test_math_vectors.py`
 - Create: `labs/python/tests/test_math_probability.py`
 
-- [ ] **Step 1: Write failing vector tests**
+- [x] **Step 1: Write failing vector tests**
 
 Create `labs/python/tests/test_math_vectors.py`:
 
@@ -561,7 +561,7 @@ def test_dot_product_rejects_mismatched_lengths() -> None:
         dot_product([1, 2], [1])
 ```
 
-- [ ] **Step 2: Run vector tests to verify failure**
+- [x] **Step 2: Run vector tests to verify failure**
 
 Run:
 
@@ -572,7 +572,7 @@ pytest labs/python/tests/test_math_vectors.py -q
 
 Expected: fails because `llm_from_scratch.math.vectors` does not exist.
 
-- [ ] **Step 3: Implement vector functions**
+- [x] **Step 3: Implement vector functions**
 
 Create `labs/python/llm_from_scratch/math/__init__.py`:
 
@@ -612,7 +612,7 @@ def cosine_similarity(left: Sequence[float], right: Sequence[float]) -> float:
     return dot_product(left, right) / (left_norm * right_norm)
 ```
 
-- [ ] **Step 4: Run vector tests to verify pass**
+- [x] **Step 4: Run vector tests to verify pass**
 
 Run:
 
@@ -623,7 +623,7 @@ pytest labs/python/tests/test_math_vectors.py -q
 
 Expected: `4 passed`.
 
-- [ ] **Step 5: Write failing probability tests**
+- [x] **Step 5: Write failing probability tests**
 
 Create `labs/python/tests/test_math_probability.py`:
 
@@ -654,7 +654,7 @@ def test_softmax_rejects_empty_logits() -> None:
         softmax([])
 ```
 
-- [ ] **Step 6: Run probability tests to verify failure**
+- [x] **Step 6: Run probability tests to verify failure**
 
 Run:
 
@@ -665,7 +665,7 @@ pytest labs/python/tests/test_math_probability.py -q
 
 Expected: fails because `llm_from_scratch.math.probability` does not exist.
 
-- [ ] **Step 7: Implement softmax**
+- [x] **Step 7: Implement softmax**
 
 Create `labs/python/llm_from_scratch/math/probability.py`:
 
@@ -685,7 +685,7 @@ def softmax(logits: Sequence[float]) -> list[float]:
     return [value / denominator for value in exponentials]
 ```
 
-- [ ] **Step 8: Run math tests**
+- [x] **Step 8: Run math tests**
 
 Run:
 
@@ -696,7 +696,7 @@ pytest labs/python/tests/test_math_vectors.py labs/python/tests/test_math_probab
 
 Expected: `7 passed`.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add labs/python/llm_from_scratch/math labs/python/tests/test_math_vectors.py labs/python/tests/test_math_probability.py
