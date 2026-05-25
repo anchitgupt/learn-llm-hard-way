@@ -3,11 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from learn_llm_api.content_loader import load_tracks
+from learn_llm_api.content_loader import load_glossary, load_tracks
+from learn_llm_api.lab_runner import run_lab
 from learn_llm_api.progress_store import ProgressStore
 
 
@@ -16,6 +17,31 @@ class ProgressInput(BaseModel):
     confidence: int = Field(ge=1, le=5)
     note: str = ""
     revisit: bool = False
+
+
+class CheckpointAttemptInput(BaseModel):
+    submittedAnswer: str = Field(min_length=1)
+    confidence: int = Field(ge=1, le=5)
+
+
+def _find_concept(tracks: list[dict[str, Any]], concept_id: str) -> dict[str, Any]:
+    for track in tracks:
+        for concept in track["concepts"]:
+            if concept["id"] == concept_id:
+                return concept
+    raise KeyError(concept_id)
+
+
+def _evaluate_checkpoint(concept: dict[str, Any], submitted_answer: str) -> tuple[bool, str]:
+    checkpoint = concept["checkpoint"]
+    normalized = submitted_answer.lower()
+    keywords = checkpoint.get("acceptedKeywords", [])
+    if keywords:
+        correct = all(keyword.lower() in normalized for keyword in keywords)
+    else:
+        correct = checkpoint["answer"].lower() in normalized
+    feedback = "Checkpoint passed." if correct else checkpoint["answer"]
+    return correct, feedback
 
 
 def create_app(
@@ -43,6 +69,14 @@ def create_app(
     def tracks() -> list[dict[str, Any]]:
         return load_tracks(root)
 
+    @app.get("/api/glossary")
+    def glossary() -> list[dict[str, Any]]:
+        return load_glossary(root)
+
+    @app.get("/api/progress")
+    def progress() -> list[dict[str, Any]]:
+        return store.list_progress()
+
     @app.put("/api/progress/{concept_id}")
     def save_progress(concept_id: str, payload: ProgressInput) -> dict[str, Any]:
         store.save_progress(
@@ -56,8 +90,51 @@ def create_app(
         assert progress is not None
         return progress
 
+    @app.post("/api/checkpoints/{concept_id}/attempts")
+    def submit_checkpoint(concept_id: str, payload: CheckpointAttemptInput) -> dict[str, Any]:
+        try:
+            concept = _find_concept(load_tracks(root), concept_id)
+        except KeyError as error:
+            raise HTTPException(status_code=404, detail=f"Unknown concept: {concept_id}") from error
+        correct, feedback = _evaluate_checkpoint(concept, payload.submittedAnswer)
+        attempt = store.record_checkpoint_attempt(
+            concept_id=concept_id,
+            submitted_answer=payload.submittedAnswer,
+            correct=correct,
+            feedback=feedback,
+            confidence=payload.confidence,
+        )
+        if not correct or payload.confidence <= 2:
+            store.save_progress(
+                concept_id=concept_id,
+                status="confusing",
+                confidence=payload.confidence,
+                note="",
+                revisit=True,
+            )
+        return attempt
+
+    @app.post("/api/labs/{lab_id}/runs")
+    def run_lab_endpoint(lab_id: str) -> dict[str, Any]:
+        try:
+            result = run_lab(lab_id, root)
+        except KeyError as error:
+            raise HTTPException(status_code=404, detail=str(error)) from error
+        store.record_lab_run(
+            lab_id=result["labId"],
+            concept_id=result["conceptId"],
+            artifact_path=result["artifactPath"],
+            status=result["status"],
+            error=result["error"],
+        )
+        return result
+
+    @app.get("/api/artifacts/recent")
+    def recent_artifacts() -> list[dict[str, Any]]:
+        return store.list_recent_artifacts()
+
     @app.get("/api/revisit")
     def revisit() -> list[dict[str, Any]]:
-        return store.list_revisit()
+        return store.list_missed_topics()
 
     return app

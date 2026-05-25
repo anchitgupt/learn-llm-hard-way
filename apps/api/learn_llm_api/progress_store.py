@@ -100,6 +100,18 @@ class ProgressStore:
             ).fetchall()
         return [self._row_to_progress(row) for row in rows]
 
+    def list_progress(self) -> list[dict[str, Any]]:
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(
+                """
+                SELECT concept_id, status, confidence, note, revisit
+                FROM concept_progress
+                ORDER BY updated_at DESC, concept_id ASC
+                """
+            ).fetchall()
+        return [self._row_to_progress(row) for row in rows]
+
     def record_checkpoint_attempt(
         self,
         concept_id: str,

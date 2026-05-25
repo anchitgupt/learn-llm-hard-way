@@ -1298,7 +1298,7 @@ git commit -m "api: extend local progress store"
 - Modify: `apps/api/learn_llm_api/app.py`
 - Modify: `apps/api/tests/test_app.py`
 
-- [ ] **Step 1: Write failing lab runner tests**
+- [x] **Step 1: Write failing lab runner tests**
 
 Create `apps/api/tests/test_lab_runner.py`:
 
@@ -1327,7 +1327,7 @@ def test_run_lab_rejects_unknown_lab(tmp_path) -> None:
         run_lab("rm-rf-demo", tmp_path)
 ```
 
-- [ ] **Step 2: Run lab runner tests to verify failure**
+- [x] **Step 2: Run lab runner tests to verify failure**
 
 Run:
 
@@ -1338,7 +1338,7 @@ pytest apps/api/tests/test_lab_runner.py -q
 
 Expected: fails because `learn_llm_api.lab_runner` does not exist.
 
-- [ ] **Step 3: Implement lab runner**
+- [x] **Step 3: Implement lab runner**
 
 Create `apps/api/learn_llm_api/lab_runner.py`:
 
@@ -1376,7 +1376,7 @@ def run_lab(lab_id: str, repo_root: Path) -> dict[str, Any]:
     }
 ```
 
-- [ ] **Step 4: Add failing API endpoint tests**
+- [x] **Step 4: Add failing API endpoint tests**
 
 Add these imports to `apps/api/tests/test_app.py`:
 
@@ -1469,7 +1469,7 @@ def test_phase_two_endpoints_return_glossary_checkpoint_lab_and_artifacts(tmp_pa
     assert revisit_response.json()[0]["conceptId"] == "bytes-unicode"
 ```
 
-- [ ] **Step 5: Run API tests to verify failure**
+- [x] **Step 5: Run API tests to verify failure**
 
 Run:
 
@@ -1480,7 +1480,7 @@ pytest apps/api/tests/test_lab_runner.py apps/api/tests/test_app.py -q
 
 Expected: fails because endpoints are missing.
 
-- [ ] **Step 6: Add request models and checkpoint evaluation**
+- [x] **Step 6: Add request models and checkpoint evaluation**
 
 Modify `apps/api/learn_llm_api/app.py`:
 
@@ -1510,7 +1510,7 @@ def _evaluate_checkpoint(concept: dict[str, Any], submitted_answer: str) -> tupl
     return correct, feedback
 ```
 
-- [ ] **Step 7: Add API endpoints**
+- [x] **Step 7: Add API endpoints**
 
 Inside `create_app`, add endpoints:
 
@@ -1596,7 +1596,7 @@ def list_progress(self) -> list[dict[str, Any]]:
     return [self._row_to_progress(row) for row in rows]
 ```
 
-- [ ] **Step 8: Run API tests**
+- [x] **Step 8: Run API tests**
 
 Run:
 
@@ -1607,7 +1607,7 @@ pytest apps/api/tests/test_lab_runner.py apps/api/tests/test_app.py apps/api/tes
 
 Expected: all selected API tests pass.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add apps/api/learn_llm_api apps/api/tests
