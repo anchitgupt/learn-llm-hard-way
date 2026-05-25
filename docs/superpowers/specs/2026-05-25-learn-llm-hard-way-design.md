@@ -2,6 +2,10 @@
 
 Date: 2026-05-25
 
+Reference input:
+
+- Andrej Karpathy, "Deep Dive into LLMs like ChatGPT", YouTube, 2025-02-05, https://www.youtube.com/watch?v=7xTGNNLPyMI
+
 ## Goal
 
 Build a local-first hybrid project for learning how large language models are created, from the smallest foundations through a user-facing chat experience. The project must support deep code-first learning while also providing a web app for explanation, visualization, progress tracking, and later recovery of missed topics.
@@ -13,6 +17,51 @@ The project should make no compromise on depth. Core mechanisms should be implem
 Use a "Knowledge Map + Guided Missions" model.
 
 The learner can follow a guided path from first principles, but every lesson is also a reusable concept node with prerequisites, status, notes, labs, visual experiments, checkpoints, and artifacts. This lets the learner come back later and pick up concepts they skipped, misunderstood, or want to reinforce.
+
+The Karpathy deep dive adds an important product constraint: the project should teach both how an LLM is built and how to think about the model at the user end. The learner should understand the full journey from raw internet data to tokenization, next-token prediction, base models, post-training, factuality mitigations, reinforcement learning, tool use, and the final chat interface.
+
+## Video-Informed Learning Requirements
+
+The project should explicitly cover these mental models from the video:
+
+1. Three-stage training pipeline
+   - Pretraining creates a base model from large text corpora.
+   - Supervised fine-tuning turns a document-completion model into an assistant by training on curated conversation examples.
+   - Reinforcement learning and RLHF shape behavior beyond direct imitation, especially for reasoning, preference alignment, and unverifiable domains.
+
+2. Data pipeline before model training
+   - Raw web data must be collected, filtered, deduplicated, cleaned, tokenized, and packed into training examples.
+   - The curriculum should show why dataset quality matters and why open corpora such as FineWeb/Common Crawl-style datasets are useful for learning even when production datasets are proprietary.
+
+3. Base model versus assistant
+   - A pretrained base model is fundamentally a next-token document completer.
+   - An assistant is created by post-training the model on conversational formats, roles, delimiters, and desired response behavior.
+   - The chat playground should make message formatting visible so the learner sees how user-facing chat maps back to model tokens.
+
+4. Context window and memory
+   - Model parameters act like long-term learned knowledge.
+   - The context window acts like working memory for the current interaction.
+   - The app should teach the difference between knowledge stored in weights, information supplied in the prompt, and external memory or retrieval.
+
+5. Hallucinations and factuality
+   - Models can produce confident false outputs because they imitate plausible text, not truth itself.
+   - The curriculum should include labs and UI traces for uncertainty, "I do not know" behavior, retrieval/tool verification, and failure analysis.
+
+6. Models need tokens and tools to think
+   - Complex tasks often require intermediate tokens, scratch work, decomposition, or external tools.
+   - The project should include experiments where forcing a one-token answer performs worse than allowing intermediate work, and where code execution is more reliable than mental arithmetic.
+
+7. Jagged capability profile
+   - LLMs can be impressive on hard tasks while failing simple-looking tasks because of tokenization, training distribution gaps, and limited computation per token.
+   - The project should include a "failure museum" with examples such as counting, spelling, arithmetic, token-boundary surprises, and date/factuality traps.
+
+8. Reasoning models and reinforcement learning
+   - Advanced reasoning behavior can emerge from trial-and-error optimization.
+   - Later phases should include small simulations of reward-based learning, preference modeling, and the distinction between verifiable and unverifiable tasks.
+
+9. Future-facing capabilities
+   - Multimodality, agents, computer use, and longer-running tasks should be treated as later extensions after the base text LLM/chat pipeline is understood.
+   - These topics should appear in the concept map as future nodes, not as phase 1 dependencies.
 
 ## Architecture
 
@@ -65,10 +114,12 @@ The curriculum is organized into five tracks:
    - Bytes
    - Unicode
    - Characters
+   - Common Crawl/FineWeb-style data sources
+   - Filtering, deduplication, and cleaning
    - Tokenization
    - Byte pair encoding
    - Token frequency
-   - Dataset cleaning
+   - Dataset packing for training
 
 2. Math for Models
    - Vectors
@@ -80,11 +131,13 @@ The curriculum is organized into five tracks:
    - Logits
 
 3. Learning
+   - Next-token prediction
    - Loss functions
    - Gradients
    - Backpropagation
    - Optimizers
    - Training loops
+   - Base model creation
    - Overfitting
    - Evaluation
 
@@ -93,15 +146,23 @@ The curriculum is organized into five tracks:
    - Masked attention
    - Positional encoding
    - Transformer blocks
+   - Context windows
+   - In-context learning
    - Mini dataset training
    - Generation
    - Sampling
 
 5. Chat Product
+   - Base model versus assistant behavior
+   - Supervised fine-tuning
+   - Human and synthetic conversation data
    - Prompt/message formatting
    - Context windows
    - System/user/assistant messages
    - Token streaming
+   - Hallucination and factuality handling
+   - Tool use for verification
+   - Reasoning models and RL/RLHF
    - Memory and retrieval concepts
    - Safety and refusal behavior basics
    - Chat UI and serving loop
@@ -166,6 +227,8 @@ Examples:
 - Neural networks begin with scalar gradients and tiny matrix math before PyTorch.
 - Attention begins with visible dot-product attention before transformer blocks.
 - Generation begins with logits and sampling before a full chat loop.
+- Post-training begins with a tiny conversation-format dataset before RLHF-style preference work.
+- Factuality begins with controlled hallucination examples before retrieval or tool-use mitigations.
 
 Each lab should have:
 
@@ -192,6 +255,7 @@ Primary screens:
 - Artifacts Browser: loss charts, tokenizer outputs, generated samples, model checkpoints, chat traces.
 - Glossary: linked explanations for important terms.
 - Chat Playground: final chat UI with an inspection panel.
+- Failure Museum: curated examples of hallucinations, counting/spelling failures, tokenization surprises, arithmetic mistakes, and prompt traps.
 
 The Chat Playground should show more than a normal chat interface. It should expose the internal path:
 
@@ -203,6 +267,13 @@ The Chat Playground should show more than a normal chat interface. It should exp
 6. Sampling decision
 7. Token stream
 8. Rendered assistant reply
+
+The Chat Playground should also include switches or views for:
+
+- Base-model completion mode versus assistant-chat mode.
+- Short-answer mode versus scratch-work mode.
+- No-tools mode versus tool-verified mode.
+- Context-only memory versus saved local memory.
 
 ## Data And Progress Model
 
@@ -303,6 +374,8 @@ End-to-end tests:
 - Add tiny dataset training loop
 - Add loss charts and generated sample artifacts
 - Add artifact browser integration
+- Add base-model versus assistant-behavior demonstrations
+- Add hallucination and factuality failure cases
 
 ### Phase 4: Chat
 
@@ -311,6 +384,9 @@ End-to-end tests:
 - Add tokenization and context-window trace
 - Add sampling controls
 - Add token streaming trace
+- Add failure museum
+- Add tool-use verification demos
+- Add tiny preference/RLHF-style simulations
 - Add optional Colab scale-up path
 
 ## Out Of Scope For First Implementation Plan
@@ -321,6 +397,8 @@ End-to-end tests:
 - Large-scale model training as a required path
 - Paid model API integration as a core dependency
 - Complex RAG/tool-use systems before the base chat loop is understood
+- Production-grade RLHF training at large scale
+- Multimodal and autonomous-agent systems as first-version requirements
 
 These can be added later after the local learning foundation is strong.
 
