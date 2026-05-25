@@ -906,7 +906,7 @@ git commit -m "labs: add tiny neural net primitives"
 - Create: `labs/python/llm_from_scratch/experiments/nn_demo.py`
 - Create: `labs/python/tests/test_phase2_experiments.py`
 
-- [ ] **Step 1: Write failing experiment tests**
+- [x] **Step 1: Write failing experiment tests**
 
 Create `labs/python/tests/test_phase2_experiments.py`:
 
@@ -942,7 +942,7 @@ def test_nn_demo_artifact_contains_loss_reduction(tmp_path) -> None:
     assert written["afterLoss"] < written["beforeLoss"]
 ```
 
-- [ ] **Step 2: Run experiment tests to verify failure**
+- [x] **Step 2: Run experiment tests to verify failure**
 
 Run:
 
@@ -953,7 +953,7 @@ pytest labs/python/tests/test_phase2_experiments.py -q
 
 Expected: fails because `math_demo.py` and `nn_demo.py` do not exist.
 
-- [ ] **Step 3: Implement math demo artifact**
+- [x] **Step 3: Implement math demo artifact**
 
 Create `labs/python/llm_from_scratch/experiments/math_demo.py`:
 
@@ -993,7 +993,7 @@ def write_math_demo_artifact(root: Path) -> Path:
     return output_path
 ```
 
-- [ ] **Step 4: Implement neural-net demo artifact**
+- [x] **Step 4: Implement neural-net demo artifact**
 
 Create `labs/python/llm_from_scratch/experiments/nn_demo.py`:
 
@@ -1031,7 +1031,7 @@ def write_nn_demo_artifact(root: Path) -> Path:
     return output_path
 ```
 
-- [ ] **Step 5: Run experiment tests**
+- [x] **Step 5: Run experiment tests**
 
 Run:
 
@@ -1042,7 +1042,7 @@ pytest labs/python/tests/test_phase2_experiments.py -q
 
 Expected: `2 passed`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add labs/python/llm_from_scratch/experiments/math_demo.py labs/python/llm_from_scratch/experiments/nn_demo.py labs/python/tests/test_phase2_experiments.py
