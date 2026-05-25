@@ -1,0 +1,55 @@
+{
+  "track": {
+    "id": "data-and-tokens",
+    "title": "Data and Tokens",
+    "summary": "Start from bytes, Unicode, characters, and tokenization before any model training happens.",
+    "order": 1
+  },
+  "concepts": [
+    {
+      "id": "bytes-unicode",
+      "title": "Bytes and Unicode",
+      "order": 1,
+      "prerequisites": [],
+      "lessonPath": "content/lessons/data-and-tokens/bytes-unicode.md",
+      "lab": null,
+      "visual": "token-flow-svg",
+      "checkpoint": {
+        "question": "Why can the same visible character use different byte sequences?",
+        "answer": "Because text is encoded into bytes using a character encoding such as UTF-8, and visible characters can map to one or more code points and byte sequences."
+      },
+      "glossary": ["byte", "unicode", "utf-8"],
+      "status": "available"
+    },
+    {
+      "id": "character-tokenization",
+      "title": "Character Tokenization",
+      "order": 2,
+      "prerequisites": ["bytes-unicode"],
+      "lessonPath": "content/lessons/data-and-tokens/character-tokenization.md",
+      "lab": "character-tokenizer",
+      "visual": "token-flow-svg",
+      "checkpoint": {
+        "question": "What does a character tokenizer lose compared with a learned subword tokenizer?",
+        "answer": "It creates long sequences and does not learn frequent reusable chunks such as common words, prefixes, or suffixes."
+      },
+      "glossary": ["token", "vocabulary", "sequence-length"],
+      "status": "available"
+    },
+    {
+      "id": "byte-pair-encoding",
+      "title": "Byte Pair Encoding",
+      "order": 3,
+      "prerequisites": ["character-tokenization"],
+      "lessonPath": "content/lessons/data-and-tokens/byte-pair-encoding.md",
+      "lab": "bpe-tokenizer",
+      "visual": "token-flow-svg",
+      "checkpoint": {
+        "question": "What does one BPE merge do?",
+        "answer": "It finds a frequent adjacent token pair and replaces that pair with a new token, shortening sequences while expanding the vocabulary."
+      },
+      "glossary": ["bpe", "merge", "subword"],
+      "status": "available"
+    }
+  ]
+}
