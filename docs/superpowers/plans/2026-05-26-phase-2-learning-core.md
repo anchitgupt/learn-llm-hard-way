@@ -1813,7 +1813,7 @@ git commit -m "web: add learning core api client"
 - Modify: `apps/web/src/components/Dashboard.tsx`
 - Modify: `apps/web/src/styles.css`
 
-- [ ] **Step 1: Write failing ConceptMap test**
+- [x] **Step 1: Write failing ConceptMap test**
 
 Create `apps/web/src/__tests__/ConceptMap.test.tsx`:
 
@@ -1871,7 +1871,7 @@ describe("ConceptMap", () => {
 });
 ```
 
-- [ ] **Step 2: Write failing Dashboard and Glossary tests**
+- [x] **Step 2: Write failing Dashboard and Glossary tests**
 
 Create `apps/web/src/__tests__/Dashboard.test.tsx`:
 
@@ -1937,7 +1937,7 @@ describe("GlossaryPanel", () => {
 });
 ```
 
-- [ ] **Step 3: Run component tests to verify failure**
+- [x] **Step 3: Run component tests to verify failure**
 
 Run:
 
@@ -1947,7 +1947,7 @@ npm --prefix apps/web test -- src/__tests__/ConceptMap.test.tsx src/__tests__/Da
 
 Expected: fails because `ConceptMap` and `GlossaryPanel` do not exist and `Dashboard` props are not extended.
 
-- [ ] **Step 4: Implement ConceptMap**
+- [x] **Step 4: Implement ConceptMap**
 
 Create `apps/web/src/components/ConceptMap.tsx`:
 
@@ -2000,7 +2000,7 @@ export function ConceptMap({ tracks, selectedConceptId, missedConceptIds, onSele
 }
 ```
 
-- [ ] **Step 5: Extend Dashboard**
+- [x] **Step 5: Extend Dashboard**
 
 Modify `apps/web/src/components/Dashboard.tsx` props:
 
@@ -2035,7 +2035,7 @@ Add sections below the track list:
 </section>
 ```
 
-- [ ] **Step 6: Implement GlossaryPanel**
+- [x] **Step 6: Implement GlossaryPanel**
 
 Create `apps/web/src/components/GlossaryPanel.tsx`:
 
@@ -2066,7 +2066,7 @@ export function GlossaryPanel({ conceptGlossaryIds, entries }: GlossaryPanelProp
 }
 ```
 
-- [ ] **Step 7: Add CSS for map and panels**
+- [x] **Step 7: Add CSS for map and panels**
 
 Modify `apps/web/src/styles.css`:
 
@@ -2105,7 +2105,7 @@ Modify `apps/web/src/styles.css`:
 }
 ```
 
-- [ ] **Step 8: Run component tests**
+- [x] **Step 8: Run component tests**
 
 Run:
 
@@ -2115,7 +2115,7 @@ npm --prefix apps/web test -- src/__tests__/ConceptMap.test.tsx src/__tests__/Da
 
 Expected: component tests pass.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add apps/web/src/components/ConceptMap.tsx apps/web/src/components/Dashboard.tsx apps/web/src/components/GlossaryPanel.tsx apps/web/src/__tests__/ConceptMap.test.tsx apps/web/src/__tests__/Dashboard.test.tsx apps/web/src/__tests__/GlossaryPanel.test.tsx apps/web/src/styles.css
