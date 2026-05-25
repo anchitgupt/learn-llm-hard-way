@@ -1,40 +1,89 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import App from "../App";
 
 const tracks = [
   {
-    id: "data-and-tokens",
-    title: "Data and Tokens",
-    summary: "Start from bytes.",
-    order: 1,
+    id: "math-for-models",
+    title: "Math for Models",
+    summary: "Math for model internals.",
+    order: 2,
     concepts: [
       {
-        id: "bytes-unicode",
-        title: "Bytes and Unicode",
+        id: "vectors",
+        title: "Vectors",
         order: 1,
         prerequisites: [],
-        lessonPath: "content/lessons/data-and-tokens/bytes-unicode.md",
-        lessonMarkdown: "# Bytes and Unicode\n\nLLMs do not see text the way people do.\n\n## What To Notice\n\n- Text becomes bytes.",
-        lab: null,
-        visual: "token-flow-svg",
-        checkpoint: { question: "Why bytes?", answer: "Encoding." },
-        glossary: ["byte"],
+        lessonPath: "content/lessons/math-for-models/vectors.md",
+        lessonMarkdown: "# Vectors\n\nVectors are ordered lists of numbers.\n\n## What To Notice\n\n- Dimensions line up.",
+        lab: "math-vector-demo",
+        visual: "vector-similarity",
+        checkpoint: {
+          question: "What is a vector?",
+          answer: "A vector is an ordered list of numbers.",
+          acceptedKeywords: ["ordered", "numbers"]
+        },
+        glossary: ["vector"],
         status: "available"
       }
     ]
   }
 ];
 
+const glossary = [
+  {
+    id: "vector",
+    term: "Vector",
+    shortDefinition: "An ordered list of numbers.",
+    explanation: "Used for embeddings.",
+    relatedConcepts: ["vectors"]
+  }
+];
+const missedTopics = [{ conceptId: "vectors", reason: "low-confidence" }];
+const artifacts = [
+  {
+    labId: "math-vector-demo",
+    conceptId: "vectors",
+    artifactPath: "artifacts/labs/math-vector-demo.json",
+    status: "passed",
+    error: ""
+  }
+];
+
 describe("App", () => {
-  it("loads curriculum and saves revisit note", async () => {
+  it("loads the learning core and wires labs and checkpoints", async () => {
     const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
       if (url.endsWith("/api/tracks")) {
         return new Response(JSON.stringify(tracks));
       }
+      if (url.endsWith("/api/glossary")) {
+        return new Response(JSON.stringify(glossary));
+      }
+      if (url.endsWith("/api/revisit")) {
+        return new Response(JSON.stringify(missedTopics));
+      }
+      if (url.endsWith("/api/artifacts/recent")) {
+        return new Response(JSON.stringify(artifacts));
+      }
+      if (url.endsWith("/api/labs/math-vector-demo/runs")) {
+        expect(init?.method).toBe("POST");
+        return new Response(JSON.stringify(artifacts[0]));
+      }
+      if (url.endsWith("/api/checkpoints/vectors/attempts")) {
+        expect(init?.method).toBe("POST");
+        return new Response(
+          JSON.stringify({
+            conceptId: "vectors",
+            submittedAnswer: "numbers",
+            correct: false,
+            feedback: "Mention ordered numbers.",
+            confidence: 2
+          })
+        );
+      }
       if (url.includes("/api/progress/")) {
-        return new Response(JSON.stringify({ conceptId: "bytes-unicode", ...(JSON.parse(String(init?.body)) as object) }));
+        return new Response(JSON.stringify({ conceptId: "vectors", ...(JSON.parse(String(init?.body)) as object) }));
       }
       return new Response("not found", { status: 404 });
     });
@@ -43,15 +92,22 @@ describe("App", () => {
     render(<App />);
 
     expect(await screen.findByRole("heading", { name: "Learn LLM The Hard Way" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Concept Map" })).toBeInTheDocument();
+    expect(screen.getByText("Missed Topics")).toBeInTheDocument();
+    expect(screen.getByText("vectors - low-confidence")).toBeInTheDocument();
+    expect(screen.getByText("math-vector-demo")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "What To Notice" })).toBeInTheDocument();
-    expect(screen.queryByText((content) => content.startsWith("# Bytes and Unicode"))).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: "Bytes and Unicode" }));
-    await userEvent.type(screen.getByLabelText("Learning note"), "Need more practice");
-    await userEvent.click(screen.getByLabelText("Add to revisit queue"));
-    await userEvent.click(screen.getByRole("button", { name: "Save progress" }));
+    expect(screen.queryByText((content) => content.startsWith("# Vectors"))).not.toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText("Progress saved")).toBeInTheDocument();
-    });
+    await userEvent.click(screen.getByRole("button", { name: "Vectors revisit needed" }));
+    await userEvent.click(screen.getByRole("tab", { name: "Lab" }));
+    await userEvent.click(screen.getByRole("button", { name: "Run lab" }));
+    expect(await screen.findByText("artifacts/labs/math-vector-demo.json")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("tab", { name: "Checkpoint" }));
+    await userEvent.type(screen.getByLabelText("Checkpoint answer"), "numbers");
+    await userEvent.selectOptions(screen.getByLabelText("Confidence"), "2");
+    await userEvent.click(screen.getByRole("button", { name: "Submit checkpoint" }));
+    expect(await screen.findByText("Mention ordered numbers.")).toBeInTheDocument();
   });
 });

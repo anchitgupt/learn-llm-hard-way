@@ -62,9 +62,14 @@ h2 {
 
 .main-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 320px minmax(0, 1fr);
   gap: 24px;
   padding: 24px;
+}
+
+.learning-column {
+  display: grid;
+  gap: 16px;
 }
 
 .dashboard,

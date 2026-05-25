@@ -2440,7 +2440,7 @@ git commit -m "web: add learning workspace panels"
 - Modify: `apps/web/src/__tests__/App.test.tsx`
 - Modify: `apps/web/src/styles.css`
 
-- [ ] **Step 1: Write failing App integration test**
+- [x] **Step 1: Write failing App integration test**
 
 Modify `apps/web/src/__tests__/App.test.tsx` so the mocked data includes a Math concept with glossary, a missed topic, and a lab artifact. Add assertions:
 
@@ -2462,7 +2462,7 @@ await userEvent.click(screen.getByRole("button", { name: "Submit checkpoint" }))
 expect(await screen.findByText("Mention ordered numbers.")).toBeInTheDocument();
 ```
 
-- [ ] **Step 2: Run App test to verify failure**
+- [x] **Step 2: Run App test to verify failure**
 
 Run:
 
@@ -2472,7 +2472,7 @@ npm --prefix apps/web test -- src/__tests__/App.test.tsx
 
 Expected: fails because `App` does not load glossary, missed topics, recent artifacts, or wire new handlers.
 
-- [ ] **Step 3: Wire App data loading**
+- [x] **Step 3: Wire App data loading**
 
 Modify imports:
 
@@ -2559,7 +2559,7 @@ Render:
 )}
 ```
 
-- [ ] **Step 4: Update layout CSS**
+- [x] **Step 4: Update layout CSS**
 
 Modify `.main-layout` to support dashboard, map, and workspace:
 
@@ -2579,7 +2579,7 @@ Modify `.main-layout` to support dashboard, map, and workspace:
 
 Wrap the map and workspace in `<div className="learning-column">`.
 
-- [ ] **Step 5: Run App test**
+- [x] **Step 5: Run App test**
 
 Run:
 
@@ -2589,7 +2589,7 @@ npm --prefix apps/web test -- src/__tests__/App.test.tsx
 
 Expected: App test passes.
 
-- [ ] **Step 6: Run all web tests**
+- [x] **Step 6: Run all web tests**
 
 Run:
 
@@ -2599,7 +2599,7 @@ npm run web:test
 
 Expected: all Vitest tests pass.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add apps/web/src/App.tsx apps/web/src/__tests__/App.test.tsx apps/web/src/styles.css
