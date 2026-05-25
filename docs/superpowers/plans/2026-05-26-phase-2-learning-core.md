@@ -2135,7 +2135,7 @@ git commit -m "web: add concept map and recovery dashboard"
 - Modify: `apps/web/src/components/ConceptWorkspace.tsx`
 - Modify: `apps/web/src/styles.css`
 
-- [ ] **Step 1: Write failing CheckpointPanel test**
+- [x] **Step 1: Write failing CheckpointPanel test**
 
 Create `apps/web/src/__tests__/CheckpointPanel.test.tsx`:
 
@@ -2166,7 +2166,7 @@ describe("CheckpointPanel", () => {
 });
 ```
 
-- [ ] **Step 2: Write failing LabPanel test**
+- [x] **Step 2: Write failing LabPanel test**
 
 Create `apps/web/src/__tests__/LabPanel.test.tsx`:
 
@@ -2195,7 +2195,7 @@ describe("LabPanel", () => {
 });
 ```
 
-- [ ] **Step 3: Run panel tests to verify failure**
+- [x] **Step 3: Run panel tests to verify failure**
 
 Run:
 
@@ -2205,7 +2205,7 @@ npm --prefix apps/web test -- src/__tests__/CheckpointPanel.test.tsx src/__tests
 
 Expected: fails because panel components do not exist.
 
-- [ ] **Step 4: Implement CheckpointPanel**
+- [x] **Step 4: Implement CheckpointPanel**
 
 Create `apps/web/src/components/CheckpointPanel.tsx`:
 
@@ -2251,7 +2251,7 @@ export function CheckpointPanel({ question, onSubmit }: CheckpointPanelProps) {
 }
 ```
 
-- [ ] **Step 5: Implement LabPanel**
+- [x] **Step 5: Implement LabPanel**
 
 Create `apps/web/src/components/LabPanel.tsx`:
 
@@ -2287,7 +2287,7 @@ export function LabPanel({ labId, onRun }: LabPanelProps) {
 }
 ```
 
-- [ ] **Step 6: Implement VisualExperiment**
+- [x] **Step 6: Implement VisualExperiment**
 
 Create `apps/web/src/components/VisualExperiment.tsx`:
 
@@ -2315,7 +2315,7 @@ export function VisualExperiment({ visualId }: VisualExperimentProps) {
 }
 ```
 
-- [ ] **Step 7: Replace workspace sections with tabs**
+- [x] **Step 7: Replace workspace sections with tabs**
 
 Modify `ConceptWorkspace` props:
 
@@ -2382,7 +2382,7 @@ Render panels:
 {activeTab === "Notes" ? <ProgressPanel conceptId={concept.id} /> : null}
 ```
 
-- [ ] **Step 8: Add tab CSS**
+- [x] **Step 8: Add tab CSS**
 
 Modify `apps/web/src/styles.css`:
 
@@ -2414,7 +2414,7 @@ Modify `apps/web/src/styles.css`:
 }
 ```
 
-- [ ] **Step 9: Run panel tests**
+- [x] **Step 9: Run panel tests**
 
 Run:
 
@@ -2424,7 +2424,7 @@ npm --prefix apps/web test -- src/__tests__/CheckpointPanel.test.tsx src/__tests
 
 Expected: panel tests pass.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add apps/web/src/components apps/web/src/__tests__/CheckpointPanel.test.tsx apps/web/src/__tests__/LabPanel.test.tsx apps/web/src/styles.css

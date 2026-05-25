@@ -151,6 +151,50 @@ h2 {
   gap: 16px;
 }
 
+.workspace-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.workspace-tabs button[aria-selected="true"] {
+  background: #1f5f6f;
+  color: #ffffff;
+}
+
+.checkpoint-panel,
+.lab-panel,
+.visual-frame {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgb(28 40 54 / 10%);
+  padding: 20px;
+}
+
+.checkpoint-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.checkpoint-panel textarea {
+  display: block;
+  min-height: 88px;
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid #cbd5d8;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.checkpoint-panel select {
+  display: block;
+  margin-top: 8px;
+  min-height: 40px;
+  border: 1px solid #cbd5d8;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
 .lesson-content {
   text-wrap: pretty;
 }
