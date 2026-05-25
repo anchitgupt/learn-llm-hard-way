@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "learn-llm-hard-way"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.7"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2",
+  "httpx>=0.27"
+]
+
+[tool.setuptools.packages.find]
+where = ["labs/python", "apps/api"]
+
+[tool.pytest.ini_options]
+pythonpath = ["labs/python", "apps/api"]
+testpaths = ["labs/python/tests", "apps/api/tests"]

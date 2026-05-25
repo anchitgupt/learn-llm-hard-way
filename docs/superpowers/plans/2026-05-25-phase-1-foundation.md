@@ -255,8 +255,9 @@ Create `docs/run.md`:
 ## First Setup
 
 ```bash
-python3 -m venv .venv
+uv venv --python 3.13 --seed .venv
 source .venv/bin/activate
+python -m pip install --upgrade pip setuptools wheel
 python -m pip install -e ".[dev]"
 npm install
 npm --prefix apps/web install
@@ -297,8 +298,9 @@ Run:
 
 ```bash
 npm install
-python3 -m venv .venv
+uv venv --python 3.13 --seed .venv
 source .venv/bin/activate
+python -m pip install --upgrade pip setuptools wheel
 python -m pip install -e ".[dev]"
 ```
 
