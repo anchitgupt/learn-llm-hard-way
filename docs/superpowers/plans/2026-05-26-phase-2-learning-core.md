@@ -2693,7 +2693,7 @@ git commit -m "test: add phase two learning core e2e"
 **Files:**
 - Modify only files needed to fix verification failures.
 
-- [ ] **Step 1: Run Python lab tests**
+- [x] **Step 1: Run Python lab tests**
 
 Run:
 
@@ -2704,7 +2704,7 @@ npm run labs:test
 
 Expected: all Python lab tests pass.
 
-- [ ] **Step 2: Run API tests**
+- [x] **Step 2: Run API tests**
 
 Run:
 
@@ -2715,7 +2715,7 @@ npm run api:test
 
 Expected: all API tests pass.
 
-- [ ] **Step 3: Run web tests**
+- [x] **Step 3: Run web tests**
 
 Run:
 
@@ -2725,7 +2725,7 @@ npm run web:test
 
 Expected: all Vitest tests pass.
 
-- [ ] **Step 4: Run web build**
+- [x] **Step 4: Run web build**
 
 Run:
 
@@ -2735,7 +2735,7 @@ npm --prefix apps/web run build
 
 Expected: TypeScript and Vite build pass.
 
-- [ ] **Step 5: Run e2e tests**
+- [x] **Step 5: Run e2e tests**
 
 Run:
 
@@ -2746,7 +2746,7 @@ npm run e2e
 
 Expected: all Playwright tests pass.
 
-- [ ] **Step 6: Browser visual check**
+- [x] **Step 6: Browser visual check**
 
 Start the API server in one terminal:
 
@@ -2770,7 +2770,7 @@ Open `http://127.0.0.1:5173` and verify:
 - Checkpoint tab accepts a low-confidence answer.
 - Missed-topic queue updates.
 
-- [ ] **Step 7: Check git status**
+- [x] **Step 7: Check git status**
 
 Run:
 
