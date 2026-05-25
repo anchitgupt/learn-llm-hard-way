@@ -1623,7 +1623,7 @@ git commit -m "api: add learning core endpoints"
 - Modify: `apps/web/src/api.ts`
 - Modify: `apps/web/src/__tests__/api.test.ts`
 
-- [ ] **Step 1: Write failing web API client tests**
+- [x] **Step 1: Write failing web API client tests**
 
 Append to `apps/web/src/__tests__/api.test.ts`:
 
@@ -1657,7 +1657,7 @@ it("calls phase two learning core endpoints", async () => {
 });
 ```
 
-- [ ] **Step 2: Run API client tests to verify failure**
+- [x] **Step 2: Run API client tests to verify failure**
 
 Run:
 
@@ -1667,7 +1667,7 @@ npm --prefix apps/web test -- src/__tests__/api.test.ts
 
 Expected: fails because the new API client functions do not exist.
 
-- [ ] **Step 3: Extend TypeScript types**
+- [x] **Step 3: Extend TypeScript types**
 
 Modify `apps/web/src/types.ts`:
 
@@ -1725,7 +1725,7 @@ export interface Checkpoint {
 }
 ```
 
-- [ ] **Step 4: Add API client functions**
+- [x] **Step 4: Add API client functions**
 
 Modify `apps/web/src/api.ts`:
 
@@ -1783,7 +1783,7 @@ export async function fetchMissedTopics(): Promise<MissedTopic[]> {
 }
 ```
 
-- [ ] **Step 5: Run API client tests**
+- [x] **Step 5: Run API client tests**
 
 Run:
 
@@ -1793,7 +1793,7 @@ npm --prefix apps/web test -- src/__tests__/api.test.ts
 
 Expected: API client tests pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add apps/web/src/types.ts apps/web/src/api.ts apps/web/src/__tests__/api.test.ts
