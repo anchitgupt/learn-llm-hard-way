@@ -6,6 +6,7 @@ checkpoints/
 node_modules/
 dist/
 coverage/
+test-results/
 __pycache__/
 *.pyc
 *.egg-info/
