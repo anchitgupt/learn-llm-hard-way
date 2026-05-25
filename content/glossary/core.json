@@ -1,0 +1,46 @@
+{
+  "entries": [
+    {
+      "id": "vector",
+      "term": "Vector",
+      "shortDefinition": "An ordered list of numbers.",
+      "explanation": "A vector is a compact way to represent features, token embeddings, activations, or directions in a learned space.",
+      "relatedConcepts": ["vectors", "dot-products"]
+    },
+    {
+      "id": "dot-product",
+      "term": "Dot Product",
+      "shortDefinition": "A sum of element-by-element products.",
+      "explanation": "Dot products measure aligned contribution between two same-length vectors and appear throughout attention and similarity calculations.",
+      "relatedConcepts": ["dot-products"]
+    },
+    {
+      "id": "logit",
+      "term": "Logit",
+      "shortDefinition": "A raw model score before probability normalization.",
+      "explanation": "A language model produces logits for candidate next tokens. Sampling rules convert those raw scores into token choices.",
+      "relatedConcepts": ["logits-softmax"]
+    },
+    {
+      "id": "softmax",
+      "term": "Softmax",
+      "shortDefinition": "A function that turns logits into probabilities.",
+      "explanation": "Softmax exponentiates scores and normalizes them so the outputs are positive and sum to one.",
+      "relatedConcepts": ["logits-softmax"]
+    },
+    {
+      "id": "gradient",
+      "term": "Gradient",
+      "shortDefinition": "A direction and size for changing a value to reduce loss.",
+      "explanation": "Gradients tell training code how a small parameter change affects the loss.",
+      "relatedConcepts": ["scalar-gradients", "tiny-linear-model"]
+    },
+    {
+      "id": "loss",
+      "term": "Loss",
+      "shortDefinition": "A number measuring how wrong a prediction is.",
+      "explanation": "Training updates parameters to reduce loss on examples.",
+      "relatedConcepts": ["tiny-linear-model"]
+    }
+  ]
+}

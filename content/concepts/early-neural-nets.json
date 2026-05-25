@@ -1,0 +1,42 @@
+{
+  "track": {
+    "id": "early-neural-nets",
+    "title": "Early Neural Nets",
+    "summary": "Build the first training intuition with scalar gradients and a tiny linear model.",
+    "order": 3
+  },
+  "concepts": [
+    {
+      "id": "scalar-gradients",
+      "title": "Scalar Gradients",
+      "order": 1,
+      "prerequisites": ["logits-softmax"],
+      "lessonPath": "content/lessons/early-neural-nets/scalar-gradients.md",
+      "lab": "nn-gradient-demo",
+      "visual": "gradient-step",
+      "checkpoint": {
+        "question": "What does a scalar gradient tell us during training?",
+        "answer": "It tells how changing one value changes the loss and which direction reduces it.",
+        "acceptedKeywords": ["change", "loss", "direction"]
+      },
+      "glossary": ["gradient", "loss"],
+      "status": "available"
+    },
+    {
+      "id": "tiny-linear-model",
+      "title": "Tiny Linear Model",
+      "order": 2,
+      "prerequisites": ["scalar-gradients"],
+      "lessonPath": "content/lessons/early-neural-nets/tiny-linear-model.md",
+      "lab": "nn-tiny-linear-demo",
+      "visual": "linear-loss-step",
+      "checkpoint": {
+        "question": "Why does one optimization step change the model's prediction?",
+        "answer": "The step uses gradients to move parameters in the direction that lowers loss.",
+        "acceptedKeywords": ["gradients", "parameters", "loss"]
+      },
+      "glossary": ["gradient", "loss"],
+      "status": "available"
+    }
+  ]
+}

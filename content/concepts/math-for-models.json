@@ -1,0 +1,58 @@
+{
+  "track": {
+    "id": "math-for-models",
+    "title": "Math for Models",
+    "summary": "Learn the small pieces of math that become embeddings, logits, probabilities, and training signals.",
+    "order": 2
+  },
+  "concepts": [
+    {
+      "id": "vectors",
+      "title": "Vectors",
+      "order": 1,
+      "prerequisites": ["byte-pair-encoding"],
+      "lessonPath": "content/lessons/math-for-models/vectors.md",
+      "lab": "math-vector-demo",
+      "visual": "vector-similarity",
+      "checkpoint": {
+        "question": "What does a vector represent in the simplest model-building sense?",
+        "answer": "A vector is an ordered list of numbers used to represent features, embeddings, or activations.",
+        "acceptedKeywords": ["ordered", "numbers", "represent"]
+      },
+      "glossary": ["vector"],
+      "status": "available"
+    },
+    {
+      "id": "dot-products",
+      "title": "Dot Products",
+      "order": 2,
+      "prerequisites": ["vectors"],
+      "lessonPath": "content/lessons/math-for-models/dot-products.md",
+      "lab": "math-vector-demo",
+      "visual": "vector-similarity",
+      "checkpoint": {
+        "question": "Why do dot products appear in similarity and attention calculations?",
+        "answer": "They add element-by-element aligned contributions between two vectors into one score.",
+        "acceptedKeywords": ["element", "contribution", "score"]
+      },
+      "glossary": ["vector", "dot-product"],
+      "status": "available"
+    },
+    {
+      "id": "logits-softmax",
+      "title": "Logits and Softmax",
+      "order": 3,
+      "prerequisites": ["dot-products"],
+      "lessonPath": "content/lessons/math-for-models/logits-softmax.md",
+      "lab": "math-softmax-demo",
+      "visual": "softmax-bars",
+      "checkpoint": {
+        "question": "What changes when logits pass through softmax?",
+        "answer": "Raw scores become positive probabilities that sum to one.",
+        "acceptedKeywords": ["probabilities", "sum", "one"]
+      },
+      "glossary": ["logit", "softmax"],
+      "status": "available"
+    }
+  ]
+}

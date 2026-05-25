@@ -144,7 +144,7 @@ tests/
 - Modify: `apps/api/learn_llm_api/content_loader.py`
 - Modify: `apps/api/tests/test_content_loader.py`
 
-- [ ] **Step 1: Write failing content loader tests**
+- [x] **Step 1: Write failing content loader tests**
 
 Add `import json` to `apps/api/tests/test_content_loader.py`, then append these tests:
 
@@ -242,7 +242,7 @@ def test_load_glossary_returns_sorted_entries(tmp_path: Path) -> None:
     assert [entry["id"] for entry in glossary] == ["softmax", "vector"]
 ```
 
-- [ ] **Step 2: Run tests to verify failure**
+- [x] **Step 2: Run tests to verify failure**
 
 Run:
 
@@ -253,7 +253,7 @@ pytest apps/api/tests/test_content_loader.py -q
 
 Expected: fails because `load_glossary` does not exist and cross-track prerequisites are still validated per-file.
 
-- [ ] **Step 3: Implement content loader support**
+- [x] **Step 3: Implement content loader support**
 
 Modify `apps/api/learn_llm_api/content_loader.py` so it first collects all concept ids, then validates prerequisites against the global set. Add `load_glossary`.
 
@@ -303,7 +303,7 @@ def load_glossary(repo_root: Path) -> list[dict[str, Any]]:
     return sorted(entries, key=lambda entry: entry["term"].lower())
 ```
 
-- [ ] **Step 4: Add Phase 2 content files**
+- [x] **Step 4: Add Phase 2 content files**
 
 Replace the first assertions in the existing `test_load_tracks_reads_concepts_and_lessons` test in `apps/api/tests/test_content_loader.py` so it expects all Phase 2 tracks:
 
@@ -499,7 +499,7 @@ from numbers.
 - Vector operations produce the scores used by attention and token probabilities.
 ```
 
-- [ ] **Step 5: Run tests to verify pass**
+- [x] **Step 5: Run tests to verify pass**
 
 Run:
 
@@ -513,7 +513,7 @@ python -m json.tool content/glossary/core.json >/dev/null
 
 Expected: all commands exit 0.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add content apps/api/learn_llm_api/content_loader.py apps/api/tests/test_content_loader.py
