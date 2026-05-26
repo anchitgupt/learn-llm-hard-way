@@ -226,7 +226,7 @@ git commit -m "docs: add phase three mini llm curriculum"
 - Create: `labs/python/llm_from_scratch/transformer/positional.py`
 - Test: `labs/python/tests/test_transformer_attention.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 Create `labs/python/tests/test_transformer_attention.py` with tests for:
 
@@ -234,7 +234,7 @@ Create `labs/python/tests/test_transformer_attention.py` with tests for:
 - `causal_mask` prevents a token from attending to future positions.
 - `sinusoidal_positions` returns deterministic values for a tiny dimension.
 
-- [ ] **Step 2: Run tests to verify failure**
+- [x] **Step 2: Run tests to verify failure**
 
 ```bash
 source .venv/bin/activate
@@ -243,7 +243,7 @@ pytest labs/python/tests/test_transformer_attention.py -q
 
 Expected: fails because `llm_from_scratch.transformer` modules do not exist.
 
-- [ ] **Step 3: Implement minimal mechanics**
+- [x] **Step 3: Implement minimal mechanics**
 
 Implement plain-Python helpers:
 
@@ -257,7 +257,7 @@ sinusoidal_positions(length: int, dimensions: int) -> list[list[float]]
 add_positions(token_vectors, positions) -> list[list[float]]
 ```
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 ```bash
 source .venv/bin/activate
@@ -266,7 +266,7 @@ pytest labs/python/tests/test_transformer_attention.py -q
 
 Expected: pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add labs/python/llm_from_scratch/transformer labs/python/tests/test_transformer_attention.py
