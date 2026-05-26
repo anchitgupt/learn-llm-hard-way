@@ -176,6 +176,33 @@ h2 {
   padding: 20px;
 }
 
+.artifact-preview {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  border-top: 1px solid #dbe4e2;
+  padding-top: 16px;
+}
+
+.artifact-preview h4,
+.artifact-preview h5,
+.artifact-preview p {
+  margin-bottom: 0;
+}
+
+.artifact-preview h5 {
+  color: #1f5f6f;
+}
+
+.artifact-preview pre {
+  overflow-x: auto;
+  margin: 8px 0 0;
+  border-radius: 6px;
+  background: #f2f6f5;
+  padding: 10px;
+  color: #18212f;
+}
+
 .checkpoint-panel {
   display: grid;
   gap: 12px;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { LabRunArtifact } from "../types";
+import { ArtifactPreview } from "./ArtifactPreview";
 
 interface LabPanelProps {
   labId: string | null;
@@ -24,6 +25,7 @@ export function LabPanel({ labId, onRun }: LabPanelProps) {
       <p>{labId}</p>
       <button type="button" onClick={handleRun}>Run lab</button>
       {artifact ? <p role="status">{artifact.artifactPath}</p> : null}
+      {artifact?.artifact ? <ArtifactPreview artifact={artifact.artifact} /> : null}
     </section>
   );
 }

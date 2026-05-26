@@ -10,7 +10,12 @@ describe("LabPanel", () => {
       conceptId: "vectors",
       artifactPath: "artifacts/labs/math-vector-demo.json",
       status: "passed",
-      error: ""
+      error: "",
+      artifact: {
+        generation: {
+          generatedText: "llm lab"
+        }
+      }
     }));
 
     render(<LabPanel labId="math-vector-demo" onRun={onRun} />);
@@ -18,5 +23,7 @@ describe("LabPanel", () => {
     await userEvent.click(screen.getByRole("button", { name: "Run lab" }));
 
     expect(await screen.findByRole("status")).toHaveTextContent("artifacts/labs/math-vector-demo.json");
+    expect(await screen.findByText("Generated text")).toBeInTheDocument();
+    expect(screen.getByText("llm lab")).toBeInTheDocument();
   });
 });

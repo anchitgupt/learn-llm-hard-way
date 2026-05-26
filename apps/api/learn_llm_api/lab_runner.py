@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -56,10 +57,12 @@ def run_lab(lab_id: str, repo_root: Path) -> dict[str, Any]:
         raise KeyError(f"Unknown lab: {lab_id}")
     concept_id, writer = LABS[lab_id]
     artifact_path = writer(repo_root)
+    artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
     return {
         "labId": lab_id,
         "conceptId": concept_id,
         "artifactPath": artifact_path.relative_to(repo_root).as_posix(),
+        "artifact": artifact,
         "status": "passed",
         "error": "",
     }

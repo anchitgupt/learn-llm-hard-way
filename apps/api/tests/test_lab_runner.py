@@ -25,6 +25,7 @@ def test_run_lab_writes_allowlisted_attention_artifact(tmp_path) -> None:
     assert result["labId"] == "attention-demo"
     assert result["conceptId"] == "attention-scores"
     assert result["status"] == "passed"
+    assert result["artifact"]["attention"]["tokens"] == ["the", "tiny", "model"]
     assert artifact["attention"]["tokens"] == ["the", "tiny", "model"]
     assert artifact["mask"]["table"][0] == [1, 0, 0]
 
@@ -37,6 +38,7 @@ def test_run_lab_writes_allowlisted_mini_training_artifact(tmp_path) -> None:
     assert result["labId"] == "mini-training-demo"
     assert result["conceptId"] == "next-token-training"
     assert result["status"] == "passed"
+    assert result["artifact"]["training"]["lossHistory"][-1] < result["artifact"]["training"]["lossHistory"][0]
     assert artifact["training"]["lossHistory"][-1] < artifact["training"]["lossHistory"][0]
     assert artifact["generation"]["generatedText"]
 

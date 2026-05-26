@@ -66,6 +66,7 @@ export interface LabRunArtifact {
   labId: string;
   conceptId: string;
   artifactPath: string;
+  artifact?: unknown;
   status: string;
   error: string;
 }

@@ -425,11 +425,11 @@ git commit -m "feat: allow phase three lab runs"
 - Test: `apps/web/src/__tests__/App.test.tsx`
 - Create: `tests/e2e/phase3-mini-llm.spec.ts`
 
-- [ ] **Step 1: Write failing web tests**
+- [x] **Step 1: Write failing web tests**
 
 Add tests that the artifact preview renders generated text, loss values, and attention weights from a Phase 3 artifact shape.
 
-- [ ] **Step 2: Run tests to verify failure**
+- [x] **Step 2: Run tests to verify failure**
 
 ```bash
 npm run web:test
@@ -437,7 +437,7 @@ npm run web:test
 
 Expected: fails because `ArtifactPreview` does not exist or is not wired.
 
-- [ ] **Step 3: Implement artifact preview**
+- [x] **Step 3: Implement artifact preview**
 
 Render compact previews for:
 
@@ -447,11 +447,11 @@ Render compact previews for:
 - Base versus assistant comparison.
 - Factuality failure explanation.
 
-- [ ] **Step 4: Add e2e test**
+- [x] **Step 4: Add e2e test**
 
 Create a browser test that opens `Attention Scores`, runs the lab, checks for an artifact path or preview, submits a low-confidence checkpoint, and sees `attention-scores - low-confidence`.
 
-- [ ] **Step 5: Run focused web/e2e tests**
+- [x] **Step 5: Run focused web/e2e tests**
 
 ```bash
 npm run web:test
@@ -461,7 +461,7 @@ npm run e2e
 
 Expected: pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add apps/web tests/e2e/phase3-mini-llm.spec.ts
