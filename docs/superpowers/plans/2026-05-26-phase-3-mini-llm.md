@@ -477,11 +477,11 @@ git commit -m "feat: show phase three lab artifacts in web app"
 - Modify if needed: `docs/run.md`
 - Modify: `docs/superpowers/plans/2026-05-26-phase-3-mini-llm.md`
 
-- [ ] **Step 1: Mark completed plan tasks**
+- [x] **Step 1: Mark completed plan tasks**
 
 Update this plan's checkboxes for tasks completed in the implementation.
 
-- [ ] **Step 2: Run full verification**
+- [x] **Step 2: Run full verification**
 
 ```bash
 source .venv/bin/activate
@@ -494,7 +494,7 @@ npm run e2e
 
 Expected: all commands exit 0.
 
-- [ ] **Step 3: Commit final docs if changed**
+- [x] **Step 3: Commit final docs if changed**
 
 ```bash
 git add README.md docs/run.md docs/superpowers/plans/2026-05-26-phase-3-mini-llm.md

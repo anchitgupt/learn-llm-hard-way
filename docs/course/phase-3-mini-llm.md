@@ -65,4 +65,4 @@ Use the learning cockpit to:
 
 ## Verification
 
-Phase 3 is implemented incrementally. Use [../run.md](../run.md) for the project verification commands.
+Phase 3 is covered by Python lab tests, API tests, web component tests, the Vite build, and Playwright e2e. Use [../run.md](../run.md) for the project verification commands.
