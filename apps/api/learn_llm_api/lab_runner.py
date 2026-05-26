@@ -5,7 +5,9 @@ from pathlib import Path
 from typing import Any
 
 from llm_from_scratch.experiments.math_demo import write_math_demo_artifact
+from llm_from_scratch.experiments.mini_training_demo import write_mini_training_demo_artifact
 from llm_from_scratch.experiments.nn_demo import write_nn_demo_artifact
+from llm_from_scratch.experiments.transformer_demo import write_transformer_demo_artifact
 
 LabWriter = Callable[[Path], Path]
 
@@ -14,6 +16,38 @@ LABS: dict[str, tuple[str, LabWriter]] = {
     "math-softmax-demo": ("logits-softmax", write_math_demo_artifact),
     "nn-gradient-demo": ("scalar-gradients", write_nn_demo_artifact),
     "nn-tiny-linear-demo": ("tiny-linear-model", write_nn_demo_artifact),
+    "attention-demo": (
+        "attention-scores",
+        lambda root: write_transformer_demo_artifact(root, "attention-demo"),
+    ),
+    "masked-attention-demo": (
+        "masked-self-attention",
+        lambda root: write_transformer_demo_artifact(root, "masked-attention-demo"),
+    ),
+    "positional-encoding-demo": (
+        "positional-encoding",
+        lambda root: write_transformer_demo_artifact(root, "positional-encoding-demo"),
+    ),
+    "transformer-block-demo": (
+        "transformer-block",
+        lambda root: write_transformer_demo_artifact(root, "transformer-block-demo"),
+    ),
+    "mini-training-demo": (
+        "next-token-training",
+        lambda root: write_mini_training_demo_artifact(root, "mini-training-demo"),
+    ),
+    "sampling-generation-demo": (
+        "sampling-generation",
+        lambda root: write_mini_training_demo_artifact(root, "sampling-generation-demo"),
+    ),
+    "base-vs-assistant-demo": (
+        "base-vs-assistant",
+        lambda root: write_mini_training_demo_artifact(root, "base-vs-assistant-demo"),
+    ),
+    "factuality-failure-demo": (
+        "factuality-failures",
+        lambda root: write_mini_training_demo_artifact(root, "factuality-failure-demo"),
+    ),
 }
 
 

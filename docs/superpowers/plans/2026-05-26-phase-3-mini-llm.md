@@ -379,11 +379,11 @@ git commit -m "feat: add tiny training and sampling artifacts"
 - Modify: `apps/api/learn_llm_api/lab_runner.py`
 - Modify: `apps/api/tests/test_lab_runner.py`
 
-- [ ] **Step 1: Write failing API tests**
+- [x] **Step 1: Write failing API tests**
 
 Add tests that `run_lab("attention-demo", tmp_path)` and `run_lab("mini-training-demo", tmp_path)` write artifacts with Phase 3 sections.
 
-- [ ] **Step 2: Run tests to verify failure**
+- [x] **Step 2: Run tests to verify failure**
 
 ```bash
 source .venv/bin/activate
@@ -392,11 +392,11 @@ pytest apps/api/tests/test_lab_runner.py -q
 
 Expected: fails because Phase 3 lab ids are not allowlisted.
 
-- [ ] **Step 3: Add lab runner allowlist entries**
+- [x] **Step 3: Add lab runner allowlist entries**
 
 Map each Phase 3 lab id to a deterministic artifact writer.
 
-- [ ] **Step 4: Run focused API tests**
+- [x] **Step 4: Run focused API tests**
 
 ```bash
 source .venv/bin/activate
@@ -405,7 +405,7 @@ pytest apps/api/tests/test_lab_runner.py -q
 
 Expected: pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add apps/api/learn_llm_api/lab_runner.py apps/api/tests/test_lab_runner.py
