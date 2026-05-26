@@ -7,11 +7,12 @@ from learn_llm_api.content_loader import load_glossary, load_tracks
 def test_load_tracks_reads_concepts_and_lessons():
     tracks = load_tracks(Path("."))
 
-    assert len(tracks) == 3
+    assert len(tracks) == 4
     assert [track["id"] for track in tracks] == [
         "data-and-tokens",
         "math-for-models",
         "early-neural-nets",
+        "transformer",
     ]
     track = tracks[0]
     assert track["id"] == "data-and-tokens"
@@ -149,3 +150,23 @@ def test_load_glossary_returns_sorted_entries(tmp_path: Path) -> None:
     glossary = load_glossary(root)
 
     assert [entry["id"] for entry in glossary] == ["softmax", "vector"]
+
+
+def test_phase3_transformer_track_loads() -> None:
+    tracks = load_tracks(Path("."))
+    transformer = next(track for track in tracks if track["id"] == "transformer")
+
+    assert transformer["title"] == "Transformer"
+    assert [concept["id"] for concept in transformer["concepts"]] == [
+        "attention-scores",
+        "masked-self-attention",
+        "positional-encoding",
+        "transformer-block",
+        "dataset-packing",
+        "next-token-training",
+        "sampling-generation",
+        "base-vs-assistant",
+        "factuality-failures",
+    ]
+    assert transformer["concepts"][0]["prerequisites"] == ["logits-softmax"]
+    assert transformer["concepts"][0]["lab"] == "attention-demo"

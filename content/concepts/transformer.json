@@ -1,0 +1,154 @@
+{
+  "track": {
+    "id": "transformer",
+    "title": "Transformer",
+    "summary": "Connect tokenization and learning math to attention, transformer blocks, tiny next-token training, and generation.",
+    "order": 4
+  },
+  "concepts": [
+    {
+      "id": "attention-scores",
+      "title": "Attention Scores",
+      "order": 1,
+      "prerequisites": ["logits-softmax"],
+      "lessonPath": "content/lessons/transformer/attention-scores.md",
+      "lab": "attention-demo",
+      "visual": "attention-weights",
+      "checkpoint": {
+        "question": "What does an attention score measure before softmax?",
+        "answer": "An attention score measures how strongly one token query matches another token key before the scores are normalized into weights.",
+        "acceptedKeywords": ["query", "key", "score"]
+      },
+      "glossary": ["attention", "dot-product", "softmax"],
+      "status": "available"
+    },
+    {
+      "id": "masked-self-attention",
+      "title": "Masked Self-Attention",
+      "order": 2,
+      "prerequisites": ["attention-scores"],
+      "lessonPath": "content/lessons/transformer/masked-self-attention.md",
+      "lab": "masked-attention-demo",
+      "visual": "causal-mask",
+      "checkpoint": {
+        "question": "Why does a decoder language model use a causal mask?",
+        "answer": "A causal mask blocks future tokens so the model can only use previous context when predicting the next token.",
+        "acceptedKeywords": ["future", "previous", "next token"]
+      },
+      "glossary": ["attention", "causal-mask", "context-window"],
+      "status": "available"
+    },
+    {
+      "id": "positional-encoding",
+      "title": "Positional Encoding",
+      "order": 3,
+      "prerequisites": ["masked-self-attention"],
+      "lessonPath": "content/lessons/transformer/positional-encoding.md",
+      "lab": "positional-encoding-demo",
+      "visual": "position-vectors",
+      "checkpoint": {
+        "question": "Why do transformer inputs need positional information?",
+        "answer": "Attention compares token vectors, so positional information tells the model where each token appears in the sequence.",
+        "acceptedKeywords": ["where", "position", "sequence"]
+      },
+      "glossary": ["positional-encoding", "context-window"],
+      "status": "available"
+    },
+    {
+      "id": "transformer-block",
+      "title": "Transformer Block",
+      "order": 4,
+      "prerequisites": ["positional-encoding", "tiny-linear-model"],
+      "lessonPath": "content/lessons/transformer/transformer-block.md",
+      "lab": "transformer-block-demo",
+      "visual": "transformer-block-flow",
+      "checkpoint": {
+        "question": "What are the two main computation stages inside a tiny transformer block?",
+        "answer": "A transformer block combines attention over the sequence with a feed-forward transformation of each token representation.",
+        "acceptedKeywords": ["attention", "feed-forward", "token"]
+      },
+      "glossary": ["transformer-block", "attention"],
+      "status": "available"
+    },
+    {
+      "id": "dataset-packing",
+      "title": "Dataset Packing",
+      "order": 5,
+      "prerequisites": ["transformer-block", "byte-pair-encoding"],
+      "lessonPath": "content/lessons/transformer/dataset-packing.md",
+      "lab": "mini-training-demo",
+      "visual": "packed-examples",
+      "checkpoint": {
+        "question": "What target does a next-token training example use?",
+        "answer": "Each input token sequence is paired with the following token or shifted target sequence that the model should predict.",
+        "acceptedKeywords": ["following", "shifted", "predict"]
+      },
+      "glossary": ["next-token-prediction", "context-window"],
+      "status": "available"
+    },
+    {
+      "id": "next-token-training",
+      "title": "Next-Token Training",
+      "order": 6,
+      "prerequisites": ["dataset-packing"],
+      "lessonPath": "content/lessons/transformer/next-token-training.md",
+      "lab": "mini-training-demo",
+      "visual": "loss-curve",
+      "checkpoint": {
+        "question": "What does next-token loss reward the model for doing?",
+        "answer": "Next-token loss rewards assigning higher probability to the actual next token in the training example.",
+        "acceptedKeywords": ["probability", "actual", "next token"]
+      },
+      "glossary": ["next-token-prediction", "loss"],
+      "status": "available"
+    },
+    {
+      "id": "sampling-generation",
+      "title": "Sampling And Generation",
+      "order": 7,
+      "prerequisites": ["next-token-training"],
+      "lessonPath": "content/lessons/transformer/sampling-generation.md",
+      "lab": "sampling-generation-demo",
+      "visual": "sampling-trace",
+      "checkpoint": {
+        "question": "How does temperature affect sampling from logits?",
+        "answer": "Lower temperature makes the distribution sharper and more deterministic; higher temperature spreads probability across more tokens.",
+        "acceptedKeywords": ["sharper", "probability", "tokens"]
+      },
+      "glossary": ["sampling", "temperature", "top-k", "logit"],
+      "status": "available"
+    },
+    {
+      "id": "base-vs-assistant",
+      "title": "Base Model Versus Assistant",
+      "order": 8,
+      "prerequisites": ["sampling-generation"],
+      "lessonPath": "content/lessons/transformer/base-vs-assistant.md",
+      "lab": "base-vs-assistant-demo",
+      "visual": "format-comparison",
+      "checkpoint": {
+        "question": "Why is a base model not automatically a helpful chat assistant?",
+        "answer": "A base model learns to continue documents, while an assistant is post-trained to follow conversational roles and helpful response patterns.",
+        "acceptedKeywords": ["continue", "documents", "roles"]
+      },
+      "glossary": ["base-model", "assistant-model", "next-token-prediction"],
+      "status": "available"
+    },
+    {
+      "id": "factuality-failures",
+      "title": "Factuality Failures",
+      "order": 9,
+      "prerequisites": ["base-vs-assistant"],
+      "lessonPath": "content/lessons/transformer/factuality-failures.md",
+      "lab": "factuality-failure-demo",
+      "visual": "failure-case",
+      "checkpoint": {
+        "question": "Why can a language model produce a plausible but false answer?",
+        "answer": "The model predicts likely text from patterns and context; it does not directly verify truth unless tools, retrieval, or reliable context are added.",
+        "acceptedKeywords": ["predicts", "patterns", "verify"]
+      },
+      "glossary": ["hallucination", "base-model", "assistant-model"],
+      "status": "available"
+    }
+  ]
+}

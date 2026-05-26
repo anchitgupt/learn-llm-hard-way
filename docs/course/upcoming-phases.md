@@ -1,24 +1,6 @@
 # Upcoming Phases
 
-These phases are planned next. They are not dependencies for running the current local course.
-
-## Phase 3: Mini LLM
-
-Phase 3 will connect the learning core to a tiny language model.
-
-Planned outcomes:
-
-- Visible dot-product attention.
-- Masked self-attention.
-- Positional encoding.
-- Transformer block implementation.
-- Tiny dataset preparation and packing.
-- Tiny next-token training loop.
-- Loss charts.
-- Generated sample artifacts.
-- Sampling controls such as greedy, temperature, and top-k or nucleus sampling.
-- Base-model versus assistant-behavior demos.
-- Factuality and hallucination examples tied to model limitations.
+These phases and extension lanes are planned after the current local course modules.
 
 ## Phase 4: Chat Mechanics
 

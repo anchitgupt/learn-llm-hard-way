@@ -41,6 +41,90 @@
       "shortDefinition": "A number measuring how wrong a prediction is.",
       "explanation": "Training updates parameters to reduce loss on examples.",
       "relatedConcepts": ["tiny-linear-model"]
+    },
+    {
+      "id": "attention",
+      "term": "Attention",
+      "shortDefinition": "A way for one token representation to mix information from other token representations.",
+      "explanation": "Attention compares query and key vectors to create weights, then uses those weights to combine value vectors.",
+      "relatedConcepts": ["attention-scores", "masked-self-attention", "transformer-block"]
+    },
+    {
+      "id": "causal-mask",
+      "term": "Causal Mask",
+      "shortDefinition": "A mask that blocks future tokens during decoder attention.",
+      "explanation": "Causal masks keep next-token training honest by preventing a position from attending to tokens that come after it.",
+      "relatedConcepts": ["masked-self-attention"]
+    },
+    {
+      "id": "positional-encoding",
+      "term": "Positional Encoding",
+      "shortDefinition": "Numeric information that tells a transformer where a token sits in a sequence.",
+      "explanation": "Positional encodings are added to token vectors so attention can use order and distance, not only token identity.",
+      "relatedConcepts": ["positional-encoding"]
+    },
+    {
+      "id": "transformer-block",
+      "term": "Transformer Block",
+      "shortDefinition": "A repeated model unit combining attention and token-wise transformations.",
+      "explanation": "A transformer block mixes information across positions with attention and then applies a feed-forward transformation to each token representation.",
+      "relatedConcepts": ["transformer-block"]
+    },
+    {
+      "id": "context-window",
+      "term": "Context Window",
+      "shortDefinition": "The tokens currently available to the model while predicting.",
+      "explanation": "The context window is working memory for a model call. The model can condition on tokens inside it but not on missing information outside it.",
+      "relatedConcepts": ["masked-self-attention", "dataset-packing"]
+    },
+    {
+      "id": "next-token-prediction",
+      "term": "Next-Token Prediction",
+      "shortDefinition": "The training objective of predicting the following token from context.",
+      "explanation": "Base language models learn by seeing token sequences and increasing probability on the actual next token.",
+      "relatedConcepts": ["dataset-packing", "next-token-training", "base-vs-assistant"]
+    },
+    {
+      "id": "sampling",
+      "term": "Sampling",
+      "shortDefinition": "Choosing the next token from model scores or probabilities.",
+      "explanation": "Sampling rules turn logits into generated text by selecting one token, appending it, and repeating the prediction loop.",
+      "relatedConcepts": ["sampling-generation"]
+    },
+    {
+      "id": "temperature",
+      "term": "Temperature",
+      "shortDefinition": "A sampling control that sharpens or spreads token probabilities.",
+      "explanation": "Lower temperature makes high-probability tokens dominate. Higher temperature gives lower-probability tokens more chance.",
+      "relatedConcepts": ["sampling-generation"]
+    },
+    {
+      "id": "top-k",
+      "term": "Top-k",
+      "shortDefinition": "A sampling control that keeps only the k highest-scoring tokens.",
+      "explanation": "Top-k sampling removes low-ranked candidates before choosing the next token.",
+      "relatedConcepts": ["sampling-generation"]
+    },
+    {
+      "id": "base-model",
+      "term": "Base Model",
+      "shortDefinition": "A model trained primarily to continue text.",
+      "explanation": "A base language model predicts likely continuations. Assistant behavior usually requires post-training on conversation formats and preferences.",
+      "relatedConcepts": ["base-vs-assistant", "factuality-failures"]
+    },
+    {
+      "id": "assistant-model",
+      "term": "Assistant Model",
+      "shortDefinition": "A model shaped to respond in a helpful conversational format.",
+      "explanation": "Assistant behavior is created by post-training a base model on role-formatted examples, preferences, and behavior constraints.",
+      "relatedConcepts": ["base-vs-assistant"]
+    },
+    {
+      "id": "hallucination",
+      "term": "Hallucination",
+      "shortDefinition": "A fluent model output that is unsupported or false.",
+      "explanation": "Hallucinations happen because language models predict plausible text. Factual tasks need context, retrieval, tools, or verification when correctness matters.",
+      "relatedConcepts": ["factuality-failures"]
     }
   ]
 }

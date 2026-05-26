@@ -121,7 +121,7 @@ tests/e2e/
 - Modify: `README.md`
 - Test: `apps/api/tests/test_content_loader.py`
 
-- [ ] **Step 1: Write failing content test**
+- [x] **Step 1: Write failing content test**
 
 Append this test to `apps/api/tests/test_content_loader.py`:
 
@@ -146,7 +146,7 @@ def test_phase3_transformer_track_loads(repo_root: Path) -> None:
     assert transformer["concepts"][0]["lab"] == "attention-demo"
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run:
 
@@ -157,7 +157,7 @@ pytest apps/api/tests/test_content_loader.py::test_phase3_transformer_track_load
 
 Expected: fails because `content/concepts/transformer.json` does not exist.
 
-- [ ] **Step 3: Add curriculum files**
+- [x] **Step 3: Add curriculum files**
 
 Create `content/concepts/transformer.json` with the nine concepts listed above. Use these lab ids:
 
@@ -175,7 +175,7 @@ factuality-failure-demo
 
 Create the nine lesson markdown files with short explanations, a "What to inspect" section, and a "Checkpoint" section.
 
-- [ ] **Step 4: Add glossary terms**
+- [x] **Step 4: Add glossary terms**
 
 Extend `content/glossary/core.json` with entries for:
 
@@ -194,11 +194,11 @@ assistant-model
 hallucination
 ```
 
-- [ ] **Step 5: Add course docs**
+- [x] **Step 5: Add course docs**
 
 Create `docs/course/phase-3-mini-llm.md` and update the README/course index so Phase 3 points to the new page with status `Available` after implementation.
 
-- [ ] **Step 6: Run focused tests**
+- [x] **Step 6: Run focused tests**
 
 Run:
 
@@ -209,7 +209,7 @@ pytest apps/api/tests/test_content_loader.py -q
 
 Expected: all content loader tests pass.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add content docs README.md apps/api/tests/test_content_loader.py
