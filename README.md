@@ -1,138 +1,70 @@
 # Learn LLM The Hard Way
 
-A local-first, code-first project for learning how large language models are built from the smallest pieces up to a user-facing chat experience.
+A local-first, code-first course for learning how large language models are built, from bytes and tokens to a user-facing chat experience.
 
-The project combines:
+This repository is not only notes. It contains working Python labs, a local FastAPI backend, a React learning app, local progress state, checkpoints, artifacts, and browser-tested learning flows.
 
-- Python labs that implement model-building mechanics directly.
-- A FastAPI local API for curriculum, progress, safe lab runs, and artifacts.
-- A React learning app for concept navigation, visuals, checkpoints, notes, and revisit recovery.
-- Versioned lessons and glossary content in the repo.
-- Local SQLite progress state and local artifact files.
+## Start Here
 
-## Current Status
+1. Set up and run the project with [docs/run.md](docs/run.md).
+2. Open the learning app at `http://127.0.0.1:5173`.
+3. Follow the course map below in order.
+4. Use checkpoints, confidence, notes, and missed topics to return to anything you skipped or forgot.
 
-Phase 1 and Phase 2 are implemented on `main`.
+## Course Map
 
-Phase 1 foundation includes:
+| Stage | Module | Status | Main outcome |
+| --- | --- | --- | --- |
+| 1 | [Foundation: Data And Tokens](docs/course/phase-1-foundation.md) | Available | Understand bytes, Unicode, tokenization, and BPE with working labs. |
+| 2 | [Learning Core: Math And Tiny Models](docs/course/phase-2-learning-core.md) | Available | Build intuition for vectors, logits, softmax, gradients, loss, and one-step optimization. |
+| 3 | [Mini LLM](docs/course/upcoming-phases.md#phase-3-mini-llm) | Planned | Implement attention, transformer blocks, next-token training, and sampling. |
+| 4 | [Chat Mechanics](docs/course/upcoming-phases.md#phase-4-chat-mechanics) | Planned | Trace prompt formatting, tokenization, context assembly, streaming, tools, and memory. |
 
-- Monorepo tooling.
-- Character tokenizer and byte pair encoding labs.
-- Tokenization demo artifacts.
-- FastAPI content/progress API.
-- React learning shell.
-- Data and Tokens lessons.
-- Browser-tested flow for opening a lesson and saving revisit progress.
+For the full course structure, see [docs/course/index.md](docs/course/index.md).
 
-Phase 2 learning core includes:
+## How Each Module Works
 
-- Math for Models and Early Neural Nets curriculum.
-- Glossary content and glossary UI.
-- Concept map with prerequisite edges.
-- Missed-topic queue.
-- Notes and confidence tracking.
-- Checkpoint attempts with deterministic feedback.
-- Safe allowlisted lab runner.
-- Recent artifact tracking.
-- Pure-Python vector, softmax, scalar-gradient, and tiny-linear-model labs.
-- Browser-tested flow for running a math lab and adding a low-confidence checkpoint to missed topics.
+Each module is meant to be revisitable:
 
-## What You Can Learn Now
+1. Read a short lesson.
+2. Run a small deterministic lab.
+3. Inspect the output artifact.
+4. Answer a checkpoint.
+5. Mark confidence and save notes.
+6. Return from the missed-topic queue when something needs review.
 
-The implemented path currently covers:
+## Current Implementation
 
-- Bytes, Unicode, character tokenization, and BPE.
-- Vectors, dot products, logits, and softmax.
-- Scalar gradients, loss, and one-step optimization.
-- How local progress, confidence, failed checkpoints, and revisit state create a recoverable learning path.
+Available now:
 
-Upcoming phases are planned to add:
+- Phase 1 foundation.
+- Phase 2 learning core.
+- Local API and web app.
+- Local SQLite learner state.
+- Safe allowlisted lab execution.
+- Recent lab artifacts.
+- Browser-tested learning flows.
 
-- Attention and masked self-attention.
-- Transformer blocks.
-- Tiny next-token training loops.
-- Loss charts and generated samples.
-- Base-model versus assistant demonstrations.
-- Hallucination and factuality failure cases.
-- A chat playground with prompt, tokenization, context, sampling, streaming, tool-use, and memory traces.
+Planned next:
 
-## Repository Layout
+- Phase 3 mini LLM implementation.
+- Phase 4 chat mechanics playground.
+- Optional Colab/GPU extension lanes after the local path is complete.
+
+## Project Layout
 
 ```text
-apps/
-  api/        FastAPI local API
-  web/        Vite + React learning app
-content/      Curriculum JSON, lessons, and glossary
-labs/python/  From-scratch Python implementations and experiments
-tests/e2e/    Playwright browser flows
-docs/         Runbooks, specs, plans, and reusable prompts
+apps/api       Local FastAPI backend
+apps/web       Vite + React learning app
+content        Course concepts, lessons, and glossary
+labs/python    From-scratch Python labs
+tests/e2e      Playwright browser flows
+docs           Runbooks, specs, plans, prompts, and course pages
 ```
 
-## First Setup
+## Run And Verify
 
-```bash
-uv venv --python 3.13 --seed .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip setuptools wheel
-python -m pip install -e ".[dev]"
-npm install
-npm --prefix apps/web install
-npx playwright install chromium
-```
-
-## Run Locally
-
-Terminal 1:
-
-```bash
-source .venv/bin/activate
-npm run api:dev
-```
-
-Terminal 2:
-
-```bash
-npm run web:dev
-```
-
-Open `http://127.0.0.1:5173`.
-
-## Verify
-
-Use the virtual environment for Python-backed commands:
-
-```bash
-source .venv/bin/activate
-npm run labs:test
-npm run api:test
-npm run web:test
-npm --prefix apps/web run build
-npm run e2e
-```
-
-Current verified counts:
-
-- Labs: 20 tests.
-- API: 15 tests.
-- Web: 10 tests.
-- E2E: 2 browser flows.
-
-## Run
-
-See [docs/run.md](docs/run.md) for the concise runbook.
-
-## Design
-
-Core project design:
-
-- [Learn LLM The Hard Way Design](docs/superpowers/specs/2026-05-25-learn-llm-hard-way-design.md)
-- [Phase 2 Learning Core Design](docs/superpowers/specs/2026-05-26-phase-2-learning-core-design.md)
-
-Execution plans:
-
-- [Phase 1 Foundation Plan](docs/superpowers/plans/2026-05-25-phase-1-foundation.md)
-- [Phase 2 Learning Core Plan](docs/superpowers/plans/2026-05-26-phase-2-learning-core.md)
-
-Reusable continuation prompt:
-
-- [Complete All Phases Goal Prompt](docs/superpowers/prompts/2026-05-26-complete-all-phases-goal-prompt.md)
+- Setup and local run commands: [docs/run.md](docs/run.md)
+- Course overview: [docs/course/index.md](docs/course/index.md)
+- Core design: [LLM course design spec](docs/superpowers/specs/2026-05-25-learn-llm-hard-way-design.md)
+- Continuation prompt: [complete all phases goal prompt](docs/superpowers/prompts/2026-05-26-complete-all-phases-goal-prompt.md)
