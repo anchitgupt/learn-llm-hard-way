@@ -284,7 +284,7 @@ git commit -m "feat: add transformer attention mechanics"
 - Test: `labs/python/tests/test_transformer_block.py`
 - Test: `labs/python/tests/test_tiny_corpus.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 Create tests for:
 
@@ -292,7 +292,7 @@ Create tests for:
 - `build_vocabulary` creates deterministic character ids.
 - `pack_next_token_examples` returns fixed-size input and target pairs.
 
-- [ ] **Step 2: Run tests to verify failure**
+- [x] **Step 2: Run tests to verify failure**
 
 ```bash
 source .venv/bin/activate
@@ -301,11 +301,11 @@ pytest labs/python/tests/test_transformer_block.py labs/python/tests/test_tiny_c
 
 Expected: fails because modules do not exist.
 
-- [ ] **Step 3: Implement minimal mechanics**
+- [x] **Step 3: Implement minimal mechanics**
 
 Implement a tiny deterministic block using the attention helpers and a two-layer feed-forward helper. Implement character vocabulary and next-token packing with clear return shapes.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 ```bash
 source .venv/bin/activate
@@ -314,7 +314,7 @@ pytest labs/python/tests/test_transformer_block.py labs/python/tests/test_tiny_c
 
 Expected: pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add labs/python/llm_from_scratch/transformer/block.py labs/python/llm_from_scratch/data labs/python/tests/test_transformer_block.py labs/python/tests/test_tiny_corpus.py
