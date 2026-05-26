@@ -333,7 +333,7 @@ git commit -m "feat: add tiny transformer block and dataset packing"
 - Test: `labs/python/tests/test_generation_sampling.py`
 - Test: `labs/python/tests/test_phase3_experiments.py`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 Create tests for:
 
@@ -342,7 +342,7 @@ Create tests for:
 - Tiny training demo loss decreases.
 - Phase 3 artifacts include attention, mask, training, generation, comparison, and failure sections.
 
-- [ ] **Step 2: Run tests to verify failure**
+- [x] **Step 2: Run tests to verify failure**
 
 ```bash
 source .venv/bin/activate
@@ -351,11 +351,11 @@ pytest labs/python/tests/test_generation_sampling.py labs/python/tests/test_phas
 
 Expected: fails because generation and experiment modules do not exist.
 
-- [ ] **Step 3: Implement minimal mechanics**
+- [x] **Step 3: Implement minimal mechanics**
 
 Implement deterministic sampling and tiny training artifact builders. Keep the training loop small and CPU-friendly. The loss history must decrease across at least two steps for the fixed corpus.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 ```bash
 source .venv/bin/activate
@@ -364,7 +364,7 @@ pytest labs/python/tests/test_generation_sampling.py labs/python/tests/test_phas
 
 Expected: pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add labs/python/llm_from_scratch/generation labs/python/llm_from_scratch/experiments/transformer_demo.py labs/python/llm_from_scratch/experiments/mini_training_demo.py labs/python/tests/test_generation_sampling.py labs/python/tests/test_phase3_experiments.py
