@@ -12,7 +12,7 @@ describe("design tokens", () => {
     expect(tokensCss).toMatch(/:root\[data-theme="dark"\]\s*\{[\s\S]*--accent:\s*#22d3ee/);
   });
 
-  it("exposes the base background token", () => {
-    expect(tokensCss).toMatch(/--bg-base:\s*#0b1220/);
+  it("exposes the base background token under the dark theme scope", () => {
+    expect(tokensCss).toMatch(/:root\[data-theme="dark"\]\s*\{[\s\S]*--bg-base:\s*#0b1220/);
   });
 });

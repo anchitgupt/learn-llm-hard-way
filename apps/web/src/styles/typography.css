@@ -1,9 +1,17 @@
 /*
  * Lesson body / markdown prose styling.
  * Applied to .prose-lesson containers (e.g. rendered lesson markdown).
- * No @layer wrap: Vite processes CSS files independently in build mode,
- * so @layer rules require @tailwind directives in the same file. Plain
- * class selectors avoid that coupling.
+ *
+ * No @layer components wrap: Vite/PostCSS processes each CSS file in
+ * isolation in production build mode, and Tailwind's @layer directive
+ * requires @tailwind components in the same compilation unit. Verified
+ * by build failure when this file was wrapped in @layer components.
+ * The .prose-lesson selectors are class-scoped, so they don't conflict
+ * with anything and don't need to be in a Tailwind layer.
+ *
+ * Off-scale literal values (15px font-size, 20px h3-top margin, 17px
+ * h3 font-size, 6px code padding, 22px line-height) are intentional —
+ * they don't map cleanly onto the spacing token scale (0/4/8/12/16/24/…).
  */
 
 .prose-lesson {
@@ -12,13 +20,13 @@
   line-height: 22px;
 }
 
-.prose-lesson h1 { font-size: 24px; line-height: 32px; font-weight: 600; margin: 24px 0 12px; }
-.prose-lesson h2 { font-size: 20px; line-height: 28px; font-weight: 600; margin: 24px 0 12px; }
-.prose-lesson h3 { font-size: 17px; line-height: 24px; font-weight: 600; margin: 20px 0 8px; }
-.prose-lesson p { margin: 12px 0; }
+.prose-lesson h1 { font-size: 24px; line-height: var(--s-6); font-weight: 600; margin: var(--s-5) 0 var(--s-3); }
+.prose-lesson h2 { font-size: 20px; line-height: 28px; font-weight: 600; margin: var(--s-5) 0 var(--s-3); }
+.prose-lesson h3 { font-size: 17px; line-height: 24px; font-weight: 600; margin: 20px 0 var(--s-2); }
+.prose-lesson p { margin: var(--s-3) 0; }
 .prose-lesson ul,
-.prose-lesson ol { margin: 12px 0 12px 24px; }
-.prose-lesson li { margin: 4px 0; }
+.prose-lesson ol { margin: var(--s-3) 0 var(--s-3) var(--s-5); }
+.prose-lesson li { margin: var(--s-1) 0; }
 .prose-lesson a {
   color: var(--accent);
   text-decoration: underline;
@@ -40,9 +48,9 @@
   background: var(--bg-inset);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
-  padding: 16px;
+  padding: var(--s-4);
   overflow-x: auto;
-  margin: 16px 0;
+  margin: var(--s-4) 0;
 }
 .prose-lesson pre code {
   background: transparent;
@@ -50,8 +58,8 @@
   padding: 0;
 }
 .prose-lesson blockquote {
-  margin: 16px 0;
-  padding: 8px 16px;
+  margin: var(--s-4) 0;
+  padding: var(--s-2) var(--s-4);
   border-left: 2px solid var(--accent);
   color: var(--text-muted);
 }
