@@ -8,8 +8,9 @@ You are working on the `learn-llm-hard-way` project.
 Repo
 - Path: /Users/anchitgupta/Documents/Github/learn-llm-hard-way
 - Branch: main
-- Latest commit on main: a426c88 polish(web): dynamic Concept sidebar entry follows the active concept
-- origin/main: in sync with local main (force-push not performed)
+- Latest commit on main: 0080200 chore(web): delete legacy concept panels + retire viz alias
+- origin/main: in sync with local main
+- Sub-projects 1, 2, 3, and 4 are all on origin/main as of 2026-05-28.
 
 Project context
 The base project is a local-first LLM learning app. The original four core
@@ -60,7 +61,40 @@ Sub-project 2: App Shell + Dashboard — DONE, merged to origin/main
 - Toaster mounted in AppShell for error toasts; error banner in AppShell when
   CourseDataProvider's initial fetch fails.
 
-Sub-project 3: Educational Viz Library — DESIGNED, NOT EXECUTED
+Sub-project 3: Educational Viz Library — DONE, merged to origin/main
+- Spec: docs/superpowers/specs/2026-05-27-educational-viz-library-design.md
+- Plan: docs/superpowers/plans/2026-05-27-educational-viz-library.md
+- Five viz at apps/web/src/viz/: TokenFlow, AttentionMap, LossCurve,
+  SamplingPlot, EmbeddingSpace.
+- Shared primitives at apps/web/src/viz/primitives/: VizFrame, Axes,
+  Tooltip, Legend, scales.ts, colors.ts, useResizeObserver.
+- Showcase at /viz inside the app shell.
+- Sidebar gained a "Viz" entry (Sparkles icon).
+
+Sub-project 4: Concept Workspace — DONE, merged to origin/main
+- Spec: docs/superpowers/specs/2026-05-27-concept-workspace-design.md
+- Plan: docs/superpowers/plans/2026-05-28-concept-workspace.md
+- API: GET /api/checkpoints/:id/attempts (and list_checkpoint_attempts
+  on ProgressStore). fetchCheckpointAttempts on apps/web/src/api.ts.
+- vizRegistry at apps/web/src/screens/concept/vizRegistry.ts maps
+  ConceptVizKey ('token-flow' | 'attention-map' | 'loss-curve' |
+  'sampling-plot' | 'embedding-space' | 'chat-playground') to viz
+  components + hints. The migration alias 'token-flow-svg' was
+  retired in Task 5.
+- Every concept JSON's `visual` field migrated to canonical keys.
+- Per-tab components at apps/web/src/screens/concept/:
+  ConceptHeader, ExplanationTab, LabTab, ExperimentTab,
+  CheckpointTab, NotesTab, useDebouncedCallback, useExperimentData.
+- New screen at apps/web/src/screens/ConceptWorkspace.tsx.
+  URL-synced tab state via ?tab=. Chat concepts default to the
+  Experiment tab so deep-links land on ChatPlayground.
+- routes.tsx points /concepts/:id at the new screen.
+- RouteWrappers.tsx's ConceptRoute is gone.
+- Legacy panels (ConceptWorkspace, VisualExperiment, LabPanel,
+  CheckpointPanel, ProgressPanel) deleted as orphans. GlossaryPanel
+  KEPT — still used by /glossary's wrapper until sub-project 7.
+
+Sub-project 5: Concept Map polish — NOT STARTED
 - Spec: docs/superpowers/specs/2026-05-27-educational-viz-library-design.md
 - Plan: docs/superpowers/plans/2026-05-27-educational-viz-library.md
 - Both files are currently UNTRACKED on the working tree of main. They get
@@ -81,45 +115,42 @@ Sub-project 3: Educational Viz Library — DESIGNED, NOT EXECUTED
 
 Test/build state on main (verify before you start)
 - labs:test → 40 passed
-- api:test  → 25 passed
-- web test  → 54 passed (across 27 files)
+- api:test  → 28 passed
+- web test  → 126 passed (across 43 files)
 - npm --prefix apps/web run build → clean
 - npm run e2e → 4 chromium flows passed
 
 Next concrete action
-Execute the Educational Viz Library plan. The plan's pre-flight:
+Brainstorm and execute sub-project 5: Concept Map polish. The Concept Map
+screen is the prerequisite graph at /concepts. Today it renders the
+existing ConceptMap.tsx component inside a MigrationBanner wrapper
+(RouteWrappers.tsx's ConceptMapRoute) — un-styled, no progress states,
+no hover previews.
 
-1. git checkout -b viz-library
-2. Commit the (currently-untracked) spec + plan as the branch's docs baseline:
-   docs/superpowers/specs/2026-05-27-educational-viz-library-design.md
-   docs/superpowers/plans/2026-05-27-educational-viz-library.md
-3. Re-run the baseline counts above to confirm starting point.
-4. Then proceed task-by-task. Suggested execution mode:
-   superpowers:subagent-driven-development (one subagent per task with
-   two-stage review: spec compliance then code quality).
+Suggested scope for sub-project 5:
+- Restyle the React Flow graph with foundation tokens (cyan accent for
+  completed, neutral for open, danger/warning for missed).
+- Hover previews showing concept summary + status.
+- Click a node to navigate to /concepts/:id (already works; just polish).
+- Honour the ?filter=missed query (set by Dashboard's MissedTopicsPanel
+  'View all' link).
+- Optional: zoom-to-fit, mini-map, search.
 
-Plan task structure
-- Task 1: Shared primitives (VizFrame, Axes, scales, colors, useResizeObserver,
-  Tooltip, Legend). TDD on VizFrame, Axes, scales, colors. Adds a ResizeObserver
-  polyfill to vitest.setup.ts if jsdom doesn't ship one.
-- Task 2: AttentionMap (first public viz; exercises all primitives).
-- Task 3: TokenFlow + SamplingPlot + LossCurve. TDD each.
-- Task 4: EmbeddingSpace + viz/data/demoEmbeddings.ts (~30 hand-clustered words).
-- Task 5: /viz showcase route + sidebar entry; update SideNav.test.tsx.
-- Final: full gate (labs + api + web + build + e2e) + dev-server smoke +
-  hand-off without auto-push.
+Brainstorm via the superpowers:brainstorming skill in a fresh session
+or by saying "brainstorm sub-project 5" in this session.
 
-Expected post-execution test count
-- labs/api unchanged.
-- web: ~85 (baseline 54 + ~25 new from viz library + showcase + SideNav).
-- e2e: 4.
-
-Documented known follow-ups
-- EmbeddingSpace ships with synthetic demo data; a future lab can produce
-  real embeddings in the same EmbeddingPoint[] shape.
+Documented known follow-ups across the prior sub-projects
+- EmbeddingSpace ships with synthetic demo data; a future lab can
+  produce real embeddings in the same EmbeddingPoint[] shape.
 - LossCurve uses SVG; if a future training run produces >2000 points,
   swap in Canvas behind the same prop signature.
-- The five viz integrate into specific screens in sub-projects 4 / 6 / 7.
+- The viz library integrates into more screens in sub-projects 6 (Chat
+  Playground) and 7 (Glossary / Artifacts / Failure Museum).
+- useExperimentData in apps/web/src/screens/concept/useExperimentData.ts
+  uses deterministic demo data for every viz. A future iteration can
+  derive real props from `recentArtifacts` per concept.
+- Dashboard's loading state is a simple "Loading…" string; promoting to
+  Skeleton blocks is a future polish.
 
 Conventions to follow when executing
 - One subagent per task. Provide the FULL task text from the plan in the
