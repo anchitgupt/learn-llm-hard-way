@@ -87,3 +87,16 @@ def test_records_lab_runs_and_recent_artifacts(tmp_path: Path) -> None:
             "error": "",
         }
     ]
+
+
+def test_saves_and_lists_chat_memory(tmp_path: Path) -> None:
+    store = ProgressStore(tmp_path / "progress.sqlite")
+    store.initialize()
+
+    saved = store.save_chat_memory("I am learning attention before chat.")
+
+    memories = store.list_chat_memories()
+
+    assert saved["content"] == "I am learning attention before chat."
+    assert saved["id"] == memories[0]["id"]
+    assert memories[0]["content"] == "I am learning attention before chat."

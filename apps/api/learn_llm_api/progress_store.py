@@ -50,6 +50,15 @@ class ProgressStore:
                 )
                 """
             )
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS chat_memories (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  content TEXT NOT NULL,
+                  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )
+                """
+            )
 
     def save_progress(
         self,
@@ -195,6 +204,33 @@ class ProgressStore:
             ).fetchall()
         return [self._row_to_lab_run(row) for row in rows]
 
+    def save_chat_memory(self, content: str) -> dict[str, Any]:
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            row = connection.execute(
+                """
+                INSERT INTO chat_memories (content)
+                VALUES (?)
+                RETURNING id, content, created_at
+                """,
+                (content,),
+            ).fetchone()
+        return self._row_to_chat_memory(row)
+
+    def list_chat_memories(self, limit: int = 20) -> list[dict[str, Any]]:
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(
+                """
+                SELECT id, content, created_at
+                FROM chat_memories
+                ORDER BY created_at DESC, id DESC
+                LIMIT ?
+                """,
+                (limit,),
+            ).fetchall()
+        return [self._row_to_chat_memory(row) for row in rows]
+
     @staticmethod
     def _row_to_progress(row: sqlite3.Row) -> dict[str, Any]:
         return {
@@ -223,4 +259,12 @@ class ProgressStore:
             "artifactPath": row["artifact_path"],
             "status": row["status"],
             "error": row["error"],
+        }
+
+    @staticmethod
+    def _row_to_chat_memory(row: sqlite3.Row) -> dict[str, Any]:
+        return {
+            "id": row["id"],
+            "content": row["content"],
+            "createdAt": row["created_at"],
         }

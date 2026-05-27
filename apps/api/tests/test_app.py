@@ -140,3 +140,44 @@ def test_phase_two_endpoints_return_glossary_checkpoint_lab_and_artifacts(tmp_pa
     revisit_response = client.get("/api/revisit")
     assert revisit_response.status_code == 200
     assert revisit_response.json()[0]["conceptId"] == "bytes-unicode"
+
+
+def test_chat_endpoints_return_trace_failures_preference_and_memory(tmp_path: Path) -> None:
+    app = create_app(repo_root=Path("."), database_path=tmp_path / "progress.sqlite")
+    client = TestClient(app)
+
+    memory_response = client.post(
+        "/api/chat/memory",
+        json={"content": "I am learning attention before chat."},
+    )
+    assert memory_response.status_code == 200
+    assert memory_response.json()["content"] == "I am learning attention before chat."
+
+    memory_list_response = client.get("/api/chat/memory")
+    assert memory_list_response.status_code == 200
+    assert memory_list_response.json()[0]["content"] == "I am learning attention before chat."
+
+    chat_response = client.post(
+        "/api/chat/demo",
+        json={
+            "message": "What is 19 * 23?",
+            "mode": "assistant",
+            "answerStyle": "short",
+            "toolMode": "verified",
+            "memoryMode": "saved",
+            "contextSize": 96,
+        },
+    )
+    assert chat_response.status_code == 200
+    chat = chat_response.json()
+    assert chat["finalReply"] == "437"
+    assert chat["toolTrace"]["result"] == 437
+    assert chat["memoryTrace"]["savedMemoriesUsed"] == ["I am learning attention before chat."]
+
+    failures_response = client.get("/api/chat/failures")
+    assert failures_response.status_code == 200
+    assert failures_response.json()[0]["category"] == "counting"
+
+    preference_response = client.get("/api/chat/preference")
+    assert preference_response.status_code == 200
+    assert preference_response.json()["winner"]["id"] == "verified"

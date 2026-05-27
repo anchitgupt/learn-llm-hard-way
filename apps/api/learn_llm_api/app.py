@@ -8,6 +8,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
+from llm_from_scratch.chat.failures import failure_cases
+from llm_from_scratch.chat.local_model import build_chat_trace
+from llm_from_scratch.chat.preference import preference_simulation
 from learn_llm_api.content_loader import load_glossary, load_tracks
 from learn_llm_api.lab_runner import run_lab
 from learn_llm_api.progress_store import ProgressStore
@@ -23,6 +26,19 @@ class ProgressInput(BaseModel):
 class CheckpointAttemptInput(BaseModel):
     submittedAnswer: str = Field(min_length=1)
     confidence: int = Field(ge=1, le=5)
+
+
+class ChatDemoInput(BaseModel):
+    message: str = Field(min_length=1)
+    mode: str = "assistant"
+    answerStyle: str = "short"
+    toolMode: str = "none"
+    memoryMode: str = "context"
+    contextSize: int = Field(default=96, ge=8, le=512)
+
+
+class ChatMemoryInput(BaseModel):
+    content: str = Field(min_length=1, max_length=500)
 
 
 def _find_concept(tracks: list[dict[str, Any]], concept_id: str) -> dict[str, Any]:
@@ -140,5 +156,39 @@ def create_app(
     @app.get("/api/revisit")
     def revisit() -> list[dict[str, Any]]:
         return store.list_missed_topics()
+
+    @app.post("/api/chat/demo")
+    def chat_demo(payload: ChatDemoInput) -> dict[str, Any]:
+        memories = [memory["content"] for memory in store.list_chat_memories()] if payload.memoryMode == "saved" else []
+        try:
+            return build_chat_trace(
+                payload.message,
+                {
+                    "mode": payload.mode,
+                    "answerStyle": payload.answerStyle,
+                    "toolMode": payload.toolMode,
+                    "memoryMode": payload.memoryMode,
+                    "contextSize": payload.contextSize,
+                },
+                saved_memories=memories,
+            )
+        except ValueError as error:
+            raise HTTPException(status_code=400, detail=str(error)) from error
+
+    @app.get("/api/chat/failures")
+    def chat_failures() -> list[dict[str, Any]]:
+        return failure_cases()
+
+    @app.get("/api/chat/preference")
+    def chat_preference() -> dict[str, Any]:
+        return preference_simulation()
+
+    @app.get("/api/chat/memory")
+    def chat_memory() -> list[dict[str, Any]]:
+        return store.list_chat_memories()
+
+    @app.post("/api/chat/memory")
+    def save_chat_memory(payload: ChatMemoryInput) -> dict[str, Any]:
+        return store.save_chat_memory(payload.content)
 
     return app
