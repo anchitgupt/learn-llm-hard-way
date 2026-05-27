@@ -12,6 +12,7 @@ import { ConceptMap } from "./components/ConceptMap";
 import { Dashboard } from "./components/Dashboard";
 import { ChatPlayground } from "./components/ChatPlayground";
 import type { Concept, GlossaryEntry, LabRunArtifact, MissedTopic, Track } from "./types";
+import { FoundationShowcase } from "./components/FoundationShowcase";
 
 const chatConceptIds = new Set([
   "message-formatting",
@@ -27,6 +28,10 @@ const chatConceptIds = new Set([
 ]);
 
 export default function App() {
+  if (typeof window !== "undefined" && window.location.pathname === "/__foundation") {
+    return <FoundationShowcase />;
+  }
+
   const [tracks, setTracks] = useState<Track[]>([]);
   const [glossaryEntries, setGlossaryEntries] = useState<GlossaryEntry[]>([]);
   const [missedTopics, setMissedTopics] = useState<MissedTopic[]>([]);
