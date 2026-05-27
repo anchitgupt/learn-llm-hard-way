@@ -1,2 +1,2 @@
 // Public viz exports. Each viz component is added here as it lands.
-export {};
+export { AttentionMap } from "./AttentionMap";
