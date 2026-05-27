@@ -156,6 +156,30 @@ def test_post_progress_touch_returns_204_and_progress_row(tmp_path, monkeypatch)
     assert any(row["conceptId"] == "bytes-unicode" and row["lastOpenedAt"] for row in progress)
 
 
+def test_get_checkpoint_attempts_returns_history(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+    from learn_llm_api.app import create_app
+
+    monkeypatch.setenv("LEARN_LLM_DATABASE_PATH", str(tmp_path / "progress.sqlite"))
+    client = TestClient(create_app(database_path=tmp_path / "progress.sqlite"))
+
+    # No attempts yet.
+    response = client.get("/api/checkpoints/bytes-unicode/attempts")
+    assert response.status_code == 200
+    assert response.json() == []
+
+    # Submit an attempt via the existing endpoint.
+    submit = client.post(
+        "/api/checkpoints/bytes-unicode/attempts",
+        json={"submittedAnswer": "utf-8 maps characters to byte sequences", "confidence": 4},
+    )
+    assert submit.status_code == 200
+
+    listed = client.get("/api/checkpoints/bytes-unicode/attempts").json()
+    assert len(listed) == 1
+    assert listed[0]["submittedAnswer"] == "utf-8 maps characters to byte sequences"
+
+
 def test_chat_endpoints_return_trace_failures_preference_and_memory(tmp_path: Path) -> None:
     app = create_app(repo_root=Path("."), database_path=tmp_path / "progress.sqlite")
     client = TestClient(app)

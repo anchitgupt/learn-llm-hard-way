@@ -114,6 +114,10 @@ def create_app(
     def touch_progress(concept_id: str) -> None:
         store.touch_concept(concept_id)
 
+    @app.get("/api/checkpoints/{concept_id}/attempts")
+    def get_checkpoint_attempts(concept_id: str) -> list[dict[str, Any]]:
+        return store.list_checkpoint_attempts(concept_id)
+
     @app.post("/api/checkpoints/{concept_id}/attempts")
     def submit_checkpoint(concept_id: str, payload: CheckpointAttemptInput) -> dict[str, Any]:
         try:

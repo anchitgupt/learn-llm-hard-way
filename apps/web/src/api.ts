@@ -67,6 +67,12 @@ export async function submitCheckpoint(
   );
 }
 
+export async function fetchCheckpointAttempts(conceptId: string): Promise<CheckpointAttempt[]> {
+  return readJson<CheckpointAttempt[]>(
+    await fetch(`${API_BASE}/api/checkpoints/${conceptId}/attempts`)
+  );
+}
+
 export async function runLab(labId: string): Promise<LabRunArtifact> {
   return readJson<LabRunArtifact>(
     await fetch(`${API_BASE}/api/labs/${labId}/runs`, {

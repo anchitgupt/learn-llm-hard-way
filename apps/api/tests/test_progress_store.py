@@ -134,3 +134,47 @@ def test_touch_concept_updates_existing_progress_row(tmp_path):
     assert len(rows) == 1
     assert rows[0]["status"] == "learning"
     assert rows[0]["lastOpenedAt"] is not None
+
+
+def test_list_checkpoint_attempts_returns_most_recent_first(tmp_path):
+    from learn_llm_api.progress_store import ProgressStore
+
+    store = ProgressStore(tmp_path / "progress.sqlite")
+    store.initialize()
+
+    store.record_checkpoint_attempt(
+        concept_id="bytes-unicode",
+        submitted_answer="first",
+        correct=False,
+        feedback="try again",
+        confidence=2,
+    )
+    store.record_checkpoint_attempt(
+        concept_id="bytes-unicode",
+        submitted_answer="second",
+        correct=True,
+        feedback="Checkpoint passed.",
+        confidence=4,
+    )
+    store.record_checkpoint_attempt(
+        concept_id="character-tokenization",
+        submitted_answer="other concept",
+        correct=False,
+        feedback="...",
+        confidence=2,
+    )
+
+    attempts = store.list_checkpoint_attempts("bytes-unicode")
+    assert len(attempts) == 2
+    assert attempts[0]["submittedAnswer"] == "second"
+    assert attempts[0]["correct"] is True
+    assert attempts[1]["submittedAnswer"] == "first"
+    assert attempts[1]["correct"] is False
+
+
+def test_list_checkpoint_attempts_returns_empty_for_unknown_concept(tmp_path):
+    from learn_llm_api.progress_store import ProgressStore
+
+    store = ProgressStore(tmp_path / "progress.sqlite")
+    store.initialize()
+    assert store.list_checkpoint_attempts("never-recorded") == []

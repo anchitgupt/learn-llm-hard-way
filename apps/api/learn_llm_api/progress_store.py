@@ -166,6 +166,20 @@ class ProgressStore:
             ).fetchone()
         return self._row_to_checkpoint_attempt(row)
 
+    def list_checkpoint_attempts(self, concept_id: str) -> list[dict[str, Any]]:
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(
+                """
+                SELECT concept_id, submitted_answer, correct, feedback, confidence
+                FROM checkpoint_attempts
+                WHERE concept_id = ?
+                ORDER BY created_at DESC, id DESC
+                """,
+                (concept_id,),
+            ).fetchall()
+        return [self._row_to_checkpoint_attempt(row) for row in rows]
+
     def record_lab_run(
         self,
         lab_id: str,
