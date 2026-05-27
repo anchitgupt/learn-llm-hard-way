@@ -18,7 +18,7 @@ This repository is not only notes. It contains working Python labs, a local Fast
 | 1 | [Foundation: Data And Tokens](docs/course/phase-1-foundation.md) | Available | Understand bytes, Unicode, tokenization, and BPE with working labs. |
 | 2 | [Learning Core: Math And Tiny Models](docs/course/phase-2-learning-core.md) | Available | Build intuition for vectors, logits, softmax, gradients, loss, and one-step optimization. |
 | 3 | [Mini LLM](docs/course/phase-3-mini-llm.md) | Available | Implement attention, transformer blocks, next-token training, and sampling. |
-| 4 | [Chat Mechanics](docs/course/upcoming-phases.md#phase-4-chat-mechanics) | Planned | Trace prompt formatting, tokenization, context assembly, streaming, tools, and memory. |
+| 4 | [Chat Mechanics](docs/course/phase-4-chat.md) | In progress | Trace prompt formatting, tokenization, context assembly, streaming, tools, and memory. |
 
 For the full course structure, see [docs/course/index.md](docs/course/index.md).
 
@@ -40,6 +40,7 @@ Available now:
 - Phase 1 foundation.
 - Phase 2 learning core.
 - Phase 3 mini LLM mechanics.
+- Phase 4 chat mechanics is now being built.
 - Local API and web app.
 - Local SQLite learner state.
 - Safe allowlisted lab execution.
@@ -48,7 +49,6 @@ Available now:
 
 Planned next:
 
-- Phase 4 chat mechanics playground.
 - Optional Colab/GPU extension lanes after the local path is complete.
 
 ## Project Layout

@@ -9,7 +9,7 @@ Learn LLM The Hard Way is organized as a hands-on course. The path starts from t
 | 1 | [Foundation: Data And Tokens](phase-1-foundation.md) | Models do not read text directly. They receive token IDs built from bytes, Unicode, and tokenization rules. |
 | 2 | [Learning Core: Math And Tiny Models](phase-2-learning-core.md) | Neural networks turn vectors into scores, probabilities, losses, gradients, and parameter updates. |
 | 3 | [Mini LLM](phase-3-mini-llm.md) | Transformers combine attention, positional information, training loops, and sampling into a small language model. |
-| 4 | [Chat Mechanics](upcoming-phases.md#phase-4-chat-mechanics) | Chat products wrap model completion with prompts, messages, context windows, tools, streaming, and memory. |
+| 4 | [Chat Mechanics](phase-4-chat.md) | Chat products wrap model completion with prompts, messages, context windows, tools, streaming, and memory. |
 
 ## Learning Loop
 

@@ -125,6 +125,90 @@
       "shortDefinition": "A fluent model output that is unsupported or false.",
       "explanation": "Hallucinations happen because language models predict plausible text. Factual tasks need context, retrieval, tools, or verification when correctness matters.",
       "relatedConcepts": ["factuality-failures"]
+    },
+    {
+      "id": "prompt",
+      "term": "Prompt",
+      "shortDefinition": "The model-facing text assembled from messages, memory, and instructions.",
+      "explanation": "A prompt is the actual token sequence the model conditions on, not only the visible user text.",
+      "relatedConcepts": ["message-formatting", "tokenization-trace"]
+    },
+    {
+      "id": "message-role",
+      "term": "Message Role",
+      "shortDefinition": "A label such as system, user, assistant, or memory.",
+      "explanation": "Roles help distinguish instructions, user requests, prior assistant text, and saved memory in a formatted chat prompt.",
+      "relatedConcepts": ["message-formatting", "base-vs-assistant-chat"]
+    },
+    {
+      "id": "token",
+      "term": "Token",
+      "shortDefinition": "A model input unit produced by tokenization.",
+      "explanation": "Chat prompts become token IDs before context assembly and generation.",
+      "relatedConcepts": ["tokenization-trace", "context-window-trace"]
+    },
+    {
+      "id": "token-streaming",
+      "term": "Token Streaming",
+      "shortDefinition": "Rendering generated chunks as they arrive.",
+      "explanation": "Streaming is a serving and UI behavior layered on top of the generation loop.",
+      "relatedConcepts": ["sampling-streaming"]
+    },
+    {
+      "id": "scratch-work",
+      "term": "Scratch Work",
+      "shortDefinition": "Intermediate text used to decompose a task before answering.",
+      "explanation": "Scratch-work gives the model more tokens to represent steps, which can help complex tasks.",
+      "relatedConcepts": ["scratch-work"]
+    },
+    {
+      "id": "reasoning-token",
+      "term": "Reasoning Token",
+      "shortDefinition": "A token used for intermediate task decomposition.",
+      "explanation": "Reasoning-style behavior often depends on using intermediate tokens before a final answer.",
+      "relatedConcepts": ["scratch-work", "preference-rlhf"]
+    },
+    {
+      "id": "tool-use",
+      "term": "Tool Use",
+      "shortDefinition": "Calling an external verifier or function instead of relying only on model text.",
+      "explanation": "Tool use can make exact tasks more reliable when the tool is constrained and its result is visible.",
+      "relatedConcepts": ["tool-verification"]
+    },
+    {
+      "id": "verification",
+      "term": "Verification",
+      "shortDefinition": "Checking a claim or computation against a reliable process.",
+      "explanation": "Verification is different from fluent explanation. It is essential for arithmetic and factual tasks.",
+      "relatedConcepts": ["tool-verification", "failure-museum"]
+    },
+    {
+      "id": "memory",
+      "term": "Memory",
+      "shortDefinition": "Information stored outside the current prompt and inserted later.",
+      "explanation": "Saved chat memory is local application state. It is not automatically part of model weights.",
+      "relatedConcepts": ["chat-memory"]
+    },
+    {
+      "id": "preference-ranking",
+      "term": "Preference Ranking",
+      "shortDefinition": "Ordering candidate responses from better to worse.",
+      "explanation": "Preference ranking is a small model of how post-training can prefer grounded, helpful responses over unsupported ones.",
+      "relatedConcepts": ["preference-rlhf"]
+    },
+    {
+      "id": "reward-model",
+      "term": "Reward Model",
+      "shortDefinition": "A scoring model used to estimate which behavior is preferred.",
+      "explanation": "In RLHF-style systems, reward models or scoring rules guide optimization toward preferred responses.",
+      "relatedConcepts": ["preference-rlhf"]
+    },
+    {
+      "id": "rlhf",
+      "term": "RLHF",
+      "shortDefinition": "Reinforcement learning from human feedback.",
+      "explanation": "RLHF uses preference information to shape behavior beyond direct next-token imitation.",
+      "relatedConcepts": ["preference-rlhf"]
     }
   ]
 }

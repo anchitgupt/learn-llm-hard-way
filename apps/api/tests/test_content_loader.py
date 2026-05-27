@@ -7,12 +7,13 @@ from learn_llm_api.content_loader import load_glossary, load_tracks
 def test_load_tracks_reads_concepts_and_lessons():
     tracks = load_tracks(Path("."))
 
-    assert len(tracks) == 4
+    assert len(tracks) == 5
     assert [track["id"] for track in tracks] == [
         "data-and-tokens",
         "math-for-models",
         "early-neural-nets",
         "transformer",
+        "chat-product",
     ]
     track = tracks[0]
     assert track["id"] == "data-and-tokens"
@@ -170,3 +171,24 @@ def test_phase3_transformer_track_loads() -> None:
     ]
     assert transformer["concepts"][0]["prerequisites"] == ["logits-softmax"]
     assert transformer["concepts"][0]["lab"] == "attention-demo"
+
+
+def test_phase4_chat_product_track_loads() -> None:
+    tracks = load_tracks(Path("."))
+    chat_product = next(track for track in tracks if track["id"] == "chat-product")
+
+    assert chat_product["title"] == "Chat Product"
+    assert [concept["id"] for concept in chat_product["concepts"]] == [
+        "message-formatting",
+        "tokenization-trace",
+        "context-window-trace",
+        "sampling-streaming",
+        "base-vs-assistant-chat",
+        "scratch-work",
+        "tool-verification",
+        "chat-memory",
+        "failure-museum",
+        "preference-rlhf",
+    ]
+    assert chat_product["concepts"][0]["prerequisites"] == ["base-vs-assistant"]
+    assert chat_product["concepts"][0]["lab"] == "chat-mechanics-demo"
