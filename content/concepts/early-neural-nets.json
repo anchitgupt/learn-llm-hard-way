@@ -13,7 +13,7 @@
       "prerequisites": ["logits-softmax"],
       "lessonPath": "content/lessons/early-neural-nets/scalar-gradients.md",
       "lab": "nn-gradient-demo",
-      "visual": "gradient-step",
+      "visual": null,
       "checkpoint": {
         "question": "What does a scalar gradient tell us during training?",
         "answer": "It tells how changing one value changes the loss and which direction reduces it.",
@@ -29,7 +29,7 @@
       "prerequisites": ["scalar-gradients"],
       "lessonPath": "content/lessons/early-neural-nets/tiny-linear-model.md",
       "lab": "nn-tiny-linear-demo",
-      "visual": "linear-loss-step",
+      "visual": "loss-curve",
       "checkpoint": {
         "question": "Why does one optimization step change the model's prediction?",
         "answer": "The step uses gradients to move parameters in the direction that lowers loss.",

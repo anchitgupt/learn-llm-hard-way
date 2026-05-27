@@ -13,7 +13,7 @@
       "prerequisites": [],
       "lessonPath": "content/lessons/data-and-tokens/bytes-unicode.md",
       "lab": null,
-      "visual": "token-flow-svg",
+      "visual": "token-flow",
       "checkpoint": {
         "question": "Why can the same visible character use different byte sequences?",
         "answer": "Because text is encoded into bytes using a character encoding such as UTF-8, and visible characters can map to one or more code points and byte sequences."
@@ -28,7 +28,7 @@
       "prerequisites": ["bytes-unicode"],
       "lessonPath": "content/lessons/data-and-tokens/character-tokenization.md",
       "lab": "character-tokenizer",
-      "visual": "token-flow-svg",
+      "visual": "token-flow",
       "checkpoint": {
         "question": "What does a character tokenizer lose compared with a learned subword tokenizer?",
         "answer": "It creates long sequences and does not learn frequent reusable chunks such as common words, prefixes, or suffixes."
@@ -43,7 +43,7 @@
       "prerequisites": ["character-tokenization"],
       "lessonPath": "content/lessons/data-and-tokens/byte-pair-encoding.md",
       "lab": "bpe-tokenizer",
-      "visual": "token-flow-svg",
+      "visual": "token-flow",
       "checkpoint": {
         "question": "What does one BPE merge do?",
         "answer": "It finds a frequent adjacent token pair and replaces that pair with a new token, shortening sequences while expanding the vocabulary."

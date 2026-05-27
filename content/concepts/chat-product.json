@@ -13,7 +13,7 @@
       "prerequisites": ["base-vs-assistant"],
       "lessonPath": "content/lessons/chat-product/message-formatting.md",
       "lab": "chat-mechanics-demo",
-      "visual": "message-format-trace",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "Why does a chat product format messages with roles before generation?",
         "answer": "Roles turn the user interface conversation into model-facing text that separates system, user, assistant, and memory instructions.",
@@ -29,7 +29,7 @@
       "prerequisites": ["message-formatting", "byte-pair-encoding"],
       "lessonPath": "content/lessons/chat-product/tokenization-trace.md",
       "lab": "chat-mechanics-demo",
-      "visual": "chat-token-trace",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "What does the tokenization trace show in a chat request?",
         "answer": "It shows how the formatted prompt becomes tokens and token ids before context assembly and generation.",
@@ -45,7 +45,7 @@
       "prerequisites": ["tokenization-trace", "masked-self-attention"],
       "lessonPath": "content/lessons/chat-product/context-window-trace.md",
       "lab": "chat-mechanics-demo",
-      "visual": "context-window-trace",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "What is the difference between kept and dropped tokens in a context trace?",
         "answer": "Kept tokens fit inside the active context window; dropped tokens are outside the window and cannot influence this generation step.",
@@ -61,7 +61,7 @@
       "prerequisites": ["context-window-trace", "sampling-generation"],
       "lessonPath": "content/lessons/chat-product/sampling-streaming.md",
       "lab": "chat-mechanics-demo",
-      "visual": "chat-stream-trace",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "What is token streaming in a chat UI?",
         "answer": "Token streaming is the UI receiving and rendering generated chunks as the model loop produces them.",
@@ -77,7 +77,7 @@
       "prerequisites": ["message-formatting", "base-vs-assistant"],
       "lessonPath": "content/lessons/chat-product/base-vs-assistant-chat.md",
       "lab": "chat-mechanics-demo",
-      "visual": "chat-mode-comparison",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "How does assistant-chat mode differ from base-completion mode?",
         "answer": "Base mode continues text directly, while assistant-chat mode uses roles and formatting to produce an assistant response.",
@@ -93,7 +93,7 @@
       "prerequisites": ["sampling-streaming"],
       "lessonPath": "content/lessons/chat-product/scratch-work.md",
       "lab": "chat-mechanics-demo",
-      "visual": "scratch-work-trace",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "Why can scratch-work mode help with complex tasks?",
         "answer": "Scratch-work mode gives the model intermediate tokens to decompose the task instead of forcing an immediate short answer.",
@@ -109,7 +109,7 @@
       "prerequisites": ["scratch-work"],
       "lessonPath": "content/lessons/chat-product/tool-verification.md",
       "lab": "chat-mechanics-demo",
-      "visual": "tool-verification-trace",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "Why is a verifier tool better than model-only guessing for arithmetic?",
         "answer": "A verifier tool computes the result directly, while model-only output can imitate arithmetic-looking text without executing the calculation.",
@@ -125,7 +125,7 @@
       "prerequisites": ["context-window-trace"],
       "lessonPath": "content/lessons/chat-product/chat-memory.md",
       "lab": "chat-mechanics-demo",
-      "visual": "memory-trace",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "How is saved local memory different from current context?",
         "answer": "Current context is the active prompt tokens for this request, while saved local memory is stored state that can be reinserted into future prompts.",
@@ -141,7 +141,7 @@
       "prerequisites": ["tool-verification", "chat-memory"],
       "lessonPath": "content/lessons/chat-product/failure-museum.md",
       "lab": "chat-mechanics-demo",
-      "visual": "failure-museum",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "What should a failure museum teach about model behavior?",
         "answer": "It should connect visible failures to causes such as token boundaries, missing context, model-only guessing, and lack of verification.",
@@ -157,7 +157,7 @@
       "prerequisites": ["failure-museum"],
       "lessonPath": "content/lessons/chat-product/preference-rlhf.md",
       "lab": "chat-mechanics-demo",
-      "visual": "preference-ranking",
+      "visual": "chat-playground",
       "checkpoint": {
         "question": "What does a preference-ranking simulation show?",
         "answer": "It shows how candidate responses can be ranked and rewarded so the system prefers more useful, grounded behavior.",
