@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { RecentArtifactsPanel } from "../RecentArtifactsPanel";
+import type { LabRunArtifact } from "../../../types";
 
 describe("RecentArtifactsPanel", () => {
   it("renders empty state", () => {
@@ -14,7 +15,7 @@ describe("RecentArtifactsPanel", () => {
       <MemoryRouter>
         <RecentArtifactsPanel
           artifacts={[
-            { labId: "bpe-train", conceptId: "bpe", artifactPath: "artifacts/bpe.json", status: "ok", error: "", createdAt: "2026-05-27T11:00:00Z" } as any
+            { labId: "bpe-train", conceptId: "bpe", artifactPath: "artifacts/bpe.json", status: "ok", error: "", createdAt: "2026-05-27T11:00:00Z" } as unknown as LabRunArtifact & { createdAt: string }
           ]}
           now={new Date("2026-05-27T12:00:00Z")}
         />

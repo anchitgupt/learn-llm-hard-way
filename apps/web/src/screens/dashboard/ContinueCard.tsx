@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/cn";
 import type { Concept, Track } from "../../types";
 
 interface ContinueCardProps {
@@ -10,13 +9,21 @@ interface ContinueCardProps {
   tracks: Track[];
 }
 
+/**
+ * Show the next concept the learner should open.
+ *
+ * Body text is a raw slice of `lessonMarkdown` — it can cut mid-word and may
+ * include markdown syntax. TODO: strip markdown + truncate at word boundary.
+ */
 export function ContinueCard({ concept, tracks }: ContinueCardProps) {
   if (!concept) {
     const first = tracks[0]?.concepts[0];
     return (
-      <Card className="bg-bg-surface border-l-4 border-accent" style={{ boxShadow: "var(--glow-accent)" }}>
+      <Card
+        className="bg-bg-surface border-l-4 border-accent"
+        style={{ boxShadow: "var(--glow-accent)" }}
+      >
         <CardHeader>
-          <p className="text-[12px] uppercase tracking-wide text-text-muted">Today</p>
           <h2 className="text-[24px] leading-[32px] font-semibold">Start the course</h2>
         </CardHeader>
         <CardContent>
@@ -38,7 +45,10 @@ export function ContinueCard({ concept, tracks }: ContinueCardProps) {
   const trackTotal = track?.concepts.length ?? 0;
 
   return (
-    <Card className={cn("bg-bg-surface border-l-4 border-accent")} style={{ boxShadow: "var(--glow-accent)" }}>
+    <Card
+      className="bg-bg-surface border-l-4 border-accent"
+      style={{ boxShadow: "var(--glow-accent)" }}
+    >
       <CardHeader>
         <p className="text-[12px] uppercase tracking-wide text-text-muted">
           Concept {positionIndex + 1} of {trackTotal} in {track?.title ?? ""}
@@ -46,7 +56,9 @@ export function ContinueCard({ concept, tracks }: ContinueCardProps) {
         <h2 className="text-[24px] leading-[32px] font-semibold">{concept.title}</h2>
       </CardHeader>
       <CardContent>
-        <p className="text-text-muted mb-4">{concept.lessonMarkdown ? concept.lessonMarkdown.slice(0, 80) : ""}</p>
+        <p className="text-text-muted mb-4">
+          {concept.lessonMarkdown ? concept.lessonMarkdown.slice(0, 80) : ""}
+        </p>
         <div className="flex gap-3">
           <Button asChild>
             <Link to={`/concepts/${concept.id}`}>

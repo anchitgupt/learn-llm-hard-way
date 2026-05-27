@@ -36,8 +36,10 @@ describe("Dashboard", () => {
       </MemoryRouter>
     );
     await waitFor(() =>
-      expect(screen.getByRole("heading", { name: /Bytes & Unicode/i })).toBeInTheDocument()
+      expect(screen.getByRole("heading", { name: /Welcome back/i })).toBeInTheDocument()
     );
+    expect(screen.getByText(/0 of 1 concepts complete/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Bytes & Unicode/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Missed topics/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Recent artifacts/i })).toBeInTheDocument();
     expect(screen.getAllByText(/Data and Tokens/i).length).toBeGreaterThan(0);
