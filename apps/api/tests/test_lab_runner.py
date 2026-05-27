@@ -43,6 +43,18 @@ def test_run_lab_writes_allowlisted_mini_training_artifact(tmp_path) -> None:
     assert artifact["generation"]["generatedText"]
 
 
+def test_run_lab_writes_allowlisted_chat_mechanics_artifact(tmp_path) -> None:
+    result = run_lab("chat-mechanics-demo", tmp_path)
+
+    artifact_path = tmp_path / result["artifactPath"]
+    artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+    assert result["labId"] == "chat-mechanics-demo"
+    assert result["conceptId"] == "message-formatting"
+    assert result["status"] == "passed"
+    assert artifact["trace"]["finalReply"] == "437"
+    assert artifact["preference"]["winner"]["id"] == "verified"
+
+
 def test_run_lab_rejects_unknown_lab(tmp_path) -> None:
     with pytest.raises(KeyError, match="Unknown lab"):
         run_lab("rm-rf-demo", tmp_path)

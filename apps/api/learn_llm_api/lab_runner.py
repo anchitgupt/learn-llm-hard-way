@@ -5,6 +5,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from llm_from_scratch.experiments.chat_demo import write_chat_demo_artifact
 from llm_from_scratch.experiments.math_demo import write_math_demo_artifact
 from llm_from_scratch.experiments.mini_training_demo import write_mini_training_demo_artifact
 from llm_from_scratch.experiments.nn_demo import write_nn_demo_artifact
@@ -49,6 +50,7 @@ LABS: dict[str, tuple[str, LabWriter]] = {
         "factuality-failures",
         lambda root: write_mini_training_demo_artifact(root, "factuality-failure-demo"),
     ),
+    "chat-mechanics-demo": ("message-formatting", write_chat_demo_artifact),
 }
 
 
