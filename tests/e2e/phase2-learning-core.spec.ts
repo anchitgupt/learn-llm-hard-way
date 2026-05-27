@@ -1,17 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 test("learner runs a math lab and sends low-confidence checkpoint to missed topics", async ({ page }) => {
-  await page.goto("/");
+  // App-shell sub-project: direct route nav replaces old-dashboard click-through.
+  await page.goto("/concepts/vectors");
 
-  await expect(page.getByRole("heading", { name: "Learn LLM The Hard Way" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Concept Map" })).toBeVisible();
-
-  await page.getByRole("region", { name: "Concept map" }).getByRole("button", { name: "Vectors" }).click();
   await expect(page.getByRole("heading", { name: "Vectors" })).toBeVisible();
 
   await page.getByRole("tab", { name: "Lab" }).click();
   await page.getByRole("button", { name: "Run lab" }).click();
-  await expect(page.getByRole("status")).toContainText("artifacts/labs/math-vector-demo.json");
+  await expect(page.getByText("artifacts/labs/math-vector-demo.json")).toBeVisible();
 
   await page.getByRole("tab", { name: "Checkpoint" }).click();
   await page.getByLabel("Checkpoint answer").fill("numbers");

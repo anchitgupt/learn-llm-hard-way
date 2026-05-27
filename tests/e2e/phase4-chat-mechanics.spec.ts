@@ -1,18 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 test("learner sends a traced chat message with tool verification and memory", async ({ page }) => {
-  await page.goto("/");
+  // App-shell sub-project: direct route nav replaces old-dashboard click-through.
+  await page.goto("/concepts/message-formatting");
 
-  await expect(page.getByRole("heading", { name: "Learn LLM The Hard Way" })).toBeVisible();
-  await page
-    .getByRole("region", { name: "Concept map" })
-    .getByRole("button", { name: "Message Formatting" })
-    .click();
   await expect(page.getByRole("heading", { name: "Message Formatting" })).toBeVisible();
 
   await page.getByRole("tab", { name: "Lab" }).click();
   await page.getByRole("button", { name: "Run lab" }).click();
-  await expect(page.getByRole("status")).toContainText("artifacts/labs/chat-mechanics-demo.json");
+  await expect(page.getByText("artifacts/labs/chat-mechanics-demo.json")).toBeVisible();
 
   await expect(page.getByRole("heading", { name: "Chat Playground" })).toBeVisible();
   await page.getByLabel("Memory to save").fill("Learning attention first.");

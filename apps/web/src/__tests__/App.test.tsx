@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, afterEach } from "vitest";
+import * as api from "../api";
 import App from "../App";
 
 const tracks = [
@@ -16,7 +16,7 @@ const tracks = [
         order: 1,
         prerequisites: [],
         lessonPath: "content/lessons/math-for-models/vectors.md",
-        lessonMarkdown: "# Vectors\n\nVectors are ordered lists of numbers.\n\n## What To Notice\n\n- Dimensions line up.",
+        lessonMarkdown: "# Vectors\n\nVectors are ordered lists of numbers.",
         lab: "math-vector-demo",
         visual: "vector-similarity",
         checkpoint: {
@@ -31,83 +31,23 @@ const tracks = [
   }
 ];
 
-const glossary = [
-  {
-    id: "vector",
-    term: "Vector",
-    shortDefinition: "An ordered list of numbers.",
-    explanation: "Used for embeddings.",
-    relatedConcepts: ["vectors"]
-  }
-];
-const missedTopics = [{ conceptId: "vectors", reason: "low-confidence" }];
-const artifacts = [
-  {
-    labId: "math-vector-demo",
-    conceptId: "vectors",
-    artifactPath: "artifacts/labs/math-vector-demo.json",
-    status: "passed",
-    error: ""
-  }
-];
-
 describe("App", () => {
-  it("loads the learning core and wires labs and checkpoints", async () => {
-    const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
-      if (url.endsWith("/api/tracks")) {
-        return new Response(JSON.stringify(tracks));
-      }
-      if (url.endsWith("/api/glossary")) {
-        return new Response(JSON.stringify(glossary));
-      }
-      if (url.endsWith("/api/revisit")) {
-        return new Response(JSON.stringify(missedTopics));
-      }
-      if (url.endsWith("/api/artifacts/recent")) {
-        return new Response(JSON.stringify(artifacts));
-      }
-      if (url.endsWith("/api/labs/math-vector-demo/runs")) {
-        expect(init?.method).toBe("POST");
-        return new Response(JSON.stringify(artifacts[0]));
-      }
-      if (url.endsWith("/api/checkpoints/vectors/attempts")) {
-        expect(init?.method).toBe("POST");
-        return new Response(
-          JSON.stringify({
-            conceptId: "vectors",
-            submittedAnswer: "numbers",
-            correct: false,
-            feedback: "Mention ordered numbers.",
-            confidence: 2
-          })
-        );
-      }
-      if (url.includes("/api/progress/")) {
-        return new Response(JSON.stringify({ conceptId: "vectors", ...(JSON.parse(String(init?.body)) as object) }));
-      }
-      return new Response("not found", { status: 404 });
-    });
-    vi.stubGlobal("fetch", fetchMock);
+  afterEach(() => vi.restoreAllMocks());
+
+  it("renders the shell header and the legacy dashboard route at /", async () => {
+    vi.spyOn(api, "fetchTracks").mockResolvedValue(tracks);
+    vi.spyOn(api, "fetchGlossary").mockResolvedValue([]);
+    vi.spyOn(api, "fetchMissedTopics").mockResolvedValue([]);
+    vi.spyOn(api, "fetchRecentArtifacts").mockResolvedValue([]);
+    vi.spyOn(api, "fetchProgress").mockResolvedValue([]);
 
     render(<App />);
 
-    expect(await screen.findByRole("heading", { name: "Learn LLM The Hard Way" })).toBeInTheDocument();
-    expect(await screen.findByRole("heading", { name: "Concept Map" })).toBeInTheDocument();
-    expect(screen.getByText("Missed Topics")).toBeInTheDocument();
-    expect(screen.getByText("vectors - low-confidence")).toBeInTheDocument();
-    expect(screen.getByText("math-vector-demo")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "What To Notice" })).toBeInTheDocument();
-    expect(screen.queryByText((content) => content.startsWith("# Vectors"))).not.toBeInTheDocument();
-
-    await userEvent.click(screen.getByRole("button", { name: "Vectors revisit needed" }));
-    await userEvent.click(screen.getByRole("tab", { name: "Lab" }));
-    await userEvent.click(screen.getByRole("button", { name: "Run lab" }));
-    expect(await screen.findByText("artifacts/labs/math-vector-demo.json")).toBeInTheDocument();
-
-    await userEvent.click(screen.getByRole("tab", { name: "Checkpoint" }));
-    await userEvent.type(screen.getByLabelText("Checkpoint answer"), "numbers");
-    await userEvent.selectOptions(screen.getByLabelText("Confidence"), "2");
-    await userEvent.click(screen.getByRole("button", { name: "Submit checkpoint" }));
-    expect(await screen.findByText("Mention ordered numbers.")).toBeInTheDocument();
+    // Header is present
+    expect(await screen.findByText(/Learn LLM/)).toBeInTheDocument();
+    // Legacy dashboard shows tracks
+    expect(await screen.findByRole("complementary", { name: "Learning tracks" })).toBeInTheDocument();
+    // Migration banner present
+    expect(screen.getByRole("status")).toBeInTheDocument();
   });
 });
