@@ -14,8 +14,10 @@ describe("SideNav", () => {
         <SideNav />
       </MemoryRouter>
     );
-    for (const label of ["Today", "Tracks", "Concept Map", "Concept", "Chat", "Glossary", "Artifacts", "Failures"]) {
-      expect(screen.getByRole("link", { name: new RegExp(label, "i") })).toBeInTheDocument();
+    // "Concept" (singular) is intentionally absent: Task 4 adds a dynamic
+    // entry tied to continueConcept; for now only the 7 static entries exist.
+    for (const label of ["Today", "Tracks", "Concept Map", "Chat", "Glossary", "Artifacts", "Failures"]) {
+      expect(screen.getByRole("link", { name: new RegExp(`^${label}$`, "i") })).toBeInTheDocument();
     }
   });
 

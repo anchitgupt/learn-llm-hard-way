@@ -31,6 +31,8 @@ beforeEach(() => {
   vi.spyOn(api, "fetchTracks").mockResolvedValue([track]);
   vi.spyOn(api, "fetchGlossary").mockResolvedValue([]);
   vi.spyOn(api, "fetchRecentArtifacts").mockResolvedValue([]);
+  // Always mock fetchProgress so a future test that forgets it doesn't hit the network.
+  vi.spyOn(api, "fetchProgress").mockResolvedValue([]);
 });
 
 afterEach(() => vi.restoreAllMocks());

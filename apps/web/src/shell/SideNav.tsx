@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  CalendarDays, LayoutGrid, Network, BookOpen, MessageSquare, Library,
+  CalendarDays, LayoutGrid, Network, MessageSquare, Library,
   Boxes, AlertOctagon, PanelLeftClose, PanelLeftOpen
 } from "lucide-react";
 import { cn } from "@/lib/cn";

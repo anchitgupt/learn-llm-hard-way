@@ -29,4 +29,23 @@ describe("AppShell", () => {
     expect(screen.getByText(/Learn LLM/)).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: /Primary/i })).toBeInTheDocument();
   });
+
+  it("shows an error banner with a Retry button when the initial fetch fails", async () => {
+    vi.spyOn(api, "fetchTracks").mockRejectedValueOnce(new Error("network down"));
+
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <Routes>
+          <Route element={<AppShell />}>
+            <Route index element={<p>home</p>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent(/Couldn't load course data/i);
+    expect(alert).toHaveTextContent(/network down/);
+    expect(screen.getByRole("button", { name: /Retry/i })).toBeInTheDocument();
+  });
 });
