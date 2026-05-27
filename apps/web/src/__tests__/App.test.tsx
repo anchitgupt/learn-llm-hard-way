@@ -34,7 +34,7 @@ const tracks = [
 describe("App", () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it("renders the shell header and the legacy dashboard route at /", async () => {
+  it("renders the shell header and the new dashboard route at /", async () => {
     vi.spyOn(api, "fetchTracks").mockResolvedValue(tracks);
     vi.spyOn(api, "fetchGlossary").mockResolvedValue([]);
     vi.spyOn(api, "fetchMissedTopics").mockResolvedValue([]);
@@ -45,9 +45,9 @@ describe("App", () => {
 
     // Header is present
     expect(await screen.findByText(/Learn LLM/)).toBeInTheDocument();
-    // Legacy dashboard shows tracks
-    expect(await screen.findByRole("complementary", { name: "Learning tracks" })).toBeInTheDocument();
-    // Migration banner present
-    expect(screen.getByRole("status")).toBeInTheDocument();
+    // New dashboard shows the continue card with concept title
+    expect(await screen.findByRole("heading", { name: /Vectors/i })).toBeInTheDocument();
+    // New dashboard shows missed topics panel
+    expect(screen.getByRole("heading", { name: /Missed topics/i })).toBeInTheDocument();
   });
 });

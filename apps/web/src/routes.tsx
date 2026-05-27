@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { AppShell } from "./shell/AppShell";
-import { LegacyDashboardRoute } from "./screens/LegacyDashboardRoute";
+import { Dashboard } from "./screens/Dashboard";
 import {
   ArtifactsRoute, ChatRoute, ConceptMapRoute, ConceptRoute,
   FailuresRoute, GlossaryRoute, TracksRoute
@@ -10,7 +10,7 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route index element={<LegacyDashboardRoute />} />
+        <Route index element={<Dashboard />} />
         <Route path="tracks"       element={<TracksRoute />} />
         <Route path="concepts"     element={<ConceptMapRoute />} />
         <Route path="concepts/:id" element={<ConceptRoute />} />
