@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  CalendarDays, LayoutGrid, Network, MessageSquare, Library,
+  CalendarDays, LayoutGrid, Network, BookOpen, MessageSquare, Library,
   Boxes, AlertOctagon, PanelLeftClose, PanelLeftOpen
 } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { useOptionalCourseData } from "./CourseDataProvider";
 
 const STORAGE_KEY = "learn-llm.sidebar.collapsed";
 
@@ -26,6 +27,9 @@ const ENTRIES: NavEntry[] = [
 ];
 
 export function SideNav() {
+  const data = useOptionalCourseData();
+  const continueConceptId = data?.continueConcept?.id ?? null;
+
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     return window.localStorage.getItem(STORAGE_KEY) === "true";
@@ -51,25 +55,53 @@ export function SideNav() {
       )}
     >
       <ul className="flex flex-col gap-1 p-2">
-        {ENTRIES.map(({ to, label, icon: Icon, end }) => (
-          <li key={to}>
-            <NavLink
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2",
-                  "text-[14px] leading-[20px] text-text-muted hover:text-text-primary hover:bg-bg-elevated",
-                  "border-l border-transparent",
-                  isActive && "bg-accent-quiet text-accent border-accent"
-                )
-              }
-            >
-              <Icon aria-hidden className="h-4 w-4 shrink-0" />
-              {collapsed ? null : <span>{label}</span>}
-            </NavLink>
-          </li>
-        ))}
+        {ENTRIES.map(({ to, label, icon: Icon, end }) => {
+          const row = (
+            <li key={to}>
+              <NavLink
+                to={to}
+                end={end}
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center gap-3 rounded-md px-3 py-2",
+                    "text-[14px] leading-[20px] text-text-muted hover:text-text-primary hover:bg-bg-elevated",
+                    "border-l border-transparent",
+                    isActive && "bg-accent-quiet text-accent border-accent"
+                  )
+                }
+              >
+                <Icon aria-hidden className="h-4 w-4 shrink-0" />
+                {collapsed ? null : <span>{label}</span>}
+              </NavLink>
+            </li>
+          );
+          // After "Concept Map", inject the dynamic Concept row that points at
+          // the learner's current/next concept (sourced from CourseDataProvider).
+          if (to === "/concepts" && continueConceptId) {
+            return (
+              <Fragment key="concepts+dynamic">
+                {row}
+                <li>
+                  <NavLink
+                    to={`/concepts/${continueConceptId}`}
+                    className={({ isActive }) =>
+                      cn(
+                        "flex items-center gap-3 rounded-md px-3 py-2",
+                        "text-[14px] leading-[20px] text-text-muted hover:text-text-primary hover:bg-bg-elevated",
+                        "border-l border-transparent",
+                        isActive && "bg-accent-quiet text-accent border-accent"
+                      )
+                    }
+                  >
+                    <BookOpen aria-hidden className="h-4 w-4 shrink-0" />
+                    {collapsed ? null : <span>Concept</span>}
+                  </NavLink>
+                </li>
+              </Fragment>
+            );
+          }
+          return row;
+        })}
       </ul>
 
       <button

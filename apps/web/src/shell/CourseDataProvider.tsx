@@ -112,3 +112,12 @@ export function useCourseData(): CourseData {
   }
   return value;
 }
+
+/**
+ * Soft variant: returns null when used outside a `<CourseDataProvider>`
+ * instead of throwing. Use for components that may render standalone in
+ * tests or that want to degrade gracefully when no data is available.
+ */
+export function useOptionalCourseData(): CourseData | null {
+  return useContext(CourseDataContext);
+}
