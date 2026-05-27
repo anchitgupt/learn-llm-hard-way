@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { AppShell } from "./shell/AppShell";
 import { Dashboard } from "./screens/Dashboard";
+import { VizShowcase } from "./screens/VizShowcase";
 import {
   ArtifactsRoute, ChatRoute, ConceptMapRoute, ConceptRoute,
   FailuresRoute, GlossaryRoute, TracksRoute
@@ -18,6 +19,7 @@ export function AppRoutes() {
         <Route path="glossary"     element={<GlossaryRoute />} />
         <Route path="artifacts"    element={<ArtifactsRoute />} />
         <Route path="failures"     element={<FailuresRoute />} />
+        <Route path="viz"          element={<VizShowcase />} />
       </Route>
     </Routes>
   );

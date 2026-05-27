@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   CalendarDays, LayoutGrid, Network, BookOpen, MessageSquare, Library,
-  Boxes, AlertOctagon, PanelLeftClose, PanelLeftOpen
+  Boxes, AlertOctagon, Sparkles, PanelLeftClose, PanelLeftOpen
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useOptionalCourseData } from "./CourseDataProvider";
@@ -23,7 +23,8 @@ const ENTRIES: NavEntry[] = [
   { to: "/chat",      label: "Chat",        icon: MessageSquare },
   { to: "/glossary",  label: "Glossary",    icon: Library },
   { to: "/artifacts", label: "Artifacts",   icon: Boxes },
-  { to: "/failures",  label: "Failures",    icon: AlertOctagon }
+  { to: "/failures",  label: "Failures",    icon: AlertOctagon },
+  { to: "/viz",       label: "Viz",         icon: Sparkles }
 ];
 
 export function SideNav() {

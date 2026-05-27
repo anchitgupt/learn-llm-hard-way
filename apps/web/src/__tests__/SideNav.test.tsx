@@ -20,7 +20,7 @@ describe("SideNav (standalone — no provider)", () => {
     // The dynamic "Concept" entry only renders when a CourseDataProvider
     // is mounted and a continueConcept is available; the SideNav itself
     // degrades gracefully outside a provider.
-    for (const label of ["Today", "Tracks", "Concept Map", "Chat", "Glossary", "Artifacts", "Failures"]) {
+    for (const label of ["Today", "Tracks", "Concept Map", "Chat", "Glossary", "Artifacts", "Failures", "Viz"]) {
       expect(screen.getByRole("link", { name: new RegExp(`^${label}$`, "i") })).toBeInTheDocument();
     }
     // Make sure the dynamic Concept entry is NOT rendered standalone.
