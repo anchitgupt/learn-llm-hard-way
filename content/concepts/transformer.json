@@ -45,7 +45,7 @@
       "prerequisites": ["masked-self-attention"],
       "lessonPath": "content/lessons/transformer/positional-encoding.md",
       "lab": "positional-encoding-demo",
-      "visual": "attention-map",
+      "visual": "embedding-space",
       "checkpoint": {
         "question": "Why do transformer inputs need positional information?",
         "answer": "Attention compares token vectors, so positional information tells the model where each token appears in the sequence.",
@@ -77,7 +77,7 @@
       "prerequisites": ["transformer-block", "byte-pair-encoding"],
       "lessonPath": "content/lessons/transformer/dataset-packing.md",
       "lab": "mini-training-demo",
-      "visual": "attention-map",
+      "visual": null,
       "checkpoint": {
         "question": "What target does a next-token training example use?",
         "answer": "Each input token sequence is paired with the following token or shifted target sequence that the model should predict.",
@@ -109,7 +109,7 @@
       "prerequisites": ["next-token-training"],
       "lessonPath": "content/lessons/transformer/sampling-generation.md",
       "lab": "sampling-generation-demo",
-      "visual": "attention-map",
+      "visual": "sampling-plot",
       "checkpoint": {
         "question": "How does temperature affect sampling from logits?",
         "answer": "Lower temperature makes the distribution sharper and more deterministic; higher temperature spreads probability across more tokens.",
@@ -125,7 +125,7 @@
       "prerequisites": ["sampling-generation"],
       "lessonPath": "content/lessons/transformer/base-vs-assistant.md",
       "lab": "base-vs-assistant-demo",
-      "visual": "attention-map",
+      "visual": null,
       "checkpoint": {
         "question": "Why is a base model not automatically a helpful chat assistant?",
         "answer": "A base model learns to continue documents, while an assistant is post-trained to follow conversational roles and helpful response patterns.",
@@ -141,7 +141,7 @@
       "prerequisites": ["base-vs-assistant"],
       "lessonPath": "content/lessons/transformer/factuality-failures.md",
       "lab": "factuality-failure-demo",
-      "visual": "attention-map",
+      "visual": null,
       "checkpoint": {
         "question": "Why can a language model produce a plausible but false answer?",
         "answer": "The model predicts likely text from patterns and context; it does not directly verify truth unless tools, retrieval, or reliable context are added.",

@@ -13,7 +13,7 @@
       "prerequisites": ["byte-pair-encoding"],
       "lessonPath": "content/lessons/math-for-models/vectors.md",
       "lab": "math-vector-demo",
-      "visual": "sampling-plot",
+      "visual": "embedding-space",
       "checkpoint": {
         "question": "What does a vector represent in the simplest model-building sense?",
         "answer": "A vector is an ordered list of numbers used to represent features, embeddings, or activations.",
@@ -29,7 +29,7 @@
       "prerequisites": ["vectors"],
       "lessonPath": "content/lessons/math-for-models/dot-products.md",
       "lab": "math-vector-demo",
-      "visual": "sampling-plot",
+      "visual": "embedding-space",
       "checkpoint": {
         "question": "Why do dot products appear in similarity and attention calculations?",
         "answer": "They add element-by-element aligned contributions between two vectors into one score.",
