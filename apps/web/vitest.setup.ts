@@ -17,6 +17,14 @@ if (typeof window !== "undefined" && !window.matchMedia) {
   });
 }
 
+if (typeof globalThis.ResizeObserver === "undefined") {
+  globalThis.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof globalThis.ResizeObserver;
+}
+
 // Node 25 exposes a built-in localStorage that lacks .clear() / .removeItem().
 // Replace it with a standard in-memory implementation so tests can call
 // window.localStorage.clear() reliably.
