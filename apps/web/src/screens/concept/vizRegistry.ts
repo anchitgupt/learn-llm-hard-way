@@ -24,11 +24,11 @@ const registry: Record<ConceptVizKey, RegistryEntry> = {
   "chat-playground": { Component: ChatPlayground, hint: "Send a message and inspect every step in the chat trace." }
 };
 
-// Migration-window aliases. Removed in Task 5 once every concept JSON
-// has been updated to the canonical keys above.
-const aliases: Record<string, ConceptVizKey> = {
-  "token-flow-svg": "token-flow"
-};
+// Migration aliases retired at the end of sub-project 4 once every
+// concept JSON was updated to canonical keys. The map is kept (empty)
+// so future migrations can re-use the alias-resolution mechanism
+// without changing resolveViz's contract.
+const aliases: Record<string, ConceptVizKey> = {};
 
 export function resolveViz(key: string | null | undefined): RegistryEntry | null {
   if (!key) return null;

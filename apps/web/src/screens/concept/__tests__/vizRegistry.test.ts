@@ -30,10 +30,4 @@ describe("vizRegistry", () => {
     expect(resolveViz("nope")).toBeNull();
   });
 
-  it("treats 'token-flow-svg' as an alias for 'token-flow' during the migration", () => {
-    const canonical = resolveViz("token-flow");
-    const alias = resolveViz("token-flow-svg");
-    expect(alias).not.toBeNull();
-    expect(alias?.Component).toBe(canonical?.Component);
-  });
 });
