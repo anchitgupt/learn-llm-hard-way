@@ -1,9 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   fetchGlossary,
+  fetchChatFailures,
+  fetchChatMemory,
+  fetchChatPreference,
   fetchRecentArtifacts,
   fetchTracks,
   runLab,
+  runChatDemo,
+  saveChatMemory,
   saveProgress,
   submitCheckpoint
 } from "../api";
@@ -58,5 +63,43 @@ describe("api client", () => {
     });
     await expect(runLab("math-vector-demo")).resolves.toMatchObject({ labId: "math-vector-demo" });
     await expect(fetchRecentArtifacts()).resolves.toEqual([{ labId: "math-vector-demo" }]);
+  });
+
+  it("calls phase four chat endpoints", async () => {
+    const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/api/chat/demo")) {
+        expect(init?.method).toBe("POST");
+        return new Response(JSON.stringify({ finalReply: "437" }));
+      }
+      if (url.endsWith("/api/chat/failures")) {
+        return new Response(JSON.stringify([{ id: "arithmetic-guess" }]));
+      }
+      if (url.endsWith("/api/chat/preference")) {
+        return new Response(JSON.stringify({ winner: { id: "verified" } }));
+      }
+      if (url.endsWith("/api/chat/memory") && init?.method === "POST") {
+        return new Response(JSON.stringify({ id: 1, content: "Learn attention." }));
+      }
+      if (url.endsWith("/api/chat/memory")) {
+        return new Response(JSON.stringify([{ id: 1, content: "Learn attention." }]));
+      }
+      return new Response("not found", { status: 404 });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      runChatDemo({
+        message: "What is 19 * 23?",
+        mode: "assistant",
+        answerStyle: "short",
+        toolMode: "verified",
+        memoryMode: "saved",
+        contextSize: 96
+      })
+    ).resolves.toMatchObject({ finalReply: "437" });
+    await expect(fetchChatFailures()).resolves.toEqual([{ id: "arithmetic-guess" }]);
+    await expect(fetchChatPreference()).resolves.toMatchObject({ winner: { id: "verified" } });
+    await expect(saveChatMemory("Learn attention.")).resolves.toMatchObject({ content: "Learn attention." });
+    await expect(fetchChatMemory()).resolves.toEqual([{ id: 1, content: "Learn attention." }]);
   });
 });

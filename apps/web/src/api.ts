@@ -1,9 +1,14 @@
 import type {
   CheckpointAttempt,
   CheckpointAttemptInput,
+  ChatDemoInput,
+  ChatMemory,
+  ChatTrace,
+  FailureCase,
   GlossaryEntry,
   LabRunArtifact,
   MissedTopic,
+  PreferenceSimulation,
   ProgressInput,
   ProgressRecord,
   Track
@@ -67,4 +72,36 @@ export async function fetchRecentArtifacts(): Promise<LabRunArtifact[]> {
 
 export async function fetchMissedTopics(): Promise<MissedTopic[]> {
   return readJson<MissedTopic[]>(await fetch(`${API_BASE}/api/revisit`));
+}
+
+export async function runChatDemo(input: ChatDemoInput): Promise<ChatTrace> {
+  return readJson<ChatTrace>(
+    await fetch(`${API_BASE}/api/chat/demo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input)
+    })
+  );
+}
+
+export async function fetchChatFailures(): Promise<FailureCase[]> {
+  return readJson<FailureCase[]>(await fetch(`${API_BASE}/api/chat/failures`));
+}
+
+export async function fetchChatPreference(): Promise<PreferenceSimulation> {
+  return readJson<PreferenceSimulation>(await fetch(`${API_BASE}/api/chat/preference`));
+}
+
+export async function fetchChatMemory(): Promise<ChatMemory[]> {
+  return readJson<ChatMemory[]>(await fetch(`${API_BASE}/api/chat/memory`));
+}
+
+export async function saveChatMemory(content: string): Promise<ChatMemory> {
+  return readJson<ChatMemory>(
+    await fetch(`${API_BASE}/api/chat/memory`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content })
+    })
+  );
 }

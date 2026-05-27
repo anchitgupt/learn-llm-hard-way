@@ -75,3 +75,55 @@ export interface MissedTopic {
   conceptId: string;
   reason: string;
 }
+
+export interface ChatDemoInput {
+  message: string;
+  mode: "base" | "assistant";
+  answerStyle: "short" | "scratch";
+  toolMode: "none" | "verified";
+  memoryMode: "context" | "saved";
+  contextSize: number;
+}
+
+export interface ChatTrace {
+  messages: Array<{ role: string; content: string }>;
+  formattedPrompt: string;
+  tokenTrace: Record<string, unknown>;
+  contextTrace: Record<string, unknown>;
+  samplingTrace: Array<Record<string, unknown>>;
+  streamChunks: string[];
+  toolTrace: Record<string, unknown> | null;
+  memoryTrace: Record<string, unknown>;
+  finalReply: string;
+}
+
+export interface ChatMemory {
+  id: number;
+  content: string;
+  createdAt: string;
+}
+
+export interface FailureCase {
+  id: string;
+  category: string;
+  prompt: string;
+  modelOnlyOutput: string;
+  explanation: string;
+  betterStrategy: string;
+  relatedConcepts: string[];
+}
+
+export interface PreferenceCandidate {
+  id: string;
+  response: string;
+  traits: string[];
+}
+
+export interface PreferenceSimulation {
+  prompt: string;
+  candidates: PreferenceCandidate[];
+  rewardScores: Record<string, number>;
+  ranking: string[];
+  winner: PreferenceCandidate;
+  explanation: string;
+}

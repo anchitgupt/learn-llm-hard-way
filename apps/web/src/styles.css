@@ -10,7 +10,9 @@ body {
 }
 
 button,
-textarea {
+textarea,
+select,
+input {
   font: inherit;
 }
 
@@ -169,7 +171,13 @@ h2 {
 
 .checkpoint-panel,
 .lab-panel,
-.visual-frame {
+.visual-frame,
+.chat-playground,
+.trace-panel,
+.failure-museum,
+.preference-panel,
+.memory-panel,
+.assistant-output {
   background: #ffffff;
   border-radius: 8px;
   box-shadow: 0 12px 30px rgb(28 40 54 / 10%);
@@ -208,7 +216,8 @@ h2 {
   gap: 12px;
 }
 
-.checkpoint-panel textarea {
+.checkpoint-panel textarea,
+.chat-controls textarea {
   display: block;
   min-height: 88px;
   width: 100%;
@@ -218,13 +227,43 @@ h2 {
   padding: 10px;
 }
 
-.checkpoint-panel select {
+.checkpoint-panel select,
+.chat-controls select,
+.memory-panel input {
   display: block;
   margin-top: 8px;
   min-height: 40px;
   border: 1px solid #cbd5d8;
   border-radius: 8px;
   padding: 8px 10px;
+}
+
+.chat-playground,
+.chat-controls,
+.trace-panel,
+.failure-grid,
+.memory-panel,
+.assistant-output,
+.preference-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.trace-panel pre {
+  overflow-x: auto;
+  border-radius: 6px;
+  background: #f2f6f5;
+  padding: 10px;
+}
+
+.failure-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.failure-card {
+  border: 1px solid #dbe4e2;
+  border-radius: 8px;
+  padding: 14px;
 }
 
 .lesson-content {

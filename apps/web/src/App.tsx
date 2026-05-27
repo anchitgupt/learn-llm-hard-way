@@ -10,7 +10,21 @@ import {
 import { ConceptWorkspace } from "./components/ConceptWorkspace";
 import { ConceptMap } from "./components/ConceptMap";
 import { Dashboard } from "./components/Dashboard";
+import { ChatPlayground } from "./components/ChatPlayground";
 import type { Concept, GlossaryEntry, LabRunArtifact, MissedTopic, Track } from "./types";
+
+const chatConceptIds = new Set([
+  "message-formatting",
+  "tokenization-trace",
+  "context-window-trace",
+  "sampling-streaming",
+  "base-vs-assistant-chat",
+  "scratch-work",
+  "tool-verification",
+  "chat-memory",
+  "failure-museum",
+  "preference-rlhf"
+]);
 
 export default function App() {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -86,12 +100,15 @@ export default function App() {
             onSelectConcept={setSelectedConcept}
           />
           {selectedConcept ? (
-            <ConceptWorkspace
-              concept={selectedConcept}
-              glossaryEntries={glossaryEntries}
-              onSubmitCheckpoint={handleSubmitCheckpoint}
-              onRunLab={handleRunLab}
-            />
+            <>
+              <ConceptWorkspace
+                concept={selectedConcept}
+                glossaryEntries={glossaryEntries}
+                onSubmitCheckpoint={handleSubmitCheckpoint}
+                onRunLab={handleRunLab}
+              />
+              {chatConceptIds.has(selectedConcept.id) ? <ChatPlayground /> : null}
+            </>
           ) : (
             <p>Loading curriculum...</p>
           )}
