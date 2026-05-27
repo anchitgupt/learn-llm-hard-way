@@ -7,15 +7,28 @@ export interface CodeBlockProps {
   children: ReactNode;
   language?: string;
   copyable?: boolean;
+  /**
+   * Raw text to copy when `children` is non-string (e.g. syntax-highlighted
+   * JSX from a highlighter library). When `children` is a plain string this
+   * is unnecessary. When neither a string `children` nor `rawContent` is
+   * present, the copy button is hidden — copying is impossible.
+   */
+  rawContent?: string;
   className?: string;
 }
 
-export function CodeBlock({ children, language, copyable = false, className }: CodeBlockProps) {
+export function CodeBlock({
+  children,
+  language,
+  copyable = false,
+  rawContent,
+  className
+}: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
-  const text = typeof children === "string" ? children : "";
+  const text = rawContent ?? (typeof children === "string" ? children : "");
+  const canCopy = copyable && text.length > 0;
 
   async function onCopy() {
-    if (!text) return;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -36,18 +49,21 @@ export function CodeBlock({ children, language, copyable = false, className }: C
       >
         <code>{children}</code>
       </pre>
-      {copyable && (
+      {canCopy && (
         <Button
           type="button"
           variant="ghost"
           size="sm"
           onClick={onCopy}
-          aria-label="Copy"
+          aria-label={copied ? "Copied" : "Copy"}
           className="absolute top-2 right-2 h-7 w-7 p-0 text-text-muted hover:text-text-primary"
         >
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         </Button>
       )}
+      <span className="sr-only" aria-live="polite">
+        {copied ? "Copied to clipboard" : ""}
+      </span>
     </div>
   );
 }

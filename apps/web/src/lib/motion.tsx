@@ -47,12 +47,18 @@ export function Reveal({ children, ...rest }: RevealProps) {
   );
 }
 
+/**
+ * Stagger orchestrates child motion components. The container itself has
+ * no `hidden` state; children must carry their own variants (e.g. wrap
+ * each child in `<Reveal>` or use `fadeIn`/`panelEnter`). Bare `<div>`
+ * children will not animate.
+ */
 export function Stagger({ children, ...rest }: RevealProps) {
   if (prefersReducedMotion()) {
     return <div {...rest}>{children}</div>;
   }
   return (
-    <motion.div variants={listStagger} initial="hidden" animate="show" {...rest}>
+    <motion.div variants={listStagger} animate="show" {...rest}>
       {children}
     </motion.div>
   );
