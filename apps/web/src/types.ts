@@ -47,6 +47,7 @@ export interface ProgressRecord {
   confidence: number;
   note: string;
   revisit: boolean;
+  lastOpenedAt?: string | null;
 }
 
 export interface CheckpointAttemptInput {

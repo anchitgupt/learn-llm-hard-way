@@ -22,6 +22,7 @@ def test_progress_store_saves_note_and_confidence(tmp_path):
         "confidence": 2,
         "note": "Need to revisit vocab ordering.",
         "revisit": False,
+        "lastOpenedAt": None,
     }
 
 
@@ -40,6 +41,7 @@ def test_progress_store_returns_revisit_queue(tmp_path):
             "confidence": 1,
             "note": "Pair merges",
             "revisit": True,
+            "lastOpenedAt": None,
         }
     ]
 
@@ -100,3 +102,35 @@ def test_saves_and_lists_chat_memory(tmp_path: Path) -> None:
     assert saved["content"] == "I am learning attention before chat."
     assert saved["id"] == memories[0]["id"]
     assert memories[0]["content"] == "I am learning attention before chat."
+
+
+def test_touch_concept_records_last_opened_at(tmp_path):
+    from learn_llm_api.progress_store import ProgressStore
+
+    store = ProgressStore(tmp_path / "progress.sqlite")
+    store.initialize()
+    store.touch_concept("bytes-unicode")
+    rows = store.list_progress()
+    assert len(rows) == 1
+    assert rows[0]["conceptId"] == "bytes-unicode"
+    assert rows[0]["lastOpenedAt"] is not None
+    assert "T" in rows[0]["lastOpenedAt"]  # ISO 8601 with date+time
+
+
+def test_touch_concept_updates_existing_progress_row(tmp_path):
+    from learn_llm_api.progress_store import ProgressStore
+
+    store = ProgressStore(tmp_path / "progress.sqlite")
+    store.initialize()
+    store.save_progress(
+        concept_id="bytes-unicode",
+        status="learning",
+        confidence=3,
+        note="",
+        revisit=False,
+    )
+    store.touch_concept("bytes-unicode")
+    rows = store.list_progress()
+    assert len(rows) == 1
+    assert rows[0]["status"] == "learning"
+    assert rows[0]["lastOpenedAt"] is not None

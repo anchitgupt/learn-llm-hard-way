@@ -142,6 +142,20 @@ def test_phase_two_endpoints_return_glossary_checkpoint_lab_and_artifacts(tmp_pa
     assert revisit_response.json()[0]["conceptId"] == "bytes-unicode"
 
 
+def test_post_progress_touch_returns_204_and_progress_row(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+    from learn_llm_api.app import create_app
+
+    monkeypatch.setenv("LEARN_LLM_DATABASE_PATH", str(tmp_path / "progress.sqlite"))
+    client = TestClient(create_app(database_path=tmp_path / "progress.sqlite"))
+
+    response = client.post("/api/progress/bytes-unicode/touch")
+    assert response.status_code == 204
+
+    progress = client.get("/api/progress").json()
+    assert any(row["conceptId"] == "bytes-unicode" and row["lastOpenedAt"] for row in progress)
+
+
 def test_chat_endpoints_return_trace_failures_preference_and_memory(tmp_path: Path) -> None:
     app = create_app(repo_root=Path("."), database_path=tmp_path / "progress.sqlite")
     client = TestClient(app)

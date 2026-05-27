@@ -20,7 +20,8 @@ class ProgressStore:
                   confidence INTEGER NOT NULL,
                   note TEXT NOT NULL,
                   revisit INTEGER NOT NULL CHECK (revisit IN (0, 1)),
-                  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  last_opened_at TEXT NULL
                 )
                 """
             )
@@ -59,6 +60,15 @@ class ProgressStore:
                 )
                 """
             )
+            # Forward migration for installations created before last_opened_at landed.
+            existing_columns = {
+                row[1]
+                for row in connection.execute("PRAGMA table_info(concept_progress)").fetchall()
+            }
+            if "last_opened_at" not in existing_columns:
+                connection.execute(
+                    "ALTER TABLE concept_progress ADD COLUMN last_opened_at TEXT NULL"
+                )
 
     def save_progress(
         self,
@@ -83,12 +93,27 @@ class ProgressStore:
                 (concept_id, status, confidence, note, int(revisit)),
             )
 
+    def touch_concept(self, concept_id: str) -> None:
+        from datetime import datetime, timezone
+
+        now = datetime.now(timezone.utc).isoformat()
+        with sqlite3.connect(self.database_path) as connection:
+            connection.execute(
+                """
+                INSERT INTO concept_progress (concept_id, status, confidence, note, revisit, last_opened_at)
+                VALUES (?, 'opened', 3, '', 0, ?)
+                ON CONFLICT(concept_id) DO UPDATE SET
+                  last_opened_at = excluded.last_opened_at
+                """,
+                (concept_id, now),
+            )
+
     def get_progress(self, concept_id: str) -> dict[str, Any] | None:
         with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
             row = connection.execute(
                 """
-                SELECT concept_id, status, confidence, note, revisit
+                SELECT concept_id, status, confidence, note, revisit, last_opened_at
                 FROM concept_progress
                 WHERE concept_id = ?
                 """,
@@ -101,7 +126,7 @@ class ProgressStore:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(
                 """
-                SELECT concept_id, status, confidence, note, revisit
+                SELECT concept_id, status, confidence, note, revisit, last_opened_at
                 FROM concept_progress
                 WHERE revisit = 1
                 ORDER BY updated_at DESC, concept_id ASC
@@ -114,7 +139,7 @@ class ProgressStore:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(
                 """
-                SELECT concept_id, status, confidence, note, revisit
+                SELECT concept_id, status, confidence, note, revisit, last_opened_at
                 FROM concept_progress
                 ORDER BY updated_at DESC, concept_id ASC
                 """
@@ -239,6 +264,7 @@ class ProgressStore:
             "confidence": row["confidence"],
             "note": row["note"],
             "revisit": bool(row["revisit"]),
+            "lastOpenedAt": row["last_opened_at"],
         }
 
     @staticmethod

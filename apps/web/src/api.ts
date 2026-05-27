@@ -45,6 +45,15 @@ export async function saveProgress(conceptId: string, input: ProgressInput): Pro
   );
 }
 
+export async function touchConcept(conceptId: string): Promise<void> {
+  const response = await fetch(`${API_BASE}/api/progress/${conceptId}/touch`, {
+    method: "POST"
+  });
+  if (!response.ok) {
+    throw new Error(`touch ${conceptId} failed: ${response.status}`);
+  }
+}
+
 export async function submitCheckpoint(
   conceptId: string,
   input: CheckpointAttemptInput

@@ -110,6 +110,10 @@ def create_app(
         assert progress is not None
         return progress
 
+    @app.post("/api/progress/{concept_id}/touch", status_code=204)
+    def touch_progress(concept_id: str) -> None:
+        store.touch_concept(concept_id)
+
     @app.post("/api/checkpoints/{concept_id}/attempts")
     def submit_checkpoint(concept_id: str, payload: CheckpointAttemptInput) -> dict[str, Any]:
         try:
