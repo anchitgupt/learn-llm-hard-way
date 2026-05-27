@@ -1,0 +1,57 @@
+/*
+ * Lesson body / markdown prose styling.
+ * Applied to .prose-lesson containers (e.g. rendered lesson markdown).
+ * No @layer wrap: Vite processes CSS files independently in build mode,
+ * so @layer rules require @tailwind directives in the same file. Plain
+ * class selectors avoid that coupling.
+ */
+
+.prose-lesson {
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.prose-lesson h1 { font-size: 24px; line-height: 32px; font-weight: 600; margin: 24px 0 12px; }
+.prose-lesson h2 { font-size: 20px; line-height: 28px; font-weight: 600; margin: 24px 0 12px; }
+.prose-lesson h3 { font-size: 17px; line-height: 24px; font-weight: 600; margin: 20px 0 8px; }
+.prose-lesson p { margin: 12px 0; }
+.prose-lesson ul,
+.prose-lesson ol { margin: 12px 0 12px 24px; }
+.prose-lesson li { margin: 4px 0; }
+.prose-lesson a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-lesson a:hover { color: var(--accent-hover); }
+.prose-lesson code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--bg-inset);
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-subtle);
+}
+.prose-lesson pre {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 22px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.prose-lesson pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.prose-lesson blockquote {
+  margin: 16px 0;
+  padding: 8px 16px;
+  border-left: 2px solid var(--accent);
+  color: var(--text-muted);
+}

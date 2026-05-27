@@ -1,0 +1,32 @@
+@import url("https://fonts.bunny.net/css?family=inter:400,500,600|jetbrains-mono:400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--r-sm);
+  }
+
+  ::selection {
+    background: var(--accent-quiet);
+    color: var(--text-primary);
+  }
+}
