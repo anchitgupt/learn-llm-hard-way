@@ -8,9 +8,9 @@ You are working on the `learn-llm-hard-way` project.
 Repo
 - Path: /Users/anchitgupta/Documents/Github/learn-llm-hard-way
 - Branch: main
-- Latest commit on main: 0080200 chore(web): delete legacy concept panels + retire viz alias
+- Latest commit on main: 3825c07 chore(web): delete legacy flat-grid ConceptMap
 - origin/main: in sync with local main
-- Sub-projects 1, 2, 3, and 4 are all on origin/main as of 2026-05-28.
+- Sub-projects 1, 2, 3, 4, and 5 are all on origin/main as of 2026-05-28.
 
 Project context
 The base project is a local-first LLM learning app. The original four core
@@ -94,7 +94,28 @@ Sub-project 4: Concept Workspace — DONE, merged to origin/main
   CheckpointPanel, ProgressPanel) deleted as orphans. GlossaryPanel
   KEPT — still used by /glossary's wrapper until sub-project 7.
 
-Sub-project 5: Concept Map polish — NOT STARTED
+Sub-project 5: Concept Map — DONE, merged to origin/main
+- Spec: docs/superpowers/specs/2026-05-28-concept-map-design.md
+- Plan: docs/superpowers/plans/2026-05-28-concept-map.md
+- Pure layout function at apps/web/src/screens/concept-map/layout.ts:
+  buildGraph() returns React-Flow-shaped nodes/edges from Track[] +
+  progress state. Track-grouped columns; concept rows by order.
+  statusFor() follows missed > complete > learning > open precedence.
+- Components at apps/web/src/screens/concept-map/:
+  ConceptNode (status dot + title + track + badge, navigates on click),
+  MapControls (URL-synced ?filter=missed|completed|open + mini-map
+  toggle persisted to localStorage),
+  HoverPreview (summary + prereq chips + Open → link; built and
+  tested but on-graph wiring deferred — see follow-ups).
+- New screen at apps/web/src/screens/ConceptMap.tsx mounts
+  @xyflow/react with custom ConceptNode renderer, mini-map, controls.
+- routes.tsx points /concepts at the new screen; ConceptMapRoute
+  wrapper removed from RouteWrappers.tsx.
+- Legacy components/ConceptMap.tsx + its test deleted as orphans.
+- shadcn HoverCard primitive installed in this sub-project for
+  the eventual on-graph hover wiring.
+
+Sub-project 6: Chat Playground + trace — NOT STARTED
 - Spec: docs/superpowers/specs/2026-05-27-educational-viz-library-design.md
 - Plan: docs/superpowers/plans/2026-05-27-educational-viz-library.md
 - Both files are currently UNTRACKED on the working tree of main. They get
@@ -116,28 +137,34 @@ Sub-project 5: Concept Map polish — NOT STARTED
 Test/build state on main (verify before you start)
 - labs:test → 40 passed
 - api:test  → 28 passed
-- web test  → 126 passed (across 43 files)
+- web test  → 148 passed (across 47 files)
 - npm --prefix apps/web run build → clean
 - npm run e2e → 4 chromium flows passed
 
 Next concrete action
-Brainstorm and execute sub-project 5: Concept Map polish. The Concept Map
-screen is the prerequisite graph at /concepts. Today it renders the
-existing ConceptMap.tsx component inside a MigrationBanner wrapper
-(RouteWrappers.tsx's ConceptMapRoute) — un-styled, no progress states,
-no hover previews.
+Brainstorm and execute sub-project 6: Chat Playground + trace. The
+ChatPlayground at /chat (and inside concept workspaces for chat
+concepts) is currently wrapped in a MigrationBanner — un-styled and
+still using the legacy panel chrome.
 
-Suggested scope for sub-project 5:
-- Restyle the React Flow graph with foundation tokens (cyan accent for
-  completed, neutral for open, danger/warning for missed).
-- Hover previews showing concept summary + status.
-- Click a node to navigate to /concepts/:id (already works; just polish).
-- Honour the ?filter=missed query (set by Dashboard's MissedTopicsPanel
-  'View all' link).
-- Optional: zoom-to-fit, mini-map, search.
+Suggested scope for sub-project 6:
+- 8-step trace visualization: formatting → tokens → context →
+  generation → sampling → stream → reply → assistant message.
+- Switches for: base/assistant mode, scratch-work mode,
+  tool-verified mode, saved-memory mode.
+- Polished message bubbles + token-stream animation.
+- Token-flow / sampling-plot integration from the viz library.
+- Persistence of the last chat session for back-navigation.
 
-Brainstorm via the superpowers:brainstorming skill in a fresh session
-or by saying "brainstorm sub-project 5" in this session.
+Brainstorm via the superpowers:brainstorming skill.
+
+Pre-existing e2e flake to know about
+The e2e suite is sensitive to stale state in .learn-llm/
+e2e-progress.sqlite. If e2e fails, wipe the file first:
+  rm -f .learn-llm/e2e-progress.sqlite
+Then re-run. Playwright config does this on cold start but reuses an
+existing API webServer across runs, so a leftover SQLite from a
+previous run can leak state.
 
 Documented known follow-ups across the prior sub-projects
 - EmbeddingSpace ships with synthetic demo data; a future lab can
@@ -151,6 +178,12 @@ Documented known follow-ups across the prior sub-projects
   derive real props from `recentArtifacts` per concept.
 - Dashboard's loading state is a simple "Loading…" string; promoting to
   Skeleton blocks is a future polish.
+- Concept Map's HoverPreview component is built and tested but not yet
+  wired to React Flow's per-node hover events (onNodeMouseEnter /
+  Leave). The hidden HoverCard reference in ConceptMap.tsx keeps the
+  imports exercised so the eventual wiring needs no new imports.
+- Concept Map edge highlighting (hover a node → its neighbourhood
+  edges go cyan) is a documented future polish.
 
 Conventions to follow when executing
 - One subagent per task. Provide the FULL task text from the plan in the
