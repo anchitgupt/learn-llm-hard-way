@@ -12,6 +12,10 @@ export type ConceptNodeData = {
   concept: Concept;
   track: Track;
   status: ConceptStatus;
+  /** Set during edge highlighting when another node is hovered. */
+  dim?: boolean;
+  /** Set during edge highlighting on the actively hovered node. */
+  hovered?: boolean;
 } & Record<string, unknown>;
 
 export interface PlainNode {

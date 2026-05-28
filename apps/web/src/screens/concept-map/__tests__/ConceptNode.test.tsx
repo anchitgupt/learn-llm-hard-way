@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { ConceptNode } from "../ConceptNode";
+import { ConceptHoverContext } from "../HoverContext";
 import type { ConceptNodeData } from "../layout";
 import type { Concept, Track } from "../../../types";
 
@@ -60,5 +61,32 @@ describe("ConceptNode", () => {
   it("marks missed concepts with a missed indicator", () => {
     const { container } = renderNode(makeData({ status: "missed" }));
     expect(container.querySelector("[data-missed='true']")).not.toBeNull();
+  });
+
+  it("dims the node when data.dim is true", () => {
+    const { container } = renderNode(makeData({ dim: true }));
+    expect(container.querySelector("[data-dim='true']")).not.toBeNull();
+  });
+
+  it("marks the actively-hovered node", () => {
+    const { container } = renderNode(makeData({ hovered: true }));
+    expect(container.querySelector("[data-hovered='true']")).not.toBeNull();
+  });
+
+  it("wraps in a HoverCard trigger when a HoverContext is provided", () => {
+    const data = makeData();
+    const { container } = render(
+      <MemoryRouter>
+        <ConceptHoverContext.Provider
+          value={{ prereqIndex: { [data.concept.id]: data.concept }, progressByConcept: {} }}
+        >
+          <ConceptNode data={data} selected={false} />
+        </ConceptHoverContext.Provider>
+      </MemoryRouter>
+    );
+    // Radix HoverCard renders the trigger inline; the button gains a
+    // data-state attribute that hover-card uses to track open/closed.
+    const button = container.querySelector("button");
+    expect(button?.getAttribute("data-state")).toBeTruthy();
   });
 });

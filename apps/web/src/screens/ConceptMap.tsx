@@ -10,11 +10,12 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { Skeleton } from "@/components/ui/skeleton";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useCourseData } from "@/shell/CourseDataProvider";
 import { ConceptNode } from "./concept-map/ConceptNode";
 import { MapControls, readMiniMapPreference } from "./concept-map/MapControls";
 import { buildGraph, type ConceptNodeData, type ConceptStatus, type PlainEdge, type PlainNode } from "./concept-map/layout";
+import { ConceptHoverContext } from "./concept-map/HoverContext";
+import { neighbourhood } from "./concept-map/highlight";
 
 type RFConceptNode = RFNode<ConceptNodeData>;
 
@@ -43,6 +44,8 @@ function filteredGraph(
 }
 
 const nodeTypes = { concept: ConceptNode };
+const HIGHLIGHT_EDGE_STYLE = { stroke: "var(--accent)", strokeWidth: 2 } as const;
+const DIMMED_EDGE_STYLE = { opacity: 0.18 } as const;
 
 export function ConceptMap() {
   const [searchParams] = useSearchParams();
@@ -50,6 +53,7 @@ export function ConceptMap() {
 
   const { tracks, progressRecords, missedTopics, loading } = useCourseData();
   const [showMiniMap, setShowMiniMap] = useState<boolean>(() => readMiniMapPreference());
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
   const progressByConcept = useMemo(
     () => Object.fromEntries(progressRecords.map((r) => [r.conceptId, r])),
@@ -59,6 +63,15 @@ export function ConceptMap() {
     () => new Set(missedTopics.map((m) => m.conceptId)),
     [missedTopics]
   );
+  const prereqIndex = useMemo(() => {
+    const out: Record<string, ReturnType<typeof Object>> = {};
+    for (const track of tracks) {
+      for (const concept of track.concepts) {
+        out[concept.id] = concept;
+      }
+    }
+    return out as Record<string, import("../types").Concept | undefined>;
+  }, [tracks]);
 
   const { nodes: allNodes, edges: allEdges } = useMemo(
     () => buildGraph(tracks, progressByConcept, missedConceptIds),
@@ -69,17 +82,33 @@ export function ConceptMap() {
     [allNodes, allEdges, filter]
   );
 
+  const highlight = useMemo(
+    () => (hoveredNodeId ? neighbourhood(hoveredNodeId, edges) : null),
+    [hoveredNodeId, edges]
+  );
+
   const rfNodes: RFConceptNode[] = nodes.map((n) => ({
     id: n.id,
     type: n.type,
     position: n.position,
-    data: n.data
+    data: highlight
+      ? {
+          ...n.data,
+          dim: !highlight.nodeIds.has(n.id),
+          hovered: n.id === hoveredNodeId
+        }
+      : n.data
   }));
   const rfEdges: RFEdge[] = edges.map((e) => ({
     id: e.id,
     source: e.source,
     target: e.target,
-    type: e.type
+    type: e.type,
+    style: highlight
+      ? highlight.edgeIds.has(e.id)
+        ? HIGHLIGHT_EDGE_STYLE
+        : DIMMED_EDGE_STYLE
+      : undefined
   }));
 
   function renderCanvas() {
@@ -102,37 +131,41 @@ export function ConceptMap() {
     }
     return (
       <div className="flex-1 relative rounded-md border border-border-subtle overflow-hidden">
-        <ReactFlow
-          nodes={rfNodes}
-          edges={rfEdges}
-          nodeTypes={nodeTypes}
-          fitView
-          panOnDrag
-          zoomOnScroll
-          nodesDraggable={false}
-          nodesConnectable={false}
-          elementsSelectable
-          edgesFocusable={false}
-          proOptions={{ hideAttribution: true }}
-        >
-          <Background gap={20} color="var(--border-subtle)" />
-          {showMiniMap ? (
-            <MiniMap
-              pannable
-              zoomable
-              nodeColor={(node) => {
-                const data = node.data as ConceptNodeData | undefined;
-                switch (data?.status) {
-                  case "complete": return "var(--success)";
-                  case "missed":   return "var(--danger)";
-                  case "learning": return "var(--accent)";
-                  default:         return "var(--text-faint)";
-                }
-              }}
-            />
-          ) : null}
-          <Controls position="bottom-right" showInteractive={false} />
-        </ReactFlow>
+        <ConceptHoverContext.Provider value={{ prereqIndex, progressByConcept }}>
+          <ReactFlow
+            nodes={rfNodes}
+            edges={rfEdges}
+            nodeTypes={nodeTypes}
+            fitView
+            panOnDrag
+            zoomOnScroll
+            nodesDraggable={false}
+            nodesConnectable={false}
+            elementsSelectable
+            edgesFocusable={false}
+            onNodeMouseEnter={(_, node) => setHoveredNodeId(node.id)}
+            onNodeMouseLeave={() => setHoveredNodeId(null)}
+            proOptions={{ hideAttribution: true }}
+          >
+            <Background gap={20} color="var(--border-subtle)" />
+            {showMiniMap ? (
+              <MiniMap
+                pannable
+                zoomable
+                nodeColor={(node) => {
+                  const data = node.data as ConceptNodeData | undefined;
+                  switch (data?.status) {
+                    case "complete": return "var(--success)";
+                    case "missed":   return "var(--danger)";
+                    case "learning": return "var(--accent)";
+                    default:         return "var(--text-faint)";
+                  }
+                }}
+              />
+            ) : null}
+            <Controls position="bottom-right" showInteractive={false} />
+          </ReactFlow>
+        </ConceptHoverContext.Provider>
       </div>
     );
   }
@@ -141,16 +174,6 @@ export function ConceptMap() {
     <div className="flex flex-col h-[calc(100vh-8rem)]">
       <MapControls onMiniMapChange={setShowMiniMap} />
       {renderCanvas()}
-
-      {/* HoverPreview is built and tested but on-graph wiring deferred; the
-          hidden HoverCard reference below keeps the import exercised so future
-          wiring doesn't need a fresh import. */}
-      <span hidden>
-        <HoverCard>
-          <HoverCardTrigger />
-          <HoverCardContent />
-        </HoverCard>
-      </span>
     </div>
   );
 }

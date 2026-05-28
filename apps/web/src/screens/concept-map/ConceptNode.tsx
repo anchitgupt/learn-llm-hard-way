@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { cn } from "@/lib/cn";
 import type { ConceptNodeData, ConceptStatus } from "./layout";
+import { useConceptHoverContext } from "./HoverContext";
+import { HoverPreview } from "./HoverPreview";
 
 interface ConceptNodeProps {
   data: ConceptNodeData;
@@ -27,14 +30,17 @@ function statusBadgeVariant(status: ConceptStatus): "default" | "secondary" | "d
 
 export function ConceptNode({ data, selected }: ConceptNodeProps) {
   const navigate = useNavigate();
-  const { concept, track, status } = data;
+  const { concept, track, status, dim, hovered } = data;
   const missed = status === "missed";
+  const hoverContext = useConceptHoverContext();
 
-  return (
+  const button = (
     <button
       type="button"
       data-status={status}
       data-missed={missed || undefined}
+      data-dim={dim ? "true" : undefined}
+      data-hovered={hovered ? "true" : undefined}
       onClick={(e) => {
         e.stopPropagation();
         navigate(`/concepts/${concept.id}`);
@@ -43,10 +49,12 @@ export function ConceptNode({ data, selected }: ConceptNodeProps) {
       className={cn(
         "w-[220px] h-[80px] rounded-md text-left px-3 py-2",
         "bg-bg-surface border border-border-subtle",
-        "hover:border-accent transition-[border-color] duration-base ease-out",
+        "hover:border-accent transition-[border-color,opacity] duration-base ease-out",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-accent",
         selected && "ring-2 ring-accent",
-        missed && "border-dashed border-danger"
+        missed && "border-dashed border-danger",
+        dim && "opacity-30",
+        hovered && "ring-2 ring-accent"
       )}
     >
       <div className="flex items-center gap-2">
@@ -66,5 +74,22 @@ export function ConceptNode({ data, selected }: ConceptNodeProps) {
         <Badge variant={statusBadgeVariant(status)}>{status}</Badge>
       </div>
     </button>
+  );
+
+  if (!hoverContext) return button;
+
+  return (
+    <HoverCard openDelay={150} closeDelay={80}>
+      <HoverCardTrigger asChild>{button}</HoverCardTrigger>
+      <HoverCardContent side="right" align="start" className="p-0 border-0 bg-transparent shadow-none">
+        <HoverPreview
+          concept={concept}
+          track={track}
+          status={status}
+          prereqIndex={hoverContext.prereqIndex}
+          progressByConcept={hoverContext.progressByConcept}
+        />
+      </HoverCardContent>
+    </HoverCard>
   );
 }
