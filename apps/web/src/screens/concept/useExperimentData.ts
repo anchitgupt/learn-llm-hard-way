@@ -4,6 +4,7 @@ import { demoEmbeddings } from "@/viz/data/demoEmbeddings";
 import type { AttentionMatrix, TokenItem } from "@/viz/data/types";
 import type { Concept } from "../../types";
 import { resolveViz } from "./vizRegistry";
+import { tryDeriveRealProps } from "./realProps";
 
 interface SamplingCandidate {
   token: string;
@@ -11,9 +12,9 @@ interface SamplingCandidate {
 }
 
 /**
- * Returns the props the chosen viz expects for this concept. Falls back
- * to a deterministic demo when no real artifact is available so the
- * tab is never empty.
+ * Returns the props the chosen viz expects for this concept. Prefers
+ * real artifact-derived data when a matching lab run exists; otherwise
+ * falls back to a deterministic synthetic demo so the tab is never empty.
  */
 export function useExperimentData(concept: Concept): Record<string, unknown> {
   const { recentArtifacts } = useCourseData();
@@ -22,6 +23,9 @@ export function useExperimentData(concept: Concept): Record<string, unknown> {
 
   return useMemo(() => {
     if (!entry) return {};
+
+    const real = tryDeriveRealProps(key, concept, recentArtifacts);
+    if (real) return real;
 
     switch (key) {
       case "chat-playground":
@@ -74,8 +78,5 @@ export function useExperimentData(concept: Concept): Record<string, unknown> {
       default:
         return {};
     }
-    // recentArtifacts intentionally referenced but not yet consumed;
-    // future iteration derives real props per concept from artifacts.
-    void recentArtifacts;
-  }, [entry, key, concept.title, recentArtifacts]);
+  }, [entry, key, concept, recentArtifacts]);
 }
