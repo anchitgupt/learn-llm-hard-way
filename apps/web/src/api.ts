@@ -120,3 +120,10 @@ export async function saveChatMemory(content: string): Promise<ChatMemory> {
     })
   );
 }
+
+export async function deleteChatMemory(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE}/api/chat/memory/${id}`, { method: "DELETE" });
+  if (!response.ok) {
+    throw new Error(`Failed to delete memory ${id}: ${response.status}`);
+  }
+}
