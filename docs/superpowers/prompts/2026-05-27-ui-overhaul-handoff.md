@@ -189,7 +189,22 @@ Test/build state on main (verify before you start)
 
 Next concrete action
 UI overhaul complete. All seven sub-projects shipped to origin/main.
-No further sub-projects scheduled.
+Four follow-ups landed in batch `ui-followups` (2026-05-29):
+- Concept Map HoverPreview wired on every node via a shadcn
+  HoverCard; reads prereqIndex + progressByConcept from a new
+  ConceptHoverContext mounted in ConceptMap.
+- Concept Map edge highlighting: hover a node → its connected
+  edges/nodes get the accent color, the rest dim out. Pure helper
+  at apps/web/src/screens/concept-map/highlight.ts.
+- Dashboard loading state is a layout-matching DashboardSkeleton
+  instead of a plain "Loading…" string.
+- useExperimentData derives real props from recentArtifacts when a
+  shape matches (attention.weights, training.lossHistory,
+  training.finalProbabilities, tokens). Falls back to the existing
+  synthetic demo otherwise. Helper at
+  apps/web/src/screens/concept/realProps.ts.
+
+No further work scheduled.
 
 Pre-existing e2e flake to know about
 The e2e suite is sensitive to stale state in .learn-llm/
@@ -206,21 +221,17 @@ Documented known follow-ups across the prior sub-projects
   swap in Canvas behind the same prop signature.
 - The viz library integrates into more screens in sub-projects 6 (Chat
   Playground) and 7 (Glossary / Artifacts / Failure Museum).
-- useExperimentData in apps/web/src/screens/concept/useExperimentData.ts
-  uses deterministic demo data for every viz. A future iteration can
-  derive real props from `recentArtifacts` per concept.
-- Dashboard's loading state is a simple "Loading…" string; promoting to
-  Skeleton blocks is a future polish.
-- Concept Map's HoverPreview component is built and tested but not yet
-  wired to React Flow's per-node hover events (onNodeMouseEnter /
-  Leave). The hidden HoverCard reference in ConceptMap.tsx keeps the
-  imports exercised so the eventual wiring needs no new imports.
-- Concept Map edge highlighting (hover a node → its neighbourhood
-  edges go cyan) is a documented future polish.
 - ChatPlayground's StreamStep currently renders all tokens at once with
   a Replay button stub; per-token Motion stagger animation is a polish
   iteration. The animation cap (60 tokens) is documented.
 - ChatPlayground has no chat memory editor; sub-project 7 handles it.
+
+Test/build state on main after the 2026-05-29 follow-ups batch
+- labs:test → 40 passed
+- api:test  → 32 passed
+- web test  → 219 passed (across 64 files)
+- npm --prefix apps/web run build → clean
+- npm run e2e → 4 chromium flows passed
 
 Conventions to follow when executing
 - One subagent per task. Provide the FULL task text from the plan in the
