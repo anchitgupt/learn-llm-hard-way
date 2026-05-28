@@ -28,17 +28,40 @@ def _reply_for(user_message: str, options: dict[str, Any], tool_trace: dict[str,
     return "I can answer with a visible prompt, token, context, sampling, and stream trace."
 
 
-def _sampling_trace(reply: str) -> list[dict[str, Any]]:
+def _sampling_trace(reply: str, answer_style: str = "short") -> list[dict[str, Any]]:
     words = reply.split()
+    # scratch mode shows intermediate planning steps before the final tokens,
+    # so we use more of the reply words (up to 10) to produce more trace entries.
+    max_steps = 10 if answer_style == "scratch" else 5
     trace: list[dict[str, Any]] = []
-    for index, word in enumerate(words[:5]):
-        logits = {
-            word: 2.0,
-            "trace": 1.0,
-            "token": 0.5,
-        }
-        decision = sample_from_logits(logits, temperature=0.7, top_k=2, seed=index)
-        trace.append({"step": index + 1, **decision})
+    if answer_style == "scratch":
+        # Prepend two intermediate reasoning steps that are always present.
+        for pre_index, candidate_word in enumerate(["[think]", "[plan]"]):
+            logits = {
+                candidate_word: 2.5,
+                "trace": 1.0,
+                "token": 0.5,
+            }
+            decision = sample_from_logits(logits, temperature=0.7, top_k=2, seed=1000 + pre_index)
+            trace.append({"step": pre_index + 1, **decision})
+        offset = len(trace)
+        for index, word in enumerate(words[:max_steps]):
+            logits = {
+                word: 2.0,
+                "trace": 1.0,
+                "token": 0.5,
+            }
+            decision = sample_from_logits(logits, temperature=0.7, top_k=2, seed=index)
+            trace.append({"step": offset + index + 1, **decision})
+    else:
+        for index, word in enumerate(words[:max_steps]):
+            logits = {
+                word: 2.0,
+                "trace": 1.0,
+                "token": 0.5,
+            }
+            decision = sample_from_logits(logits, temperature=0.7, top_k=2, seed=index)
+            trace.append({"step": index + 1, **decision})
     return trace
 
 
@@ -87,7 +110,7 @@ def build_chat_trace(
         "formattedPrompt": formatted_prompt,
         "tokenTrace": token_trace,
         "contextTrace": context_trace,
-        "samplingTrace": _sampling_trace(final_reply),
+        "samplingTrace": _sampling_trace(final_reply, answer_style=answer_style),
         "streamChunks": _stream_chunks(final_reply),
         "toolTrace": tool_trace,
         "memoryTrace": {

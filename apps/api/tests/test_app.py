@@ -219,3 +219,70 @@ def test_chat_endpoints_return_trace_failures_preference_and_memory(tmp_path: Pa
     preference_response = client.get("/api/chat/preference")
     assert preference_response.status_code == 200
     assert preference_response.json()["winner"]["id"] == "verified"
+
+
+def test_chat_demo_tool_mode_verified_populates_tool_trace(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+    from learn_llm_api.app import create_app
+
+    monkeypatch.setenv("LEARN_LLM_DATABASE_PATH", str(tmp_path / "progress.sqlite"))
+    client = TestClient(create_app(database_path=tmp_path / "progress.sqlite"))
+
+    response = client.post(
+        "/api/chat/demo",
+        json={
+            "message": "What is 19 * 23?",
+            "mode": "assistant",
+            "answerStyle": "short",
+            "toolMode": "verified",
+            "memoryMode": "context",
+            "contextSize": 96,
+        },
+    )
+    assert response.status_code == 200
+    trace = response.json()
+    assert trace["toolTrace"] is not None
+    assert "tool" in trace["toolTrace"]
+    assert "result" in trace["toolTrace"]
+    # Tool result is non-empty for an arithmetic question.
+    assert len(str(trace["toolTrace"]["result"])) > 0
+
+
+def test_chat_demo_scratch_answer_style_produces_multi_step_sampling(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+    from learn_llm_api.app import create_app
+
+    monkeypatch.setenv("LEARN_LLM_DATABASE_PATH", str(tmp_path / "progress.sqlite"))
+    client = TestClient(create_app(database_path=tmp_path / "progress.sqlite"))
+
+    short_response = client.post(
+        "/api/chat/demo",
+        json={
+            "message": "What is 19 * 23?",
+            "mode": "assistant",
+            "answerStyle": "short",
+            "toolMode": "none",
+            "memoryMode": "context",
+            "contextSize": 96,
+        },
+    )
+    scratch_response = client.post(
+        "/api/chat/demo",
+        json={
+            "message": "What is 19 * 23?",
+            "mode": "assistant",
+            "answerStyle": "scratch",
+            "toolMode": "none",
+            "memoryMode": "context",
+            "contextSize": 96,
+        },
+    )
+    assert short_response.status_code == 200
+    assert scratch_response.status_code == 200
+
+    short_steps = len(short_response.json()["samplingTrace"])
+    scratch_steps = len(scratch_response.json()["samplingTrace"])
+    # Scratch mode shows intermediate sampling steps, so it has strictly
+    # more entries than short mode for the same prompt.
+    assert scratch_steps > short_steps
+    assert scratch_steps >= 2
