@@ -57,9 +57,7 @@ describe("ChatPlayground memory drawer", () => {
   });
 
   it("failed delete restores the row and shows an inline alert", async () => {
-    (api.deleteChatMemory as ReturnType<typeof vi.spyOn>).mockRejectedValueOnce(
-      new Error("network down")
-    );
+    vi.mocked(api.deleteChatMemory).mockRejectedValueOnce(new Error("network down"));
     render(<MemoryRouter><ChatPlayground /></MemoryRouter>);
     fireEvent.click(await screen.findByRole("button", { name: /Memories/i }));
     const drawer = await screen.findByRole("dialog", { name: /Saved memories/i });
