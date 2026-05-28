@@ -5,9 +5,10 @@ import { VizShowcase } from "./screens/VizShowcase";
 import { ConceptWorkspace } from "./screens/ConceptWorkspace";
 import { ConceptMap } from "./screens/ConceptMap";
 import { ChatPlayground } from "./screens/ChatPlayground";
+import { Glossary } from "./screens/Glossary";
 import {
   ArtifactsRoute,
-  FailuresRoute, GlossaryRoute, TracksRoute
+  FailuresRoute, TracksRoute
 } from "./screens/RouteWrappers";
 
 export function AppRoutes() {
@@ -19,7 +20,7 @@ export function AppRoutes() {
         <Route path="concepts"     element={<ConceptMap />} />
         <Route path="concepts/:id" element={<ConceptWorkspace />} />
         <Route path="chat"         element={<ChatPlayground />} />
-        <Route path="glossary"     element={<GlossaryRoute />} />
+        <Route path="glossary"     element={<Glossary />} />
         <Route path="artifacts"    element={<ArtifactsRoute />} />
         <Route path="failures"     element={<FailuresRoute />} />
         <Route path="viz"          element={<VizShowcase />} />

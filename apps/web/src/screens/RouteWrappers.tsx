@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
-import { GlossaryPanel } from "../components/GlossaryPanel";
+import { useEffect, useState } from "react";
 import { ArtifactPreview } from "../components/ArtifactPreview";
 import { FailureMuseum } from "../components/FailureMuseum";
 import { MigrationBanner } from "../shell/MigrationBanner";
@@ -27,18 +26,6 @@ export function TracksRoute() {
           </li>
         ))}
       </ul>
-    </>
-  );
-}
-
-export function GlossaryRoute() {
-  const { glossaryEntries } = useCourseData();
-  // Show all glossary entries by passing all their IDs
-  const allIds = useMemo(() => glossaryEntries.map((e) => e.id), [glossaryEntries]);
-  return (
-    <>
-      <MigrationBanner scheduledIn={7} />
-      <GlossaryPanel conceptGlossaryIds={allIds} entries={glossaryEntries} />
     </>
   );
 }
