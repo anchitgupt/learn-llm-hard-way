@@ -8,9 +8,9 @@ You are working on the `learn-llm-hard-way` project.
 Repo
 - Path: /Users/anchitgupta/Documents/Github/learn-llm-hard-way
 - Branch: main
-- Latest commit on main: 3825c07 chore(web): delete legacy flat-grid ConceptMap
+- Latest commit on main: 0c74062 chore(web): delete legacy ChatPlayground + TracePanel + legacy test
 - origin/main: in sync with local main
-- Sub-projects 1, 2, 3, 4, and 5 are all on origin/main as of 2026-05-28.
+- Sub-projects 1, 2, 3, 4, 5, and 6 are all on origin/main as of 2026-05-28.
 
 Project context
 The base project is a local-first LLM learning app. The original four core
@@ -115,7 +115,35 @@ Sub-project 5: Concept Map — DONE, merged to origin/main
 - shadcn HoverCard primitive installed in this sub-project for
   the eventual on-graph hover wiring.
 
-Sub-project 6: Chat Playground + trace — NOT STARTED
+Sub-project 6: Chat Playground + trace — DONE, merged to origin/main
+- Spec: docs/superpowers/specs/2026-05-28-chat-playground-design.md
+- Plan: docs/superpowers/plans/2026-05-28-chat-playground.md
+- API: deterministic local model patched so toolMode=verified populates
+  toolTrace and answerStyle=scratch produces multi-entry samplingTrace.
+  Two new API tests pin these contracts.
+- State hook: apps/web/src/screens/chat/useChatSession.ts owns composer
+  state, ChatTrace, loading/error, and calls runChatDemo.
+- Left column: apps/web/src/screens/chat/ChatComposer.tsx (4 segmented
+  switches: mode/answerStyle/toolMode/memoryMode + textarea + Send) and
+  ChatReply.tsx (assistant bubble or empty / loading / error states).
+- Right column: apps/web/src/screens/chat/TraceTimeline.tsx composes the
+  8 mandatory steps (User, Format, Token, Context, Generation, Sampling,
+  Stream, Reply) + conditional Tool. Step renderers live under
+  apps/web/src/screens/chat/trace/ — each is dumb and takes only its
+  trace slice. TokenStep renders <TokenFlow>, SamplingStep renders
+  <SamplingPlot> (one panel per samplingTrace entry).
+- Screen: apps/web/src/screens/ChatPlayground.tsx exports
+  ChatPlayground (with page header for /chat) and ChatPlaygroundBody
+  (header-less for the Experiment tab via the viz registry).
+- routes.tsx points /chat at the new screen; ChatRoute wrapper removed.
+- vizRegistry.ts 'chat-playground' entry now points at ChatPlaygroundBody
+  (so chat concepts' Experiment tab mounts the playground without a
+  page-header collision).
+- Legacy components/ChatPlayground.tsx + components/TracePanel.tsx and
+  the legacy ChatPlayground.test.tsx deleted as orphans.
+- FailureMuseum + PreferencePanel KEPT — sub-project 7 owns them.
+
+Sub-project 7: Supporting screens — NOT STARTED
 - Spec: docs/superpowers/specs/2026-05-27-educational-viz-library-design.md
 - Plan: docs/superpowers/plans/2026-05-27-educational-viz-library.md
 - Both files are currently UNTRACKED on the working tree of main. They get
@@ -136,25 +164,31 @@ Sub-project 6: Chat Playground + trace — NOT STARTED
 
 Test/build state on main (verify before you start)
 - labs:test → 40 passed
-- api:test  → 28 passed
-- web test  → 148 passed (across 47 files)
+- api:test  → 30 passed
+- web test  → 185 passed (across 61 files)
 - npm --prefix apps/web run build → clean
 - npm run e2e → 4 chromium flows passed
 
 Next concrete action
-Brainstorm and execute sub-project 6: Chat Playground + trace. The
-ChatPlayground at /chat (and inside concept workspaces for chat
-concepts) is currently wrapped in a MigrationBanner — un-styled and
-still using the legacy panel chrome.
+Brainstorm and execute sub-project 7: Supporting screens. This is the
+last sub-project in the 7-part UI overhaul. Surfaces still un-styled:
 
-Suggested scope for sub-project 6:
-- 8-step trace visualization: formatting → tokens → context →
-  generation → sampling → stream → reply → assistant message.
-- Switches for: base/assistant mode, scratch-work mode,
-  tool-verified mode, saved-memory mode.
-- Polished message bubbles + token-stream animation.
-- Token-flow / sampling-plot integration from the viz library.
-- Persistence of the last chat session for back-navigation.
+- /glossary — currently wraps the legacy GlossaryPanel with a
+  MigrationBanner (scheduledIn: 7).
+- /artifacts — currently an un-styled lab artifacts list in
+  RouteWrappers.tsx (scheduledIn: 7).
+- /failures — currently wraps the legacy FailureMuseum with a
+  MigrationBanner (scheduledIn: 7).
+- /tracks — currently a tiny un-styled list (scheduledIn: 4 originally
+  but never polished; can fold into sub-project 7).
+
+Plus pulled-out pieces from earlier sub-projects:
+- A polished memory editor + memory list for /chat/memory (or a section
+  inside the glossary surface). Sub-project 6 dropped the inline memory
+  UI from ChatPlayground; sub-project 7 brings it back as its own
+  polished surface.
+- PreferencePanel polish — currently kept as legacy but consumed by no
+  active screen.
 
 Brainstorm via the superpowers:brainstorming skill.
 
@@ -184,6 +218,10 @@ Documented known follow-ups across the prior sub-projects
   imports exercised so the eventual wiring needs no new imports.
 - Concept Map edge highlighting (hover a node → its neighbourhood
   edges go cyan) is a documented future polish.
+- ChatPlayground's StreamStep currently renders all tokens at once with
+  a Replay button stub; per-token Motion stagger animation is a polish
+  iteration. The animation cap (60 tokens) is documented.
+- ChatPlayground has no chat memory editor; sub-project 7 handles it.
 
 Conventions to follow when executing
 - One subagent per task. Provide the FULL task text from the plan in the
