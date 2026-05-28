@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { ChatComposer } from "./chat/ChatComposer";
 import { ChatReply } from "./chat/ChatReply";
 import { TraceTimeline } from "./chat/TraceTimeline";
 import { useChatSession } from "./chat/useChatSession";
+import { MemoryDrawer } from "./chat/MemoryDrawer";
 
 export function ChatPlaygroundBody() {
   const s = useChatSession();
+  const [memoryOpen, setMemoryOpen] = useState(false);
   return (
     <div className="flex flex-col lg:grid lg:grid-cols-[1.2fr_1fr] gap-6">
       <div className="space-y-4">
@@ -21,6 +24,7 @@ export function ChatPlaygroundBody() {
           onToolModeChange={s.setToolMode}
           onMemoryModeChange={s.setMemoryMode}
           onSend={s.send}
+          onOpenMemories={() => setMemoryOpen(true)}
         />
         <ChatReply
           finalReply={s.trace?.finalReply ?? null}
@@ -32,6 +36,7 @@ export function ChatPlaygroundBody() {
       <div>
         <TraceTimeline trace={s.trace} loading={s.loading} />
       </div>
+      <MemoryDrawer open={memoryOpen} onOpenChange={setMemoryOpen} />
     </div>
   );
 }

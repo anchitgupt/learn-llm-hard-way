@@ -17,6 +17,7 @@ interface ChatComposerProps {
   onToolModeChange: (value: ChatDemoInput["toolMode"]) => void;
   onMemoryModeChange: (value: ChatDemoInput["memoryMode"]) => void;
   onSend: () => void;
+  onOpenMemories?: () => void;
 }
 
 interface SegmentedGroupProps<T extends string> {
@@ -56,7 +57,7 @@ const MEMORY_OPTIONS = ["context", "saved"] as const;
 export function ChatComposer({
   message, mode, answerStyle, toolMode, memoryMode, loading,
   onMessageChange, onModeChange, onAnswerStyleChange, onToolModeChange, onMemoryModeChange,
-  onSend
+  onSend, onOpenMemories
 }: ChatComposerProps) {
   return (
     <Card className="bg-bg-surface">
@@ -79,7 +80,12 @@ export function ChatComposer({
           />
         </label>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+          {onOpenMemories ? (
+            <Button type="button" variant="outline" size="sm" onClick={onOpenMemories}>
+              Memories
+            </Button>
+          ) : null}
           <Button type="button" onClick={onSend} disabled={loading}>
             <Play className="h-4 w-4 mr-1" />
             {loading ? "Sending…" : "Send"}
