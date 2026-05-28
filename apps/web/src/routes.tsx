@@ -6,9 +6,10 @@ import { ConceptWorkspace } from "./screens/ConceptWorkspace";
 import { ConceptMap } from "./screens/ConceptMap";
 import { ChatPlayground } from "./screens/ChatPlayground";
 import { Glossary } from "./screens/Glossary";
+import { Tracks } from "./screens/Tracks";
 import {
   ArtifactsRoute,
-  FailuresRoute, TracksRoute
+  FailuresRoute
 } from "./screens/RouteWrappers";
 
 export function AppRoutes() {
@@ -16,7 +17,7 @@ export function AppRoutes() {
     <Routes>
       <Route element={<AppShell />}>
         <Route index element={<Dashboard />} />
-        <Route path="tracks"       element={<TracksRoute />} />
+        <Route path="tracks"       element={<Tracks />} />
         <Route path="concepts"     element={<ConceptMap />} />
         <Route path="concepts/:id" element={<ConceptWorkspace />} />
         <Route path="chat"         element={<ChatPlayground />} />

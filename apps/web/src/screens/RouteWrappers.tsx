@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ArtifactPreview } from "../components/ArtifactPreview";
 import { FailureMuseum } from "../components/FailureMuseum";
@@ -6,29 +5,6 @@ import { MigrationBanner } from "../shell/MigrationBanner";
 import { useCourseData } from "../shell/CourseDataProvider";
 import { fetchChatFailures } from "../api";
 import type { FailureCase } from "../types";
-
-export function TracksRoute() {
-  const { tracks } = useCourseData();
-  const navigate = useNavigate();
-  return (
-    <>
-      <MigrationBanner scheduledIn={4} />
-      <ul className="space-y-2 font-mono text-[14px]">
-        {tracks.map((t) => (
-          <li key={t.id}>
-            <button
-              type="button"
-              className="underline text-accent hover:text-accent-hover"
-              onClick={() => navigate(`/concepts/${t.concepts[0]?.id ?? ""}`)}
-            >
-              {t.title} — {t.concepts.length} concepts
-            </button>
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-}
 
 export function ArtifactsRoute() {
   const { recentArtifacts } = useCourseData();
