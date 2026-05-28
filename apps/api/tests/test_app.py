@@ -309,3 +309,32 @@ def test_delete_chat_memory_returns_404_for_unknown_id(tmp_path: Path) -> None:
     delete_response = client.delete("/api/chat/memory/9999")
     assert delete_response.status_code == 404
     assert delete_response.json() == {"detail": "memory not found"}
+
+
+def test_run_character_tokenizer_lab_returns_artifact_with_tokens(tmp_path: Path) -> None:
+    client = TestClient(create_app(repo_root=tmp_path, database_path=tmp_path / "progress.sqlite"))
+
+    response = client.post("/api/labs/character-tokenizer/runs")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["labId"] == "character-tokenizer"
+    assert body["conceptId"] == "character-tokenization"
+    assert body["status"] == "passed"
+    # The artifact carries the per-character token sequence so the
+    # token-flow viz on the Experiment tab renders real content.
+    assert body["artifact"]["tokens"] == ["l", "l", "m", " ", "l", "a", "b"]
+    assert body["artifact"]["decoded"] == "llm lab"
+
+
+def test_run_bpe_tokenizer_lab_returns_artifact_with_merge_trace(tmp_path: Path) -> None:
+    client = TestClient(create_app(repo_root=tmp_path, database_path=tmp_path / "progress.sqlite"))
+
+    response = client.post("/api/labs/bpe-tokenizer/runs")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["labId"] == "bpe-tokenizer"
+    assert body["conceptId"] == "byte-pair-encoding"
+    assert body["status"] == "passed"
+    artifact = body["artifact"]
+    assert len(artifact["merges"]) == artifact["settings"]["mergeCount"]
+    assert len(artifact["tokens"]) <= len(artifact["initialTokens"])

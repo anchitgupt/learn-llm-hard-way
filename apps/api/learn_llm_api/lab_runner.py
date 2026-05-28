@@ -9,11 +9,17 @@ from llm_from_scratch.experiments.chat_demo import write_chat_demo_artifact
 from llm_from_scratch.experiments.math_demo import write_math_demo_artifact
 from llm_from_scratch.experiments.mini_training_demo import write_mini_training_demo_artifact
 from llm_from_scratch.experiments.nn_demo import write_nn_demo_artifact
+from llm_from_scratch.experiments.tokenization_demo import (
+    write_bpe_tokenizer_artifact,
+    write_character_tokenizer_artifact,
+)
 from llm_from_scratch.experiments.transformer_demo import write_transformer_demo_artifact
 
 LabWriter = Callable[[Path], Path]
 
 LABS: dict[str, tuple[str, LabWriter]] = {
+    "character-tokenizer": ("character-tokenization", write_character_tokenizer_artifact),
+    "bpe-tokenizer": ("byte-pair-encoding", write_bpe_tokenizer_artifact),
     "math-vector-demo": ("vectors", write_math_demo_artifact),
     "math-softmax-demo": ("logits-softmax", write_math_demo_artifact),
     "nn-gradient-demo": ("scalar-gradients", write_nn_demo_artifact),
