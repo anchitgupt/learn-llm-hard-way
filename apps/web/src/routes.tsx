@@ -8,7 +8,7 @@ import { ChatPlayground } from "./screens/ChatPlayground";
 import { Glossary } from "./screens/Glossary";
 import { Tracks } from "./screens/Tracks";
 import { Artifacts } from "./screens/Artifacts";
-import { FailuresRoute } from "./screens/RouteWrappers";
+import { Failures } from "./screens/Failures";
 
 export function AppRoutes() {
   return (
@@ -21,7 +21,7 @@ export function AppRoutes() {
         <Route path="chat"         element={<ChatPlayground />} />
         <Route path="glossary"     element={<Glossary />} />
         <Route path="artifacts"    element={<Artifacts />} />
-        <Route path="failures"     element={<FailuresRoute />} />
+        <Route path="failures"     element={<Failures />} />
         <Route path="viz"          element={<VizShowcase />} />
       </Route>
     </Routes>
