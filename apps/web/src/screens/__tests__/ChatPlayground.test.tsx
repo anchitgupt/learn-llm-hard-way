@@ -27,13 +27,21 @@ describe("ChatPlayground", () => {
     render(<MemoryRouter><ChatPlayground /></MemoryRouter>);
     expect(screen.getByRole("heading", { name: /Send a message; inspect every step/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /message/i })).toBeInTheDocument();
-    expect(screen.getByText(/Send a message to see how it flows/i)).toBeInTheDocument();
+    // The "Send a message to see how it flows" placeholder appears in BOTH the
+    // ChatReply card (left column) and the TraceTimeline empty state (right
+    // column). The dual-view layout is by design — assert at-least-one match.
+    expect(screen.getAllByText(/Send a message to see how it flows/i).length).toBeGreaterThan(0);
   });
 
   it("sending a message populates the trace timeline and the reply", async () => {
     render(<MemoryRouter><ChatPlayground /></MemoryRouter>);
     fireEvent.click(screen.getByRole("button", { name: /^Send$/i }));
-    await waitFor(() => expect(screen.getByText(/Attention is a weighted lookup/i)).toBeInTheDocument());
+    // The final reply renders in BOTH the ChatReply card (left) and the
+    // ReplyStep card inside the TraceTimeline (right) — the split layout
+    // shows them simultaneously. Assert at-least-one match.
+    await waitFor(() =>
+      expect(screen.getAllByText(/Attention is a weighted lookup/i).length).toBeGreaterThan(0)
+    );
     expect(screen.getByRole("heading", { name: /User message/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Token stream/i })).toBeInTheDocument();
   });

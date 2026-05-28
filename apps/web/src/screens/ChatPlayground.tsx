@@ -22,33 +22,16 @@ export function ChatPlaygroundBody() {
           onMemoryModeChange={s.setMemoryMode}
           onSend={s.send}
         />
-        {/* Show ChatReply only when there is no trace yet (placeholder / loading /
-            error state). Once a trace arrives the TraceTimeline carries both
-            the reply (ReplyStep) and all intermediate steps, so ChatReply would
-            duplicate the final reply text. */}
-        {!s.trace ? (
-          <ChatReply
-            finalReply={null}
-            loading={s.loading}
-            error={s.error}
-            onRetry={s.send}
-          />
-        ) : s.error ? (
-          <ChatReply
-            finalReply={null}
-            loading={false}
-            error={s.error}
-            onRetry={s.send}
-          />
-        ) : null}
+        <ChatReply
+          finalReply={s.trace?.finalReply ?? null}
+          loading={s.loading}
+          error={s.error}
+          onRetry={s.send}
+        />
       </div>
-      {/* TraceTimeline is only rendered once a trace exists to avoid duplicate
-          placeholder text alongside ChatReply's empty state. */}
-      {s.trace || s.loading ? (
-        <div>
-          <TraceTimeline trace={s.trace} loading={s.loading} />
-        </div>
-      ) : null}
+      <div>
+        <TraceTimeline trace={s.trace} loading={s.loading} />
+      </div>
     </div>
   );
 }
