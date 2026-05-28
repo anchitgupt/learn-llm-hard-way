@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import { AttentionMap, EmbeddingSpace, LossCurve, SamplingPlot, TokenFlow } from "@/viz";
-import { ChatPlayground } from "@/components/ChatPlayground";
+import { ChatPlaygroundBody } from "@/screens/ChatPlayground";
 
 export type ConceptVizKey =
   | "token-flow"
@@ -21,7 +21,7 @@ const registry: Record<ConceptVizKey, RegistryEntry> = {
   "loss-curve":      { Component: LossCurve,      hint: "Training loss over steps. Lower is better." },
   "sampling-plot":   { Component: SamplingPlot,   hint: "Probabilities over candidate next tokens." },
   "embedding-space": { Component: EmbeddingSpace, hint: "Two-dimensional projection of embedding vectors." },
-  "chat-playground": { Component: ChatPlayground, hint: "Send a message and inspect every step in the chat trace." }
+  "chat-playground": { Component: ChatPlaygroundBody, hint: "Send a message and inspect every step in the chat trace." }
 };
 
 // Migration aliases retired at the end of sub-project 4 once every

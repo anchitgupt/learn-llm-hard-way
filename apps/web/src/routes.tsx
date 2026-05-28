@@ -4,8 +4,9 @@ import { Dashboard } from "./screens/Dashboard";
 import { VizShowcase } from "./screens/VizShowcase";
 import { ConceptWorkspace } from "./screens/ConceptWorkspace";
 import { ConceptMap } from "./screens/ConceptMap";
+import { ChatPlayground } from "./screens/ChatPlayground";
 import {
-  ArtifactsRoute, ChatRoute,
+  ArtifactsRoute,
   FailuresRoute, GlossaryRoute, TracksRoute
 } from "./screens/RouteWrappers";
 
@@ -17,7 +18,7 @@ export function AppRoutes() {
         <Route path="tracks"       element={<TracksRoute />} />
         <Route path="concepts"     element={<ConceptMap />} />
         <Route path="concepts/:id" element={<ConceptWorkspace />} />
-        <Route path="chat"         element={<ChatRoute />} />
+        <Route path="chat"         element={<ChatPlayground />} />
         <Route path="glossary"     element={<GlossaryRoute />} />
         <Route path="artifacts"    element={<ArtifactsRoute />} />
         <Route path="failures"     element={<FailuresRoute />} />

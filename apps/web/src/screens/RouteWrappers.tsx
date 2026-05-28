@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { ChatPlayground } from "../components/ChatPlayground";
 import { GlossaryPanel } from "../components/GlossaryPanel";
 import { ArtifactPreview } from "../components/ArtifactPreview";
 import { FailureMuseum } from "../components/FailureMuseum";
@@ -28,15 +27,6 @@ export function TracksRoute() {
           </li>
         ))}
       </ul>
-    </>
-  );
-}
-
-export function ChatRoute() {
-  return (
-    <>
-      <MigrationBanner scheduledIn={6} />
-      <ChatPlayground />
     </>
   );
 }
