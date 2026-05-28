@@ -7,10 +7,8 @@ import { ConceptMap } from "./screens/ConceptMap";
 import { ChatPlayground } from "./screens/ChatPlayground";
 import { Glossary } from "./screens/Glossary";
 import { Tracks } from "./screens/Tracks";
-import {
-  ArtifactsRoute,
-  FailuresRoute
-} from "./screens/RouteWrappers";
+import { Artifacts } from "./screens/Artifacts";
+import { FailuresRoute } from "./screens/RouteWrappers";
 
 export function AppRoutes() {
   return (
@@ -22,7 +20,7 @@ export function AppRoutes() {
         <Route path="concepts/:id" element={<ConceptWorkspace />} />
         <Route path="chat"         element={<ChatPlayground />} />
         <Route path="glossary"     element={<Glossary />} />
-        <Route path="artifacts"    element={<ArtifactsRoute />} />
+        <Route path="artifacts"    element={<Artifacts />} />
         <Route path="failures"     element={<FailuresRoute />} />
         <Route path="viz"          element={<VizShowcase />} />
       </Route>

@@ -1,6 +1,6 @@
 .superpowers/
 .learn-llm/
-artifacts/
+/artifacts/
 checkpoints/
 .venv/
 node_modules/
