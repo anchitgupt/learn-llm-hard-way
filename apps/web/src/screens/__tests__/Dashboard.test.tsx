@@ -44,4 +44,19 @@ describe("Dashboard", () => {
     expect(screen.getByRole("heading", { name: /Recent artifacts/i })).toBeInTheDocument();
     expect(screen.getAllByText(/Data and Tokens/i).length).toBeGreaterThan(0);
   });
+
+  it("renders the DashboardSkeleton (not plain 'Loading…') while CourseData is loading", () => {
+    // The provider starts in loading state on first render — assert
+    // the skeleton appears synchronously before any data resolves.
+    render(
+      <MemoryRouter>
+        <CourseDataProvider>
+          <Dashboard />
+        </CourseDataProvider>
+      </MemoryRouter>
+    );
+    expect(screen.queryByText(/^Loading…$/)).not.toBeInTheDocument();
+    expect(screen.getByTestId("dashboard-skeleton")).toBeInTheDocument();
+    expect(screen.getAllByTestId("skeleton").length).toBeGreaterThanOrEqual(8);
+  });
 });

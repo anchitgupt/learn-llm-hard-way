@@ -4,13 +4,14 @@ import { ContinueCard } from "./dashboard/ContinueCard";
 import { TrackProgressGrid } from "./dashboard/TrackProgressGrid";
 import { MissedTopicsPanel } from "./dashboard/MissedTopicsPanel";
 import { RecentArtifactsPanel } from "./dashboard/RecentArtifactsPanel";
+import { DashboardSkeleton } from "./dashboard/DashboardSkeleton";
 
 export function Dashboard() {
   const { tracks, missedTopics, recentArtifacts, progressRecords, continueConcept, totals, loading } =
     useCourseData();
 
   if (loading) {
-    return <p className="text-text-muted">Loading…</p>;
+    return <DashboardSkeleton />;
   }
 
   return (
