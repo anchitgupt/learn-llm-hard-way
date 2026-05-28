@@ -286,3 +286,26 @@ def test_chat_demo_scratch_answer_style_produces_multi_step_sampling(tmp_path, m
     # more entries than short mode for the same prompt.
     assert scratch_steps > short_steps
     assert scratch_steps >= 2
+
+
+def test_delete_chat_memory_removes_existing_row(tmp_path: Path) -> None:
+    client = TestClient(create_app(repo_root=Path("."), database_path=tmp_path / "progress.sqlite"))
+
+    save_response = client.post("/api/chat/memory", json={"content": "remember this"})
+    assert save_response.status_code == 200
+    memory_id = save_response.json()["id"]
+
+    delete_response = client.delete(f"/api/chat/memory/{memory_id}")
+    assert delete_response.status_code == 204
+    assert delete_response.content == b""
+
+    list_response = client.get("/api/chat/memory")
+    assert all(entry["id"] != memory_id for entry in list_response.json())
+
+
+def test_delete_chat_memory_returns_404_for_unknown_id(tmp_path: Path) -> None:
+    client = TestClient(create_app(repo_root=Path("."), database_path=tmp_path / "progress.sqlite"))
+
+    delete_response = client.delete("/api/chat/memory/9999")
+    assert delete_response.status_code == 404
+    assert delete_response.json() == {"detail": "memory not found"}

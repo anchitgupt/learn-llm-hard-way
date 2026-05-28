@@ -270,6 +270,14 @@ class ProgressStore:
             ).fetchall()
         return [self._row_to_chat_memory(row) for row in rows]
 
+    def delete_chat_memory(self, memory_id: int) -> bool:
+        with sqlite3.connect(self.database_path) as connection:
+            cursor = connection.execute(
+                "DELETE FROM chat_memories WHERE id = ?",
+                (memory_id,),
+            )
+            return cursor.rowcount > 0
+
     @staticmethod
     def _row_to_progress(row: sqlite3.Row) -> dict[str, Any]:
         return {

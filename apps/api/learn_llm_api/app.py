@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -198,5 +198,12 @@ def create_app(
     @app.post("/api/chat/memory")
     def save_chat_memory(payload: ChatMemoryInput) -> dict[str, Any]:
         return store.save_chat_memory(payload.content)
+
+    @app.delete("/api/chat/memory/{memory_id}", status_code=204)
+    def delete_chat_memory(memory_id: int) -> Response:
+        deleted = store.delete_chat_memory(memory_id)
+        if not deleted:
+            raise HTTPException(status_code=404, detail="memory not found")
+        return Response(status_code=204)
 
     return app
