@@ -143,54 +143,53 @@ Sub-project 6: Chat Playground + trace — DONE, merged to origin/main
   the legacy ChatPlayground.test.tsx deleted as orphans.
 - FailureMuseum + PreferencePanel KEPT — sub-project 7 owns them.
 
-Sub-project 7: Supporting screens — NOT STARTED
-- Spec: docs/superpowers/specs/2026-05-27-educational-viz-library-design.md
-- Plan: docs/superpowers/plans/2026-05-27-educational-viz-library.md
-- Both files are currently UNTRACKED on the working tree of main. They get
-  committed inside the plan's pre-flight step.
-- Five viz components planned:
-  - TokenFlow         (1D sequence across stages: text/tokens/ids/bytes)
-  - AttentionMap      (2D heatmap with masked cells distinct, optional row sums)
-  - LossCurve         (time-series lines with optional rolling-mean overlay)
-  - SamplingPlot      (vertical bars for softmax distribution, top-K, selected)
-  - EmbeddingSpace    (2D scatter with optional cluster coloring)
-- Plus shared primitives: VizFrame, Axes, Tooltip, Legend, useResizeObserver,
-  scales.ts (d3-scale), colors.ts (token-aware).
-- Library home: apps/web/src/viz/.
-- Showcase route: /viz, inside the app shell (unlike /__foundation which bypasses
-  the shell). New "Viz" entry (Sparkles icon) appended to SideNav, last position.
-- Tech: SVG + d3-scale + d3-shape; React owns the DOM; Motion-for-React for
-  animation. Canvas path for LossCurve documented as a future escape hatch.
+Sub-project 7: Supporting screens — DONE, merged to origin/main
+- Spec: docs/superpowers/specs/2026-05-28-supporting-screens-design.md
+- Plan: docs/superpowers/plans/2026-05-28-supporting-screens.md
+- /glossary: searchable grid of expandable TermCard with URL-synced
+  ?q= filter; screen at apps/web/src/screens/Glossary.tsx with parts
+  under apps/web/src/screens/glossary/.
+- /tracks: TrackCard grid with TrackProgress bar derived from
+  useTrackStats; "Start track →" jumps to the first non-complete
+  concept. Parts under apps/web/src/screens/tracks/.
+- /artifacts: ArtifactsByLab groups recentArtifacts; ArtifactCard
+  dispatches to type-aware thumb renderers (AttentionThumb / LossThumb
+  / GenerationThumb / ComparisonThumb / FailureThumb). Empty state
+  links to /concepts. Parts under apps/web/src/screens/artifacts/.
+- /failures: FailuresByCategory + expandable FailureCard reveals
+  explanation + better strategy + related-concept chips. A
+  PreferenceSection at the bottom absorbs the legacy PreferencePanel
+  surface (RLHF-adjacent education). useFailuresData loads
+  failures + preference in parallel; loading skeleton + retry on
+  error. Parts under apps/web/src/screens/failures/.
+- Memory drawer in /chat: composer gains a "Memories" button that
+  opens a shadcn Sheet. useMemoryEditor owns list/save/delete with
+  optimistic delete + snapshot rollback on failure + inline alert.
+  Parts under apps/web/src/screens/chat/ (MemoryDrawer, MemoryList,
+  MemoryAddForm, useMemoryEditor).
+- API addition: DELETE /api/chat/memory/{id} → 204 on success, 404
+  on not-found. Backed by store.delete_chat_memory(id) -> bool. Two
+  API tests pin the contract.
+- Web client addition: deleteChatMemory(id) in apps/web/src/api.ts.
+- Retired: apps/web/src/screens/RouteWrappers.tsx and four legacy
+  components (GlossaryPanel, FailureMuseum, PreferencePanel,
+  ArtifactPreview) plus their __tests__ — every consumer now points
+  at the new screens.
+- .gitignore: anchored the existing `artifacts/` rule to repo root
+  (`/artifacts/`) so apps/web/src/screens/artifacts/ is tracked.
 
 Test/build state on main (verify before you start)
 - labs:test → 40 passed
-- api:test  → 30 passed
-- web test  → 185 passed (across 61 files)
+- api:test  → 32 passed
+- web test  → 201 passed (across 62 files)
 - npm --prefix apps/web run build → clean
 - npm run e2e → 4 chromium flows passed
+  (e2e requires .venv/bin on PATH so `python -m uvicorn` resolves —
+  e.g. `PATH="$PWD/.venv/bin:$PATH" npm run e2e`)
 
 Next concrete action
-Brainstorm and execute sub-project 7: Supporting screens. This is the
-last sub-project in the 7-part UI overhaul. Surfaces still un-styled:
-
-- /glossary — currently wraps the legacy GlossaryPanel with a
-  MigrationBanner (scheduledIn: 7).
-- /artifacts — currently an un-styled lab artifacts list in
-  RouteWrappers.tsx (scheduledIn: 7).
-- /failures — currently wraps the legacy FailureMuseum with a
-  MigrationBanner (scheduledIn: 7).
-- /tracks — currently a tiny un-styled list (scheduledIn: 4 originally
-  but never polished; can fold into sub-project 7).
-
-Plus pulled-out pieces from earlier sub-projects:
-- A polished memory editor + memory list for /chat/memory (or a section
-  inside the glossary surface). Sub-project 6 dropped the inline memory
-  UI from ChatPlayground; sub-project 7 brings it back as its own
-  polished surface.
-- PreferencePanel polish — currently kept as legacy but consumed by no
-  active screen.
-
-Brainstorm via the superpowers:brainstorming skill.
+UI overhaul complete. All seven sub-projects shipped to origin/main.
+No further sub-projects scheduled.
 
 Pre-existing e2e flake to know about
 The e2e suite is sensitive to stale state in .learn-llm/
