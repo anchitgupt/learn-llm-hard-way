@@ -2,11 +2,17 @@ import type { Concept, ProgressRecord, Track } from "../../types";
 
 export type ConceptStatus = "complete" | "missed" | "learning" | "open";
 
-export interface ConceptNodeData {
+/**
+ * Node data attached to each concept's React Flow node. The
+ * `Record<string, unknown>` intersection satisfies React Flow v12's
+ * `Node<T extends Record<string, unknown>>` generic constraint without
+ * polluting consumers' property access.
+ */
+export type ConceptNodeData = {
   concept: Concept;
   track: Track;
   status: ConceptStatus;
-}
+} & Record<string, unknown>;
 
 export interface PlainNode {
   id: string;

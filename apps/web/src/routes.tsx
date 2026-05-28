@@ -3,8 +3,9 @@ import { AppShell } from "./shell/AppShell";
 import { Dashboard } from "./screens/Dashboard";
 import { VizShowcase } from "./screens/VizShowcase";
 import { ConceptWorkspace } from "./screens/ConceptWorkspace";
+import { ConceptMap } from "./screens/ConceptMap";
 import {
-  ArtifactsRoute, ChatRoute, ConceptMapRoute,
+  ArtifactsRoute, ChatRoute,
   FailuresRoute, GlossaryRoute, TracksRoute
 } from "./screens/RouteWrappers";
 
@@ -14,7 +15,7 @@ export function AppRoutes() {
       <Route element={<AppShell />}>
         <Route index element={<Dashboard />} />
         <Route path="tracks"       element={<TracksRoute />} />
-        <Route path="concepts"     element={<ConceptMapRoute />} />
+        <Route path="concepts"     element={<ConceptMap />} />
         <Route path="concepts/:id" element={<ConceptWorkspace />} />
         <Route path="chat"         element={<ChatRoute />} />
         <Route path="glossary"     element={<GlossaryRoute />} />

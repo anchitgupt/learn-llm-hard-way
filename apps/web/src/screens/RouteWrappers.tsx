@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { ConceptMap } from "../components/ConceptMap";
 import { ChatPlayground } from "../components/ChatPlayground";
 import { GlossaryPanel } from "../components/GlossaryPanel";
 import { ArtifactPreview } from "../components/ArtifactPreview";
@@ -29,26 +28,6 @@ export function TracksRoute() {
           </li>
         ))}
       </ul>
-    </>
-  );
-}
-
-export function ConceptMapRoute() {
-  const { tracks, missedTopics } = useCourseData();
-  const navigate = useNavigate();
-  const missedConceptIds = useMemo(
-    () => new Set(missedTopics.map((m) => m.conceptId)),
-    [missedTopics]
-  );
-  return (
-    <>
-      <MigrationBanner scheduledIn={5} />
-      <ConceptMap
-        tracks={tracks}
-        selectedConceptId={null}
-        missedConceptIds={missedConceptIds}
-        onSelectConcept={(concept) => navigate(`/concepts/${concept.id}`)}
-      />
     </>
   );
 }
